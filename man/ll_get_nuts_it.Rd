@@ -4,7 +4,7 @@
 \alias{ll_get_nuts_it}
 \title{Regions and provinces in Italy (high detail, CC-BY Istat)}
 \usage{
-ll_get_nuts_it(level = 2, year = 2019, resolution = "low")
+ll_get_nuts_it(name = NULL, level = 2, year = 2019, resolution = "low")
 }
 \arguments{
 \item{level}{Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.}
@@ -17,4 +17,5 @@ ll_get_nuts_it(level = 2, year = 2019, resolution = "low")
 }
 \examples{
 ll_get_nuts_it()
+ll_get_nuts_it(name = "Rimini")
 }

@@ -4,14 +4,18 @@
 \alias{ll_get_lau_eu}
 \title{Gets local administrative units from Eurostat's website}
 \usage{
-ll_get_lau_eu(year = 2018)
+ll_get_lau_eu(name = NULL, year = 2018)
+}
+\arguments{
+\item{year}{Year of mapping, defaults to most recent (2018). Availalble values: 2017, 2018}
 }
 \value{
-LAU in sf format
+European LAU in sf format
 }
 \description{
-Gets local administrative units from Eurostat's website
+Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18
 }
 \examples{
 ll_get_lau_eu()
+
 }
