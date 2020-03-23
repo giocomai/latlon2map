@@ -8,7 +8,8 @@
 #'
 #' @examples
 ll_get_world <- function(resolution = "60",
-                         year = 2016) {
+                         year = 2016, 
+                         name = NULL) {
   resolution <- stringr::str_pad(string = resolution, width = 2, side = "left", pad = 0)
   usethis::ui_info("Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries")
   usethis::ui_info("© EuroGeographics for the administrative boundaries")

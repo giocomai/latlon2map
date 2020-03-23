@@ -11,12 +11,12 @@
 #' @export
 #'
 #' @examples
-ll_match_geo <- function(data,
-                         longitude = 1,
-                         latitude = 2,
-                         join = sf::st_intersects,
-                         sample = NULL,
-                         match = longlat2map::ll_get_world()) {
+ll_match <- function(data,
+                     longitude = 1,
+                     latitude = 2,
+                     join = sf::st_intersects,
+                     sample = NULL,
+                     match = longlat2map::ll_get_world()) {
   if (is.null(sample)==FALSE) {
     data <- data %>% dplyr::sample_n(size = sample)
   }

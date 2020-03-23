@@ -4,7 +4,22 @@
 \alias{ll_get_population_grid}
 \title{Get EU 1km population grid}
 \usage{
-ll_get_population_grid(year = 2011)
+ll_get_population_grid(
+  year = 2011,
+  match_sf = NULL,
+  match_name = NULL,
+  match_country = NULL,
+  join = sf::st_intersects
+)
+}
+\arguments{
+\item{year}{Defaults to 2011. Currently, the EU population grid is available only for the year 2011.}
+
+\item{match_sf}{An sf object to me matched with the population grid. If not given, full grid is returned.}
+
+\item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
+
+\item{match_country}{Defaults to NULL. If given, used to speed up processing.}
 }
 \value{
 An sf object with the population grid.
