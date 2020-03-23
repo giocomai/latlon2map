@@ -43,11 +43,11 @@ ll_get_nuts_it <- function(name = NULL,
   } else {
     ll_create_folders(geo = "it",
                       level = level,
-                      resolution = "low",
+                      resolution = resolution,
                       year = year)
     ll_create_folders(geo = "it",
                       level = "all_levels",
-                      resolution = "low",
+                      resolution = resolution,
                       year = year)
     
     shp_folder <- ll_find_file(geo = "it",
