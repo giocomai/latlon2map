@@ -2,6 +2,7 @@
 
 export("%>%")
 export(ll_app)
+export(ll_bbox)
 export(ll_create_folders)
 export(ll_find_file)
 export(ll_get_lau_eu)
