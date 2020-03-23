@@ -4,7 +4,7 @@
 \alias{ll_get_lau_eu}
 \title{Gets local administrative units from Eurostat's website}
 \usage{
-ll_get_lau_eu(name = NULL, year = 2018)
+ll_get_lau_eu(name = NULL, year = 2018, silent = FALSE)
 }
 \arguments{
 \item{year}{Year of mapping, defaults to most recent (2018). Availalble values: 2017, 2018}

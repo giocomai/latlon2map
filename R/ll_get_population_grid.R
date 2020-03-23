@@ -16,9 +16,13 @@ ll_get_population_grid <- function(year = 2011,
                                    match_sf = NULL,
                                    match_name = NULL, 
                                    match_country = NULL,
-                                   join = sf::st_intersects) {
-  usethis::ui_info(x = "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat")
-  
+                                   join = sf::st_intersects, 
+                                   silent = FALSE) {
+  if (silent==FALSE) {
+    usethis::ui_info(x = "Data source population grid information: Eurostat, EFGS")
+    usethis::ui_info(x = "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat")
+  }
+ 
   if (is.null(match_country)==FALSE) {
     match_country <- stringr::str_to_upper(string = match_country)
   }

@@ -10,8 +10,12 @@
 #' @examples
 #' ll_get_lau_eu()
 #' 
-ll_get_lau_eu <- function(name = NULL, year = 2018) {
-  usethis::ui_info(x = "© EuroGeographics for the administrative boundaries")
+ll_get_lau_eu <- function(name = NULL,
+                          year = 2018,
+                          silent = FALSE) {
+  if (silent==FALSE) {
+    usethis::ui_info(x = "© EuroGeographics for the administrative boundaries")
+  }
   ll_create_folders(geo = "eu",
                     level = "lau",
                     resolution = "1m",

@@ -4,7 +4,13 @@
 \alias{ll_get_nuts_eu}
 \title{Gets NUTS as sf object from Eurostat's website}
 \usage{
-ll_get_nuts_eu(level = 3, resolution = 60, year = 2016)
+ll_get_nuts_eu(
+  name = NULL,
+  level = 3,
+  resolution = 60,
+  year = 2016,
+  silent = FALSE
+)
 }
 \arguments{
 \item{level}{Defaults to 3, corresponding to nuts3. Available values are: 0, 1, 2, and 3.}

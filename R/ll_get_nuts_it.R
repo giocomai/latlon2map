@@ -14,8 +14,10 @@ ll_get_nuts_it <- function(name = NULL,
                            level = 2,
                            year = 2019,
                            resolution = "low") {
-  usethis::ui_info(x = "Source: https://www.istat.it/it/archivio/222527")
-  usethis::ui_info(x = "Istat (CC-BY)")
+  if (silent==FALSE) {
+    usethis::ui_info(x = "Source: https://www.istat.it/it/archivio/222527")
+    usethis::ui_info(x = "Istat (CC-BY)")
+  }
   
   if (is.null(name)==FALSE) {
     rds_file_location <- ll_find_file(geo = "it",

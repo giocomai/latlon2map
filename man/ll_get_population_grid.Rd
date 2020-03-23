@@ -9,7 +9,8 @@ ll_get_population_grid(
   match_sf = NULL,
   match_name = NULL,
   match_country = NULL,
-  join = sf::st_intersects
+  join = sf::st_intersects,
+  silent = FALSE
 )
 }
 \arguments{
