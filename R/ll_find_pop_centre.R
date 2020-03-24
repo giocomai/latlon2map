@@ -44,14 +44,14 @@ ll_find_pop_centre <- function(sf_location,
                                             sf::st_drop_geometry() 
                                           
                                           if (nrow(temp)==0) {
-                                            tibble::tibble(TOT_P = 0, id = x)
+                                            tibble::tibble(Population = 0, id = x)
                                           } else {
                                             temp %>% 
-                                              dplyr::summarise(TOT_P = (sum(TOT_P)), id = x)
+                                              dplyr::summarise(Population = (sum(Population)), id = x)
                                           }
                                         })
     
-    sf_location <- sf_polygon %>% dplyr::slice(which.max(df_pop_by_polygon$TOT_P))
+    sf_location <- sf_polygon %>% dplyr::slice(which.max(df_pop_by_polygon$Population))
     
   }
   
@@ -59,22 +59,25 @@ ll_find_pop_centre <- function(sf_location,
                                     y = sf_location %>% sf::st_transform(crs = 3857),
                                     join = join) %>% 
     sf::st_transform(crs = 4326)
-  
+  if (is.element("TOT_P", colnames(sf_location_grid))) {
+    sf_location_grid  <- sf_location_grid %>% 
+      dplyr::rename(Population = TOT_P)
+  }
   sf_pop_centre <- dplyr::bind_cols(sf_location_grid %>% 
                                       sf::st_drop_geometry() %>% 
-                                      dplyr::select(TOT_P),
+                                      dplyr::select(Population),
                                     sf_location_grid %>% 
                                       sf::st_transform(crs = 3857) %>% 
                                       sf::st_centroid() %>% 
                                       sf::st_transform(crs = 4326) %>% 
                                       sf::st_coordinates() %>% 
                                       tibble::as_tibble()) %>% 
-    dplyr::summarise(x = weighted.mean(x = X, w = TOT_P^power), 
-                     y = weighted.mean(x = Y, w = TOT_P^power)) %>% 
+    dplyr::summarise(x = weighted.mean(x = X, w = Population^power), 
+                     y = weighted.mean(x = Y, w = Population^power)) %>% 
     sf::st_as_sf(coords = c("x", "y"), crs = 4326)
   
   # sf_location_grid %>% 
-  #   dplyr::filter(TOT_P>=median(TOT_P))
+  #   dplyr::filter(Population>=median(Population))
   
   if (sf::st_intersects(x = sf_location %>% sf::st_transform(crs = 3857), y = sf_pop_centre %>% sf::st_transform(crs = 3857), sparse = FALSE)==FALSE) {
     sf_cell <- sf_location_grid %>% sf::st_transform(crs = 3857) %>% 
