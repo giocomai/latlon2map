@@ -13,7 +13,8 @@
 ll_get_nuts_it <- function(name = NULL,
                            level = 2,
                            year = 2019,
-                           resolution = "low") {
+                           resolution = "low",
+                           silent = FALSE) {
   if (silent==FALSE) {
     usethis::ui_info(x = "Source: https://www.istat.it/it/archivio/222527")
     usethis::ui_info(x = "Istat (CC-BY)")

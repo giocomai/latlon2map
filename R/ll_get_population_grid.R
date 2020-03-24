@@ -91,9 +91,10 @@ ll_get_population_grid <- function(year = 2011,
   }
 
   if (is.null(match_sf)==FALSE) {
-    sf <- sf::st_filter(x = sf,
-                        y = match_sf,
-                        join = join)
+    sf <- sf::st_filter(x = sf %>% sf::st_transform(crs = 3857),
+                        y = match_sf %>% sf::st_transform(crs = 3857),
+                        join = join) %>%
+      sf::st_transform(crs = 4326)
   }
   
   if (is.null(match_name)==FALSE) {

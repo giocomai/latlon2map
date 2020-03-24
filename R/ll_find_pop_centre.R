@@ -31,15 +31,15 @@ ll_find_pop_centre <- function(sf_location,
                                join = sf::st_intersects) {
   
   sf_polygon <- sf_location %>% 
+    dplyr::select(geometry) %>% 
     sf::st_cast(to = "POLYGON") %>% 
-    dplyr::mutate(id = dplyr::row_number()) %>% 
-    dplyr::select(id)
+    dplyr::mutate(id = dplyr::row_number())
   
   if (nrow(sf_polygon)>1) {
     df_pop_by_polygon <- purrr::map_dfr(.x = seq_along(along.with = 1:nrow(sf_polygon)),
                                         .f = function(x) {
-                                          temp <- sf::st_filter(x = sf_population_grid,
-                                                                y = sf_polygon %>% dplyr::slice(x),
+                                          temp <- sf::st_filter(x = sf_population_grid %>% sf::st_transform(crs = 3857),
+                                                                y = sf_polygon %>% dplyr::slice(x) %>% sf::st_transform(crs = 3857),
                                                                 join = join) %>% 
                                             sf::st_drop_geometry() 
                                           
@@ -62,24 +62,25 @@ ll_find_pop_centre <- function(sf_location,
   
   sf_pop_centre <- dplyr::bind_cols(sf_location_grid %>% 
                                       sf::st_drop_geometry() %>% 
-                                      select(TOT_P),
+                                      dplyr::select(TOT_P),
                                     sf_location_grid %>% 
                                       sf::st_transform(crs = 3857) %>% 
                                       sf::st_centroid() %>% 
                                       sf::st_transform(crs = 4326) %>% 
                                       sf::st_coordinates() %>% 
                                       tibble::as_tibble()) %>% 
-    summarise(x = weighted.mean(x = X, w = TOT_P^power), 
-              y = weighted.mean(x = Y, w = TOT_P^power)) %>% 
+    dplyr::summarise(x = weighted.mean(x = X, w = TOT_P^power), 
+                     y = weighted.mean(x = Y, w = TOT_P^power)) %>% 
     sf::st_as_sf(coords = c("x", "y"), crs = 4326)
   
   # sf_location_grid %>% 
   #   dplyr::filter(TOT_P>=median(TOT_P))
   
-  if (sf::st_intersects(x = sf_location, y = sf_pop_centre, sparse = FALSE)==FALSE) {
-    sf_cell <- sf::st_filter(x = sf_location_grid %>% sf::st_transform(crs = 3857),
-                             sf_pop_centre %>% sf::st_transform(crs = 3857),
-                             join = sf::st_nearest_feature)
+  if (sf::st_intersects(x = sf_location %>% sf::st_transform(crs = 3857), y = sf_pop_centre %>% sf::st_transform(crs = 3857), sparse = FALSE)==FALSE) {
+    sf_cell <- sf_location_grid %>% sf::st_transform(crs = 3857) %>% 
+      dplyr::slice(sf::st_nearest_feature(x = sf_pop_centre %>% sf::st_transform(crs = 3857),
+                                           y =  sf_location_grid %>% sf::st_transform(crs = 3857)))
+    
     sf_cell_intersection <- sf::st_intersection(sf_cell,
                                                 sf_location %>%
                                                   sf::st_transform(crs = 3857))
