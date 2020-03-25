@@ -34,7 +34,7 @@ ll_get_lau_eu <- function(name = NULL,
                                       level = "lau",
                                       resolution = "1m",
                                       year = year,
-                                      name = paste0("lau-", name),
+                                      name = paste0("lau-", stringr::str_replace(string = name, pattern = "[[:punct:]]", replacement = "_")),
                                       file_type = "rds")
     
     if (fs::file_exists(rds_file_location)) {
