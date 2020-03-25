@@ -3,6 +3,7 @@
 #' Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18
 #'
 #' @param year Year of mapping, defaults to most recent (2018). Availalble values: 2017, 2018
+#' @param lau_sf sf object, exactly such as the one that would be returned by `ll_get_lau_eu()`. Used to speed-up computation when bulk processing.
 #'
 #' @return European LAU in sf format
 #' @export
@@ -14,7 +15,8 @@
 #' 
 ll_get_lau_eu <- function(name = NULL,
                           year = 2018,
-                          silent = FALSE) {
+                          silent = FALSE, 
+                          lau_sf = NULL) {
   if (silent==FALSE) {
     usethis::ui_info(x = "© EuroGeographics for the administrative boundaries")
   }
@@ -42,8 +44,9 @@ ll_get_lau_eu <- function(name = NULL,
     }
   }
   
-  
-  if (fs::file_exists(rds_file)) {
+  if (is.null(lau_sf)==FALSE) {
+    sf <- lau_sf
+  } else if (fs::file_exists(rds_file)) {
     sf <- readr::read_rds(rds_file)
   } else {
     shp_folder <- ll_find_file(geo = "eu",
