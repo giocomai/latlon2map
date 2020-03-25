@@ -18,7 +18,7 @@ ll_find_file <- function(geo,
                          name = "abl",
                          file_type = "rds") {
   base_folder <- ll_set_folder()
-  name <- stringr::str_replace(string = name, pattern = "[[:punct:]]", replacement = "_")
+  name <- stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_")
   file_name <- paste0(paste(c(geo, level, resolution, year), collapse = "-"), "-", name, ".", file_type)
   full_path <-   fs::path(base_folder, "ll_data", file_type, geo, level, resolution, year, file_name)
   if (file_type == "shp") {

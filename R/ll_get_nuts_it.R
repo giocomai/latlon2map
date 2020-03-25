@@ -26,7 +26,7 @@ ll_get_nuts_it <- function(name = NULL,
                                       level = level,
                                       resolution = resolution,
                                       year = year,
-                                      name = paste0(level, "-", stringr::str_replace(string = name, pattern = "[[:punct:]]", replacement = "_")),
+                                      name = paste0(level, "-", stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_")),
                                       file_type = "rds")
     
     if (fs::file_exists(rds_file_location)) {
