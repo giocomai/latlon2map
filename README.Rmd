@@ -13,32 +13,32 @@ knitr::opts_chunk$set(
 )
 ```
 
-# longlat2map
+# latlon2map
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-The goal of `longlat2map` is to make it simple to process spatial data, and to match tabular data distributed in spreadsheets with longitude/latitude columns with various geographical units based on shapefile distributed by statistical offices such as Eurostat. 
+The goal of `latlon2map` is to make it simple to process spatial data, and to match tabular data distributed in spreadsheets with longitude/latitude columns with various geographical units based on shapefile distributed by statistical offices such as Eurostat. 
 
 The package includes a number of convenience functions that download and cache locally pre-processed files to reduce boilerplate code commonly found in data projects, hopefully speeding up the data pipeline and favouring reproducibility.
 
-By dafault, `longlat2map` stores all downloaded files in the current working directory. However, it makes is easy to keep them on a single folder, preventing the common issue of having multiple copies of the same geographic files for each data project on a computer. The code remains transferrable and reproducible, as missing files are simply downloaded on the fly if unavaiable locally.
+By dafault, `latlon2map` stores all downloaded files in the current working directory. However, it makes is easy to keep them on a single folder, preventing the common issue of having multiple copies of the same geographic files for each data project on a computer. The code remains transferrable and reproducible, as missing files are simply downloaded on the fly if unavaiable locally.
 
 ## Installation
 
-You can install `longlat2map` from GitHub with:
+You can install `latlon2map` from GitHub with:
 
 ```{r eval = FALSE}
-remotes::install_github("giocomai/longlat2map")
+remotes::install_github("giocomai/latlon2map")
 ```
 
 ## Use
 
-All `longlat2map` function starts with `ll_` to facilitate auto-completion. By default, data are stored in a folder called `ll_data` inside the working directory. However, I suggest caching data in a separate folder for system-wide caching: you will not need to re-download again geographic files for different projects, and you will not unncessarily sync multiple copies of those files for each project that needs them. You need to call e.g. `ll_set_folder("~/R/")` once per session.
+All `latlon2map` function starts with `ll_` to facilitate auto-completion. By default, data are stored in a folder called `ll_data` inside the working directory. However, I suggest caching data in a separate folder for system-wide caching: you will not need to re-download again geographic files for different projects, and you will not unncessarily sync multiple copies of those files for each project that needs them. You need to call e.g. `ll_set_folder("~/R/")` once per session.
 
 ```{r}
-library("longlat2map")
+library("latlon2map")
 ll_set_folder("~/R/")
 ```
 
