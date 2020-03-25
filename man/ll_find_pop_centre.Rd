@@ -28,6 +28,7 @@ Find the population-weighted centre of a municipality
 }
 \examples{
 
+ll_set_folder("~/R/")
 name = "Pinzolo"
 sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high")
 

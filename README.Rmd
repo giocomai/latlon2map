@@ -39,8 +39,6 @@ All `longlat2map` function starts with `ll_` to facilitate auto-completion. By d
 
 ```{r}
 library("longlat2map")
-library("ggplot2")
-library("sf")
 ll_set_folder("~/R/")
 ```
 
@@ -51,36 +49,7 @@ For reference all of the original data are kept in the `ll_data/shp/` folder, so
 
 Functions calls such as `ll_get_world(resolution = 60)` can safely be used where you would usually place your `sf` object/data frame. They will download items when they are not locally available, and will simply load pre-processed data on the following calls.
 
-
-```{r}
-ll_get_world(resolution = 60) %>% 
-  ggplot() +
-  geom_sf()
-```
-
-
-```{r}
-ll_get_nuts_eu(level = 2, resolution = 60) %>% 
-  ggplot() +
-  geom_sf()
-```
-
-
-
-```{r}
-ll_get_nuts_it(level = "nuts2") %>% 
-  ggplot() +
-  geom_sf()
-```
-
-
-```{r}
-ll_get_nuts_us(level = "county",
-               resolution = "500k") %>% 
-  ggplot() +
-  geom_sf()
-```
-
+Check the package vignette for more details, examples, and use cases. 
 
 ## Shiny app
 

@@ -20,7 +20,7 @@ This is useful in particular to make geom_sf()-based ggplots with consistent asp
 \examples{
 
 # The following two graphs will have same 4:3 aspect ratio
-
+ll_set_folder("~/R/")
 library("ggspatial")
 
 sf_location <- ll_get_nuts_it(name = "Palmanova", level = "lau", resolution = "low")

@@ -10,6 +10,7 @@
 #'
 #' @examples
 #' 
+#' ll_set_folder("~/R/")
 #' name = "Pinzolo"
 #' sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high")
 #' 
@@ -46,6 +47,10 @@ ll_find_pop_centre <- function(sf_location,
                                           if (nrow(temp)==0) {
                                             tibble::tibble(Population = 0, id = x)
                                           } else {
+                                            if (is.element("TOT_P", colnames(temp))) {
+                                              temp  <- temp %>% 
+                                                dplyr::rename(Population = TOT_P)
+                                            }
                                             temp %>% 
                                               dplyr::summarise(Population = (sum(Population)), id = x)
                                           }

@@ -22,6 +22,7 @@ ll_get_nuts_it(
 2019 / WGS84 UTM32N
 }
 \examples{
+ll_set_folder("~/R/")
 ll_get_nuts_it()
 ll_get_nuts_it(name = "Rimini")
 }

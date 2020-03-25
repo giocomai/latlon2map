@@ -16,6 +16,8 @@ European LAU in sf format
 Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18
 }
 \examples{
+
+ll_set_folder("~/R/")
 ll_get_lau_eu()
 
 }

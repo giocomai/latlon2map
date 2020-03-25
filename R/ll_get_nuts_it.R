@@ -8,6 +8,7 @@
 #' @export
 #'
 #' @examples
+#' ll_set_folder("~/R/")
 #' ll_get_nuts_it()
 #' ll_get_nuts_it(name = "Rimini")
 ll_get_nuts_it <- function(name = NULL,

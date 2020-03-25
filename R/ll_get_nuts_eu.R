@@ -64,7 +64,7 @@ ll_get_nuts_eu <- function(name = NULL,
                                name = "abl",
                                file_type = "shp")
     
-    shp_folder_level <- fs::path(shp_folder, paste0("NUTS_RG_", resolution, "M_", year, "_3857_LEVL_", level, ".shp"))
+    shp_folder_level <- fs::path(shp_folder, paste0("NUTS_RG_", resolution, "M_", year, "_4326_LEVL_", level, ".shp"))
     
     if (fs::file_exists(shp_folder_level)==FALSE) {
       
@@ -83,11 +83,10 @@ ll_get_nuts_eu <- function(name = NULL,
       unzip(zipfile = zip_file,
             exdir = shp_folder)
       unzip(zipfile = paste0(shp_folder_level, ".zip"),
-            exdir = shp_folder)
+            exdir = fs::path(shp_folder, paste0("4326-nuts", level)))
       
     }
-    sf <- sf::read_sf(shp_folder_level) %>% 
-      sf::st_transform(crs = 4326)
+    sf <- sf::read_sf(fs::path(shp_folder, paste0("4326-nuts", level))) 
     readr::write_rds(x = sf,
                      path = rds_file)
   }

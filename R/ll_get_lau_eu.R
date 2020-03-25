@@ -8,6 +8,8 @@
 #' @export
 #'
 #' @examples
+#' 
+#' ll_set_folder("~/R/")
 #' ll_get_lau_eu()
 #' 
 ll_get_lau_eu <- function(name = NULL,
