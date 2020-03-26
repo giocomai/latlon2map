@@ -10,7 +10,8 @@ ll_get_population_grid(
   match_name = NULL,
   match_country = NULL,
   join = sf::st_intersects,
-  silent = FALSE
+  silent = FALSE,
+  population_grid_sf = NULL
 )
 }
 \arguments{
@@ -21,6 +22,8 @@ ll_get_population_grid(
 \item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
 
 \item{match_country}{Defaults to NULL. If given, used to speed up processing.}
+
+\item{population_grid_sf}{Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.}
 }
 \value{
 An sf object with the population grid.

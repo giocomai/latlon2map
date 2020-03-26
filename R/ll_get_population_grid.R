@@ -7,6 +7,7 @@
 #' @param match_sf An sf object to me matched with the population grid. If not given, full grid is returned.
 #' @param match_name A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.
 #' @param match_country Defaults to NULL. If given, used to speed up processing. 
+#' @param population_grid_sf Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.
 #'
 #' @return An sf object with the population grid.
 #' @export
@@ -17,7 +18,8 @@ ll_get_population_grid <- function(year = 2011,
                                    match_name = NULL, 
                                    match_country = NULL,
                                    join = sf::st_intersects, 
-                                   silent = FALSE) {
+                                   silent = FALSE, 
+                                   population_grid_sf = NULL) {
   if (silent==FALSE) {
     usethis::ui_info(x = "Data source population grid information: Eurostat, EFGS")
     usethis::ui_info(x = "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat")
@@ -52,7 +54,9 @@ ll_get_population_grid <- function(year = 2011,
                            name = paste0("population_grid", "-", if(is.null(match_country)) "eu" else match_country),
                            file_type = "rds")
   
-  if (fs::file_exists(rds_file)) {
+  if (is.null(population_grid_sf)==FALSE) {
+    sf <- population_grid_sf
+  } else if (fs::file_exists(rds_file)) {
     sf <- readr::read_rds(path = rds_file)
   } else {
     shp_folder <- ll_find_file(geo = "eu",
