@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
   fig.width = 6,
   fig.height = 4.5
 )
-library("tidyverse", quietly = TRUE)
+
+library("ggplot2")
 theme_set(theme_void(base_family = "Roboto Condensed") +
             theme(title = element_text(size = 14, face = "bold"),
                   plot.subtitle = element_text(face = "plain"),
@@ -37,7 +38,7 @@ The first thing to do is to set a folder where all data will be cached. This sho
 
 
 ```{r setup}
-library("tidyverse", quietly = TRUE)
+library("dplyr", quietly = TRUE)
 library("sf", quietly = TRUE)
 
 library("latlon2map")
