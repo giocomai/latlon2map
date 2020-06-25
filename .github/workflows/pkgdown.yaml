@@ -6,7 +6,7 @@ name: pkgdown
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - run: git config user.name "GitHub Actions" && git config user.email "actions@users.noreply.github.com"
@@ -21,8 +21,8 @@ jobs:
       - name: install libssh2-1-dev
         run: sudo apt-get install libssh2-1-dev
 
-      - name: install libudunits2-dev
-        run: sudo apt-get install libudunits2-dev
+      - name: install libudunits2-dev et al 
+        run: sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev
         
       - name: Query dependencies
         run: |
