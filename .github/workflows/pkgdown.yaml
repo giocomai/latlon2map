@@ -17,7 +17,13 @@ jobs:
       
       - name: install libcurl4
         run: sudo apt-get install libcurl4-openssl-dev
+        
+      - name: install libssh2-1-dev
+        run: sudo apt-get install libssh2-1-dev
 
+      - name: install libudunits2-dev
+        run: sudo apt-get install libudunits2-dev
+        
       - name: Query dependencies
         run: |
           install.packages('remotes')
