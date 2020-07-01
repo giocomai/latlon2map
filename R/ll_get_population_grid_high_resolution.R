@@ -95,7 +95,7 @@ ll_get_population_grid_hr <- function(geo,
                     destfile = zip_file)
     }
     
-    file_name = stringr::str_split(source_url, '/') %>% unlist() %>% last()
+    file_name = stringr::str_split(source_url, '/') %>% unlist() %>% last() %>% str_replace_all('\\.zip$','')
     
     if (fs::file_exists(fs::path(csv_folder, file_name))==FALSE) {
       unzip(zipfile = zip_file,
