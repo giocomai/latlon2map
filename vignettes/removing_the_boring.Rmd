@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
   fig.width = 6,
   fig.height = 4.5
 )
-library("tidyverse", quietly = TRUE)
+
+library("ggplot2")
 theme_set(theme_void(base_family = "Roboto Condensed") +
             theme(title = element_text(size = 14, face = "bold"),
                   plot.subtitle = element_text(face = "plain"),
@@ -37,7 +38,7 @@ The first thing to do is to set a folder where all data will be cached. This sho
 
 
 ```{r setup}
-library("tidyverse", quietly = TRUE)
+library("dplyr", quietly = TRUE)
 library("sf", quietly = TRUE)
 
 library("latlon2map")
@@ -93,9 +94,10 @@ The original shapefiles and the accompanying documentation remains stored under 
 
 Another small nuisance is related to including in the same post maps or areas with different proportions.
 
-For example, Portugal and the Netherlands have different shapes, but I'd like to have all maps in my my post with the same height/width ratio. This is slighly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function `ll_bbox` takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. 
+For example, Portugal and the Netherlands have different shapes, but I'd like to have all maps in my my post with the same height/width ratio. This is slightly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function `ll_bbox` takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. 
 
 ```{r}
+remotes::install_github("paleolimbot/ggspatial", upgrade = "never", quiet = TRUE)
 library("ggspatial")
 
 sf_reference <- ll_get_nuts_eu(level = 2, resolution = 1) %>% filter(CNTR_CODE == "SE")
@@ -116,7 +118,7 @@ ggplot() +
 
 ## Get the population grid
 
-There are more complex geographic data than simple boundary lines. Eurostat for example published a population grid, pointing at how many people lives in each square km of the continent. Such data can be useful for a number of analyses, but they tend to come in big files. Again, `lonlat2map` caches the result, including pre-processed data if a consisent name is provided. 
+There are more complex geographic data than simple boundary lines. Eurostat for example published a population grid, pointing at how many people lives in each square km of the continent. Such data can be useful for a number of analyses, but they tend to come in big files. Again, `lonlat2map` caches the result, including pre-processed data if a consistent name is provided. 
 
 ```{r}
 name <- "Wien"
@@ -214,7 +216,7 @@ Centroid in red, population-weighted centre in blue",
 
 The function is flexible, and can be used with more granular population data such as those [distributed by Facebook](https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/), which can be loaded with the function `ll_get_population_grid_hr()`.
 
-```{r}
+```{r eval=FALSE}
 lau_grid_name_temp <- stringr::str_c(name, "_lau_hr-st_intersects")
 
 sf_location_grid_hr <- ll_get_population_grid_hr(geo = "IT", 

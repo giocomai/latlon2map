@@ -82,7 +82,7 @@ ll_get_population_grid <- function(year = 2011,
           exdir = shp_folder)
     
     sf <- sf::read_sf(fs::path(shp_folder, "Version 2_0_1", "GEOSTATReferenceGrid"))  %>%
-      dplyr::right_join(read_csv(fs::path(shp_folder, "Version 2_0_1", "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv")),
+      dplyr::right_join(readr::read_csv(fs::path(shp_folder, "Version 2_0_1", "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv")),
                         by = "GRD_ID") %>% 
       sf::st_transform(crs = 4326)
     
