@@ -95,11 +95,13 @@ ll_get_population_grid_hr <- function(geo,
                     destfile = zip_file)
     }
     
-    if (fs::file_exists(fs::path(csv_folder, "population_ita_2019-07-01.csv"))==FALSE) {
+    file_name = stringr::str_split(source_url, '/') %>% unlist() %>% dplyr::last() %>% stringr::str_replace_all('\\.zip$','')
+    
+    if (fs::file_exists(fs::path(csv_folder, file_name))==FALSE) {
       unzip(zipfile = zip_file,
             exdir = csv_folder)
     }
-    df <- readr::read_csv(file = fs::path(csv_folder, "population_ita_2019-07-01.csv"),
+    df <- readr::read_csv(file = fs::path(csv_folder, file_name),
                           col_types = readr::cols(
                             Lat = readr::col_double(),
                             Lon = readr::col_double(),
