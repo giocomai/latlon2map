@@ -95,18 +95,28 @@ ll_get_population_grid_hr <- function(geo,
                     destfile = zip_file)
     }
     
-    file_name = stringr::str_split(source_url, '/') %>% unlist() %>% dplyr::last() %>% stringr::str_replace_all('\\.zip$','')
+    file_name <- stringr::str_split(source_url, '/') %>%
+      unlist() %>%
+      dplyr::last() %>%
+      stringr::str_replace('_csv\\.zip$|\\.csv\\.zip$','.csv') %>% 
+      stringr::str_to_lower()
     
     if (fs::file_exists(fs::path(csv_folder, file_name))==FALSE) {
       unzip(zipfile = zip_file,
             exdir = csv_folder)
+      fs::dir_walk(path = csv_folder,
+                   fun = function(x) {fs::file_move(path = x,
+                                                    new_path = fs::path(fs::path_dir(x),
+                                                                        stringr::str_to_lower(fs::path_file(x))))})
     }
     df <- readr::read_csv(file = fs::path(csv_folder, file_name),
+                          col_names = c("Lat", "Lon", "Population"),
                           col_types = readr::cols(
                             Lat = readr::col_double(),
                             Lon = readr::col_double(),
                             Population = readr::col_double()
-                          ))
+                          ),
+                          skip = 1)
     if (is.null(match_sf)==FALSE) {
       
       bbox <- sf::st_bbox(match_sf)
