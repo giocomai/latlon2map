@@ -55,7 +55,7 @@ ggplot()+
 
 ```
 
-The first time that this is run it will dowload data from Eurostat's website, unzip it, import as an `sf` object, and store it locally for quick retrieval. This means that if you run the same piece of code a second time, it will print the map almost instantly. 
+The first time that this is run it will download data from Eurostat's website, unzip it, import as an `sf` object, and store it locally for quick retrieval. This means that if you run the same piece of code a second time, it will print the map almost instantly. 
 
 Here is for example the code for having NUTS2 regions in Italy.
 
