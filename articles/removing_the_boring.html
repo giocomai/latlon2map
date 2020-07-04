@@ -116,7 +116,7 @@
 <span class="co">#&gt; ℹ © EuroGeographics for the administrative boundaries</span>
 </pre></div>
 <p><img src="removing_the_boring_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
-<p>The first time that this is run it will dowload data from Eurostat’s website, unzip it, import as an <code>sf</code> object, and store it locally for quick retrieval. This means that if you run the same piece of code a second time, it will print the map almost instantly.</p>
+<p>The first time that this is run it will download data from Eurostat’s website, unzip it, import as an <code>sf</code> object, and store it locally for quick retrieval. This means that if you run the same piece of code a second time, it will print the map almost instantly.</p>
 <p>Here is for example the code for having NUTS2 regions in Italy.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>()<span class="op">+</span>
@@ -153,45 +153,44 @@
 <p>Another small nuisance is related to including in the same post maps or areas with different proportions.</p>
 <p>For example, Portugal and the Netherlands have different shapes, but I’d like to have all maps in my my post with the same height/width ratio. This is slightly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function <code>ll_bbox</code> takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. </p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"paleolimbot/ggspatial"</span>, <span class="dt">upgrade =</span> <span class="st">"never"</span>, <span class="dt">quiet =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Installing 10 packages: rosm, abind, tidyr, sp, rjson, plyr, jpeg, png, rgdal, prettymapr</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">library</span>(<span class="st">"ggspatial"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4"></a></span>
-<span id="cb6-5"><a href="#cb6-5"></a>sf_reference &lt;-<span class="st"> </span><span class="kw">ll_get_nuts_eu</span>(<span class="dt">level =</span> <span class="dv">2</span>, <span class="dt">resolution =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(CNTR_CODE <span class="op">==</span><span class="st"> "SE"</span>)</span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; ℹ © EuroGeographics for the administrative boundaries</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="st">    </span><span class="kw">annotation_map_tile</span>(<span class="dt">type =</span> <span class="st">"stamenbw"</span>, <span class="dt">zoomin =</span> <span class="dv">0</span>, <span class="dt">cachedir =</span> fs<span class="op">::</span><span class="kw">path</span>(<span class="kw">ll_set_folder</span>(), <span class="st">"ll_data"</span>)) <span class="op">+</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> sf_reference, <span class="dt">colour =</span> <span class="st">"darkred"</span>, <span class="dt">fill =</span> <span class="ot">NA</span>)</span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; Zoom: 5</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; Fetching 12 missing tiles</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; </span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="st">  </span><span class="er">|</span><span class="st">                                                                      </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%</span>
-<span id="cb6-16"><a href="#cb6-16"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="st">  </span><span class="er">|======</span><span class="st">                                                                </span><span class="er">|</span><span class="st">   </span><span class="dv">8</span>%</span>
-<span id="cb6-18"><a href="#cb6-18"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="st">  </span><span class="er">|============</span><span class="st">                                                          </span><span class="er">|</span><span class="st">  </span><span class="dv">17</span>%</span>
-<span id="cb6-20"><a href="#cb6-20"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="st">  </span><span class="er">|==================</span><span class="st">                                                    </span><span class="er">|</span><span class="st">  </span><span class="dv">25</span>%</span>
-<span id="cb6-22"><a href="#cb6-22"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="st">  </span><span class="er">|=======================</span><span class="st">                                               </span><span class="er">|</span><span class="st">  </span><span class="dv">33</span>%</span>
-<span id="cb6-24"><a href="#cb6-24"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-25"><a href="#cb6-25"></a><span class="st">  </span><span class="er">|=============================</span><span class="st">                                         </span><span class="er">|</span><span class="st">  </span><span class="dv">42</span>%</span>
-<span id="cb6-26"><a href="#cb6-26"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-27"><a href="#cb6-27"></a><span class="st">  </span><span class="er">|===================================</span><span class="st">                                   </span><span class="er">|</span><span class="st">  </span><span class="dv">50</span>%</span>
-<span id="cb6-28"><a href="#cb6-28"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-29"><a href="#cb6-29"></a><span class="st">  </span><span class="er">|=========================================</span><span class="st">                             </span><span class="er">|</span><span class="st">  </span><span class="dv">58</span>%</span>
-<span id="cb6-30"><a href="#cb6-30"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-31"><a href="#cb6-31"></a><span class="st">  </span><span class="er">|===============================================</span><span class="st">                       </span><span class="er">|</span><span class="st">  </span><span class="dv">67</span>%</span>
-<span id="cb6-32"><a href="#cb6-32"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-33"><a href="#cb6-33"></a><span class="st">  </span><span class="er">|====================================================</span><span class="st">                  </span><span class="er">|</span><span class="st">  </span><span class="dv">75</span>%</span>
-<span id="cb6-34"><a href="#cb6-34"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-35"><a href="#cb6-35"></a><span class="st">  </span><span class="er">|==========================================================</span><span class="st">            </span><span class="er">|</span><span class="st">  </span><span class="dv">83</span>%</span>
-<span id="cb6-36"><a href="#cb6-36"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-37"><a href="#cb6-37"></a><span class="st">  </span><span class="er">|================================================================</span><span class="st">      </span><span class="er">|</span><span class="st">  </span><span class="dv">92</span>%</span>
-<span id="cb6-38"><a href="#cb6-38"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
-<span id="cb6-39"><a href="#cb6-39"></a><span class="st">  </span><span class="er">|======================================================================|</span><span class="st"> </span><span class="dv">100</span>%</span>
-<span id="cb6-40"><a href="#cb6-40"></a><span class="co">#&gt; ...complete!</span></span></code></pre></div>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">library</span>(<span class="st">"ggspatial"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a>sf_reference &lt;-<span class="st"> </span><span class="kw">ll_get_nuts_eu</span>(<span class="dt">level =</span> <span class="dv">2</span>, <span class="dt">resolution =</span> <span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(CNTR_CODE <span class="op">==</span><span class="st"> "SE"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt; ℹ © EuroGeographics for the administrative boundaries</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="st">    </span><span class="kw">annotation_map_tile</span>(<span class="dt">type =</span> <span class="st">"stamenbw"</span>, <span class="dt">zoomin =</span> <span class="dv">0</span>, <span class="dt">cachedir =</span> fs<span class="op">::</span><span class="kw">path</span>(<span class="kw">ll_set_folder</span>(), <span class="st">"ll_data"</span>)) <span class="op">+</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> sf_reference, <span class="dt">colour =</span> <span class="st">"darkred"</span>, <span class="dt">fill =</span> <span class="ot">NA</span>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; Zoom: 5</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; Fetching 12 missing tiles</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; </span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="st">  </span><span class="er">|</span><span class="st">                                                                      </span><span class="er">|</span><span class="st">   </span><span class="dv">0</span>%</span>
+<span id="cb6-15"><a href="#cb6-15"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="st">  </span><span class="er">|======</span><span class="st">                                                                </span><span class="er">|</span><span class="st">   </span><span class="dv">8</span>%</span>
+<span id="cb6-17"><a href="#cb6-17"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="st">  </span><span class="er">|============</span><span class="st">                                                          </span><span class="er">|</span><span class="st">  </span><span class="dv">17</span>%</span>
+<span id="cb6-19"><a href="#cb6-19"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="st">  </span><span class="er">|==================</span><span class="st">                                                    </span><span class="er">|</span><span class="st">  </span><span class="dv">25</span>%</span>
+<span id="cb6-21"><a href="#cb6-21"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="st">  </span><span class="er">|=======================</span><span class="st">                                               </span><span class="er">|</span><span class="st">  </span><span class="dv">33</span>%</span>
+<span id="cb6-23"><a href="#cb6-23"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="st">  </span><span class="er">|=============================</span><span class="st">                                         </span><span class="er">|</span><span class="st">  </span><span class="dv">42</span>%</span>
+<span id="cb6-25"><a href="#cb6-25"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="st">  </span><span class="er">|===================================</span><span class="st">                                   </span><span class="er">|</span><span class="st">  </span><span class="dv">50</span>%</span>
+<span id="cb6-27"><a href="#cb6-27"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-28"><a href="#cb6-28"></a><span class="st">  </span><span class="er">|=========================================</span><span class="st">                             </span><span class="er">|</span><span class="st">  </span><span class="dv">58</span>%</span>
+<span id="cb6-29"><a href="#cb6-29"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-30"><a href="#cb6-30"></a><span class="st">  </span><span class="er">|===============================================</span><span class="st">                       </span><span class="er">|</span><span class="st">  </span><span class="dv">67</span>%</span>
+<span id="cb6-31"><a href="#cb6-31"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="st">  </span><span class="er">|====================================================</span><span class="st">                  </span><span class="er">|</span><span class="st">  </span><span class="dv">75</span>%</span>
+<span id="cb6-33"><a href="#cb6-33"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-34"><a href="#cb6-34"></a><span class="st">  </span><span class="er">|==========================================================</span><span class="st">            </span><span class="er">|</span><span class="st">  </span><span class="dv">83</span>%</span>
+<span id="cb6-35"><a href="#cb6-35"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-36"><a href="#cb6-36"></a><span class="st">  </span><span class="er">|================================================================</span><span class="st">      </span><span class="er">|</span><span class="st">  </span><span class="dv">92</span>%</span>
+<span id="cb6-37"><a href="#cb6-37"></a>  <span class="op">|</span><span class="st">                                                                            </span></span>
+<span id="cb6-38"><a href="#cb6-38"></a><span class="st">  </span><span class="er">|======================================================================|</span><span class="st"> </span><span class="dv">100</span>%</span>
+<span id="cb6-39"><a href="#cb6-39"></a><span class="co">#&gt; ...complete!</span></span></code></pre></div>
 <p><img src="removing_the_boring_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 <p>…we can have this all of them with the same proportion.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
