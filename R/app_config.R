@@ -5,7 +5,7 @@
 #' 
 #' @noRd
 app_sys <- function(...){
-  system.file(..., package = "longlat2map")
+  system.file(..., package = "latlon2map")
 }
 
 
