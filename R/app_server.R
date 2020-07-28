@@ -85,12 +85,12 @@ app_server <- function(input, output, session) {
         if (is.element("Country (World)", input$geolocate_selector)) {
           if (input$join_type=="Nearest") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_world(resolution = 60) %>% 
+                                   latlon2map::ll_get_world(resolution = 60) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_nearest_feature)
           } else if (input$join_type=="Within") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_world(resolution = 60) %>% 
+                                   latlon2map::ll_get_world(resolution = 60) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_within)        
           }
@@ -99,12 +99,12 @@ app_server <- function(input, output, session) {
         if (is.element("NUTS0", input$geolocate_selector)) {
           if (input$join_type=="Nearest") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 0)%>% 
+                                   latlon2map::ll_get_nuts_eu(level = 0)%>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_nearest_feature)
           } else if (input$join_type=="Within") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 0)%>% 
+                                   latlon2map::ll_get_nuts_eu(level = 0)%>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_within)        
           }
@@ -113,12 +113,12 @@ app_server <- function(input, output, session) {
         if (is.element("NUTS1", input$geolocate_selector)) {
           if (input$join_type=="Nearest") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 1) %>% 
+                                   latlon2map::ll_get_nuts_eu(level = 1) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_nearest_feature)
           } else if (input$join_type=="Within") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 1) %>% 
+                                   latlon2map::ll_get_nuts_eu(level = 1) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_within)        
           }
@@ -127,12 +127,12 @@ app_server <- function(input, output, session) {
         if (is.element("NUTS2", input$geolocate_selector)) {
           if (input$join_type=="Nearest") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 2) %>% 
+                                   latlon2map::ll_get_nuts_eu(level = 2) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_nearest_feature)
           } else if (input$join_type=="Within") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 2) %>% 
+                                   latlon2map::ll_get_nuts_eu(level = 2) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_within)        
           }
@@ -141,12 +141,12 @@ app_server <- function(input, output, session) {
         if (is.element("NUTS3", input$geolocate_selector)) {
           if (input$join_type=="Nearest") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 3) %>% 
+                                   latlon2map::ll_get_nuts_eu(level = 3) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_nearest_feature)
           } else if (input$join_type=="Within") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_nuts_eu(level = 3) %>% 
+                                   latlon2map::ll_get_nuts_eu(level = 3) %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_within)        
           }
@@ -155,12 +155,12 @@ app_server <- function(input, output, session) {
         if (is.element("LAU", input$geolocate_selector)) {
           if (input$join_type=="Nearest") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_lau_eu() %>% 
+                                   latlon2map::ll_get_lau_eu() %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_nearest_feature)
           } else if (input$join_type=="Within") {
             sf_temp <- sf::st_join(sf_temp,
-                                   longlat2map::ll_get_lau_eu() %>% 
+                                   latlon2map::ll_get_lau_eu() %>% 
                                      sf::st_transform(crs = 3857),
                                    join = sf::st_within)        
           }
@@ -182,12 +182,12 @@ app_server <- function(input, output, session) {
   output$map_gg <- renderPlot(expr = {
     if (is.null(df_f())==TRUE) {
       ggplot2::ggplot() +
-        ggplot2::geom_sf(data = longlat2map::ll_get_world(resolution = 60) %>% 
+        ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
                            sf::st_transform(crs = 4326)) +
         ggplot2::theme_minimal()
     } else {
     ggplot2::ggplot() +
-      ggplot2::geom_sf(data = longlat2map::ll_get_world(resolution = 60) %>% 
+      ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
                          sf::st_transform(crs = 4326)) +
       ggplot2::geom_sf(data = sf() %>% 
                          sf::st_transform(crs = 4326),
