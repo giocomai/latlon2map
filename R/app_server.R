@@ -10,7 +10,7 @@ app_server <- function(input, output, session) {
   #### UI ####
   
   output$sample_size_UI <- renderUI({
-    if (tibble::is.tibble(df())) {
+    if (tibble::is_tibble(df())) {
     shiny::sliderInput(inputId = "sample_size",
                        round = TRUE,
                         label = "Sample size",
