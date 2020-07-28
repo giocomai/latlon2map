@@ -124,7 +124,7 @@
     <p>Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts16</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/latlon2map/man/ll_get_nuts_eu.html'>ll_get_nuts_eu</a></span>(
+    <pre class="usage"><span class='fu'>ll_get_nuts_eu</span>(
   name = <span class='kw'>NULL</span>,
   level = <span class='fl'>3</span>,
   resolution = <span class='fl'>60</span>,
@@ -154,14 +154,14 @@
     <p>NUTS in sf format</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/latlon2map/man/ll_get_lau_eu.html'>ll_get_lau_eu</a></span>()</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; Simple feature collection with 102552 features and 6 fields
+    <pre class="examples"><div class='input'><span class='fu'><a href='ll_get_lau_eu.html'>ll_get_lau_eu</a></span>()</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; Simple feature collection with 102552 features and 6 fields
 #&gt; geometry type:  MULTIPOLYGON
 #&gt; dimension:      XY
 #&gt; bbox:           xmin: -63.15372 ymin: -21.38881 xmax: 55.83573 ymax: 71.18532
 #&gt; CRS:            EPSG:4326
 #&gt; </span><span style='color: #555555;'># A tibble: 102,552 x 7</span><span>
 #&gt;    LAU_CODE LAU_LABEL GISCO_ID Shape_Leng Shape_Area                  geometry
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;MULTIPOLYGON [°]&gt;</span><span>
+#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;MULTIPOLYGON [°]&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> 0000     Reykjaví… IS_0000       2.83     0.050</span><span style='text-decoration: underline;'>7</span><span>  (((-21.58641 64.01809, -…
 #&gt; </span><span style='color: #555555;'> 2</span><span> 00019    Andrijaš… HR_00019      0.279    0.004</span><span style='text-decoration: underline;'>52</span><span> (((18.76285 45.21731, 18…
 #&gt; </span><span style='color: #555555;'> 3</span><span> 00027    Antunovac HR_00027      0.431    0.006</span><span style='text-decoration: underline;'>58</span><span> (((18.60095 45.46151, 18…
