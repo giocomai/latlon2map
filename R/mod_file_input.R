@@ -27,14 +27,7 @@ mod_file_input_server <- function(input, output, session){
   })
   
   df <- reactive({
-     readr::read_csv(user_file()$datapath,
-                                   col_names = c("Long", "Lat", "Value"),
-                                   col_types = readr::cols(
-                                     Long = readr::col_double(),
-                                     Lat = readr::col_double(),
-                                     Value = readr::col_double()),
-                                   skip = 1)
-    
+    readr::read_csv(file = user_file()$datapath)
   })
 
   observe({
