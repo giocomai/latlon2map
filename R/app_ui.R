@@ -13,9 +13,19 @@ app_ui <- function(request) {
       sidebarLayout(
         sidebarPanel =
           shiny::sidebarPanel(mod_file_input_ui("file_input_ui_1"),
-                              shiny::radioButtons(inputId = "longlat_invert",
-                                                  label = "Column order",
-                                                  choices = c("Long/Lat", "Lat/Long")),
+                              shiny::radioButtons(inputId = "file_type",
+                                                  label = "File type",
+                                                  choices = c(".csv",
+                                                              ".tsv",
+                                                              ".xlsx",
+                                                              ".ods"),
+                                                  inline = TRUE),
+                              shiny::uiOutput(outputId = "latitude_selector_ui"),
+                              shiny::uiOutput(outputId = "longitude_selector_ui"),
+                              shiny::uiOutput(outputId = "other_columns_selector_ui"),
+
+                              shiny::helpText(""),
+
                               shiny::uiOutput(outputId = "sample_size_UI"),
                               shiny::checkboxInput(inputId = "geolocate_panel",
                                                    label = "Geolocate points",

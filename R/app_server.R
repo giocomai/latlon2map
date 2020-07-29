@@ -10,75 +10,115 @@ app_server <- function(input, output, session) {
   #### UI ####
   
   output$sample_size_UI <- renderUI({
-    if (tibble::is_tibble(df())) {
-    shiny::sliderInput(inputId = "sample_size",
-                       round = TRUE,
-                        label = "Sample size",
-                        value = if (nrow(df())>1000) 1000 else nrow(df()),
-                        min = 1,
-                        max = nrow(df()))
+    if (tibble::is_tibble(df_original())) {
+      shiny::sliderInput(inputId = "sample_size",
+                         round = TRUE,
+                         label = "Sample size",
+                         value = if (nrow(df_original())>1000) 1000 else nrow(df_original()),
+                         min = 1,
+                         max = nrow(df()))
     }
   })
   
   output$long_range_UI <- renderUI({
-    min_max <- if (input$longlat_invert == "Lat/Long") round(c(min(df()$Lat), max(df()$Lat)), digits = 2) else round(c(min(df()$Long), max(df()$Long)), digits = 2) 
-    
-    if (tibble::is.tibble(df())) {
-      shiny::sliderInput(inputId = "long_range",
-                         round = FALSE,
-                         label = "Longitude range",
-                         value = min_max,
-                         min = min_max[1],
-                         max = min_max[2],
-                         width = "100%")
+    if (tibble::is_tibble(df())) {
+      if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
+      min_max <- round(c(min(df()$Longitude), max(df()$Longitude)), digits = 2)
+        shiny::sliderInput(inputId = "long_range",
+                           round = FALSE,
+                           label = "Longitude range",
+                           value = min_max,
+                           min = min_max[1],
+                           max = min_max[2],
+                           width = "100%")
+      }
     }
   })
   
   output$lat_range_UI <- renderUI({
-    if (tibble::is.tibble(df())) {
-      min_max <- if (input$longlat_invert == "Lat/Long") round(c(min(df()$Long), max(df()$Long)), digits = 2) else round(c(min(df()$Lat), max(df()$Lat)), digits = 2)
-      
-      shiny::sliderInput(inputId = "lat_range",
-                         round = TRUE,
-                         label = "Latitude range",
-                         value = min_max,
-                         min = min_max[1],
-                         max = min_max[2],
-                         width = "100%")
+    if (tibble::is_tibble(df())) {
+      if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
+        
+        min_max <- round(c(min(df()$Latitude), max(df()$Latitude)), digits = 2)
+        
+        shiny::sliderInput(inputId = "lat_range",
+                           round = TRUE,
+                           label = "Latitude range",
+                           value = min_max,
+                           min = min_max[1],
+                           max = min_max[2],
+                           width = "100%")
+      }
     }
   })
   
-  df <- callModule(mod_file_input_server, "file_input_ui_1")
+  
+  output$latitude_selector_ui <- renderUI({
+    if (tibble::is_tibble(df_original())) {
+      shiny::selectInput(inputId = "latitude_selector",
+                         label = "Latitude column:",
+                         choices = c("-", colnames(df_original())),
+                         selected = NA)
+    }
+  })
+  
+  output$longitude_selector_ui <- renderUI({
+    if (tibble::is_tibble(df_original())) {
+      shiny::selectInput(inputId = "longitude_selector",
+                         label = "Longitude column:",
+                         choices = c("-", colnames(df_original())),
+                         selected = NA)
+    }
+  })
+  
+  output$other_columns_selector_ui <- renderUI({
+    if (tibble::is_tibble(df_original())) {
+      shiny::selectInput(inputId = "other_columns_selector",
+                         label = "Select column(s) with data to keep",
+                         choices = colnames(df_original()),
+                         multiple = TRUE)
+    }
+  })
+  
+  #### read file ####
+  
+  df_original <- callModule(mod_file_input_server, "file_input_ui_1")
+  
+  df <- reactive({
+    if (is.character(input$latitude_selector)==TRUE&is.character(input$longitude_selector)==TRUE) {
+      if (is.character(input$other_columns_selector)==TRUE) {
+        df_original() %>% 
+          dplyr::select(Latitude =  which(colnames(df_original())==input$latitude_selector),
+                        Longitude = which(colnames(df_original())==input$longitude_selector),
+                        which(is.element(colnames(df_original()), input$other_columns_selector)))
+      } else {
+        df_original() %>% 
+          dplyr::select(Latitude = which(colnames(df_original())==input$latitude_selector),
+                        Longitude = which(colnames(df_original())==input$longitude_selector))
+      }
+    }
+  })
   
   df_f <- reactive({
-    
-    if (is.numeric(input$sample_size)) {
-      df_filtered <- df() %>% 
-        dplyr::slice(base::sample(x = 1:nrow(df()),
-                                  size = input$sample_size,
-                                  replace = FALSE))
-      
-      if (input$longlat_invert == "Lat/Long")  {
-        df_filtered <- df_filtered %>% 
-          dplyr::rename(lon_new = Lat,
-                        lat_new = Long) %>% 
-          dplyr::transmute(Long = lon_new, Lat = lat_new, Value)
+    if (tibble::is_tibble(df())) {
+       if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
+        if (is.numeric(input$sample_size)&is.numeric(input$long_range)&is.numeric(input$lat_range)) {
+          df() %>% 
+            dplyr::slice(base::sample(x = 1:nrow(df()),
+                                      size = input$sample_size,
+                                      replace = FALSE)) %>% 
+            dplyr::filter(Longitude>=input$long_range[1]&Longitude<=input$long_range[2],
+                          Latitude>=input$lat_range[1]&Latitude<=input$lat_range[2])
+        }
       }
-      
-      df_filtered <- df_filtered %>% 
-        dplyr::filter(Long>=input$long_range[1]&Long<=input$long_range[2],
-                      Lat>=input$lat_range[1]&Lat<=input$lat_range[2])
-      return(df_filtered)
     }
-
-    
   })
   
   sf <- reactive({
     if (is.null(df_f())==FALSE) {
       sf_temp <- sf::st_as_sf(df_f(),
-                   coords = c("Long","Lat"),
-                   crs = 4326) %>% 
+                              coords = c("Longitude","Latitude"),
+                              crs = 4326) %>% 
         sf::st_transform(crs = 3857)
       if (input$geolocate_panel==TRUE) {
         
@@ -175,27 +215,34 @@ app_server <- function(input, output, session) {
     if (is.null(sf())==FALSE) sf() %>% sf::st_drop_geometry(),
     options = list(
       pageLength = 5
-      ),
+    ),
     rownames = FALSE
-    )
-
+  )
+  
   output$map_gg <- renderPlot(expr = {
-    if (is.null(df_f())==TRUE) {
-      ggplot2::ggplot() +
-        ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
-                           sf::st_transform(crs = 4326)) +
-        ggplot2::theme_minimal()
-    } else {
-    ggplot2::ggplot() +
+    
+    gg_map <- ggplot2::ggplot() +
       ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
                          sf::st_transform(crs = 4326)) +
-      ggplot2::geom_sf(data = sf() %>% 
-                         sf::st_transform(crs = 4326),
-                       mapping = ggplot2::aes(colour = Value)) +
+      ggplot2::theme_minimal()
+    
+    if (is.null(df_f())==FALSE) {
+      if (ncol(sf())>1) {
+        gg_map <- gg_map +
+          ggplot2::geom_sf(data = sf() %>% 
+                             sf::st_transform(crs = 4326),
+                           mapping = ggplot2::aes_string(colour = input$other_columns_selector[[1]])) 
+      } else {
+        gg_map <- gg_map +
+          ggplot2::geom_sf(data = sf() %>% 
+                             sf::st_transform(crs = 4326))
+      }
+      gg_map <- gg_map +  
         ggplot2::scale_x_continuous(limits = as.numeric(input$long_range)) +
         ggplot2::scale_y_continuous(limits = as.numeric(input$lat_range)) +
         ggplot2::theme_minimal()
     }
+    gg_map
   })
   
   
