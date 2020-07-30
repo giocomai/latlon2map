@@ -11,12 +11,14 @@ app_server <- function(input, output, session) {
   
   output$sample_size_UI <- renderUI({
     if (tibble::is_tibble(df_original())) {
-      shiny::sliderInput(inputId = "sample_size",
-                         round = TRUE,
-                         label = "Sample size",
-                         value = if (nrow(df_original())>1000) 1000 else nrow(df_original()),
-                         min = 1,
-                         max = nrow(df()))
+      if (nrow(df_original())>0) {
+        shiny::sliderInput(inputId = "sample_size",
+                           round = TRUE,
+                           label = "Sample size",
+                           value = if (nrow(df_original())>1000) 1000 else nrow(df_original()),
+                           min = 1,
+                           max = nrow(df_original()))
+      }
     }
   })
   
@@ -136,7 +138,8 @@ app_server <- function(input, output, session) {
     if (is.null(df_f())==FALSE) {
       sf_temp <- sf::st_as_sf(df_f(),
                               coords = c("Longitude","Latitude"),
-                              crs = 4326) %>% 
+                              crs = 4326,
+                              remove = FALSE) %>% 
         sf::st_transform(crs = 3857)
       if (input$geolocate_panel==TRUE) {
         
@@ -237,6 +240,30 @@ app_server <- function(input, output, session) {
     rownames = FALSE
   )
   
+  output$df_DT_filtered <- DT::renderDT(
+    if (is.null(df())==FALSE&input$dynamic_filter_check==TRUE) df() %>% 
+      dplyr::filter(Latitude < input$map_lf_bounds[["north"]],
+                    Latitude > input$map_lf_bounds[["south"]],
+                    Longitude < input$map_lf_bounds[["east"]],
+                    Longitude > input$map_lf_bounds[["west"]]),
+    options = list(
+      pageLength = 5
+    ),
+    rownames = FALSE
+  )
+  
+  output$df_DT_clicked <- DT::renderDT(
+    if (is.null(df())==FALSE&input$dynamic_filter_check==TRUE&is.null(input$map_lf_marker_click)==FALSE) df() %>% 
+      dplyr::filter(Latitude == input$map_lf_marker_click[["lat"]],
+                    Longitude == input$map_lf_marker_click[["lng"]]),
+    options = list(
+      pageLength = 5
+    ),
+    rownames = FALSE
+  )
+  
+  
+  
   ##### maps #####
   
   output$map_gg <- renderPlot(expr = {
@@ -272,10 +299,21 @@ app_server <- function(input, output, session) {
               gg_map <- gg_map +
                 ggplot2::geom_sf(data = sf_selected, colour = "#6f2c91")
             }
-          } else if (ncol(sf())>1) {
-            gg_map <- gg_map +
-              ggplot2::geom_sf(data = sf(),
-                               mapping = ggplot2::aes_string(colour = input$other_columns_selector[[1]])) 
+          } else if (input$highlight_mode=="Data columns") {
+            if (input$colour_column_selector!="-"&input$size_column_selector!="-") {
+              gg_map <- gg_map +
+                ggplot2::geom_sf(data = sf(),
+                                 mapping = ggplot2::aes_string(colour = input$colour_column_selector,
+                                                               size = input$size_column_selector)) 
+            } else if (input$colour_column_selector!="-"&input$size_column_selector=="-") {
+                gg_map <- gg_map +
+                  ggplot2::geom_sf(data = sf(),
+                                   mapping = ggplot2::aes_string(colour = input$colour_column_selector)) 
+            } else if (input$colour_column_selector=="-"&input$size_column_selector!="-") {
+              gg_map <- gg_map +
+                ggplot2::geom_sf(data = sf(),
+                                 mapping = ggplot2::aes_string(size = input$size_column_selector)) 
+            }
           } else {
             gg_map <- gg_map +
               ggplot2::geom_sf(data = sf())
@@ -309,26 +347,98 @@ app_server <- function(input, output, session) {
                                                            true = "#6f2c91",
                                                            false = "#a6ce39"))
           if (sum(sf_selected$Selected)>0) {
-            base_lf %>%
-              leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(!Selected),
-                                        color = ~selected_colour,
-                                        group = "Not selected") %>% 
-              leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
-                                        color = ~selected_colour,
-                                        group = "Selected") %>% 
-              leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
-                                                       "Terrain",
-                                                       "Black and white",
-                                                       "Satellite"),
-                                        overlayGroups = c("Selected",
-                                                          "Not selected"))
+            if (input$only_selected==TRUE) {
+              base_lf %>%
+                leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
+                                          color = ~selected_colour,
+                                          group = "Selected") %>% 
+                leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                         "Terrain",
+                                                         "Black and white",
+                                                         "Satellite"),
+                                          options = leaflet::layersControlOptions(collapsed = FALSE))
+              
+            } else {
+              base_lf %>%
+                leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(!Selected),
+                                          color = ~selected_colour,
+                                          group = "Not selected") %>% 
+                leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
+                                          color = ~selected_colour,
+                                          group = "Selected") %>% 
+                leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                         "Terrain",
+                                                         "Black and white",
+                                                         "Satellite"),
+                                          overlayGroups = c("Selected",
+                                                            "Not selected"),
+                                          options = leaflet::layersControlOptions(collapsed = FALSE))
+            }
           } else {
             base_lf %>%
               leaflet::addCircleMarkers(data = sf(),
                                         color = "#6f2c91")
           }
-        } else {
+        } else if (input$highlight_mode=="Data columns") {
           
+          if (is.numeric(sf()[[input$colour_column_selector]])==TRUE) {
+            pal <- leaflet::colorNumeric(
+              palette = 'Blues',
+              domain = sf()[[input$colour_column_selector]],
+              reverse = TRUE
+            )
+          } else {
+            pal <- leaflet::colorFactor(
+              palette = 'Dark2',
+              domain = sf()[[input$colour_column_selector]]
+            )
+          }
+          
+          if (input$size_column_selector!="-") {
+            size_resized <- scales::rescale(x = sf()[[input$size_column_selector]],
+                                            to = c(1, 10))
+          }
+          
+          if (input$colour_column_selector!="-"&input$size_column_selector!="-") {
+
+            base_lf %>%
+              leaflet::addCircleMarkers(data = sf(),
+                                        color = ~pal(sf()[[input$colour_column_selector]]),
+                                        radius = size_resized) %>% 
+              leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                       "Terrain",
+                                                       "Black and white",
+                                                       "Satellite"),
+                                        options = leaflet::layersControlOptions(collapsed = FALSE)) %>% 
+              leaflet::addLegend(position = "bottomright",
+                                 pal = pal,
+                                 values = sf()[[input$colour_column_selector]])
+
+          } else if (input$colour_column_selector!="-"&input$size_column_selector=="-") {
+            
+            base_lf %>%
+              leaflet::addCircleMarkers(data = sf(),
+                                        color = ~pal(sf()[[input$colour_column_selector]])) %>% 
+              leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                       "Terrain",
+                                                       "Black and white",
+                                                       "Satellite"),
+                                        options = leaflet::layersControlOptions(collapsed = FALSE)) %>% 
+              leaflet::addLegend(position = "bottomright",
+                                 pal = pal,
+                                 values = sf()[[input$colour_column_selector]])
+              
+          } else if (input$colour_column_selector=="-"&input$size_column_selector!="-") {
+            
+            base_lf %>%
+              leaflet::addCircleMarkers(data = sf(),
+                                        radius = size_resized) %>% 
+              leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                       "Terrain",
+                                                       "Black and white",
+                                                       "Satellite"),
+                                        options = leaflet::layersControlOptions(collapsed = FALSE))
+          }
         }
       } else {
         base_lf
@@ -336,5 +446,6 @@ app_server <- function(input, output, session) {
     }
   })
   
+
   
 }
