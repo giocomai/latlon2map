@@ -13,19 +13,36 @@ app_ui <- function(request) {
       sidebarLayout(
         sidebarPanel =
           shiny::sidebarPanel(mod_file_input_ui("file_input_ui_1"),
-                              shiny::radioButtons(inputId = "file_type",
-                                                  label = "File type",
-                                                  choices = c(".csv",
-                                                              ".tsv",
-                                                              ".xlsx",
-                                                              ".ods"),
+                              # shiny::radioButtons(inputId = "file_type",
+                              #                     label = "File type",
+                              #                     choices = c(".csv",
+                              #                                 ".tsv",
+                              #                                 ".xlsx",
+                              #                                 ".ods"),
+                              #                     inline = TRUE),
+                              shiny::radioButtons(inputId = "map_type",
+                                                  label = "Map type",
+                                                  choices = c("Static",
+                                                              "Dynamic"),
+                                                  selected = "Static",
                                                   inline = TRUE),
                               shiny::uiOutput(outputId = "latitude_selector_ui"),
                               shiny::uiOutput(outputId = "longitude_selector_ui"),
                               shiny::uiOutput(outputId = "other_columns_selector_ui"),
-
-                              shiny::helpText(""),
-
+                              shiny::radioButtons(inputId = "highlight_mode",
+                                                  label = "Color-code in map based on:",
+                                                  choices = c("Manually selected rows",
+                                                              "Data columns")
+                                                    ),
+                              shiny::conditionalPanel(condition = "input.highlight_mode=='Manually selected rows'",
+                                                      shiny::checkboxInput(inputId = "only_selected",
+                                                                           label = "Show only selected rows",
+                                                                           value = FALSE)
+                              ), 
+                              shiny::conditionalPanel(condition = "input.highlight_mode=='Data columns'",
+                                                      shiny::uiOutput(outputId = "colour_column_selector_ui"),
+                                                      shiny::uiOutput(outputId = "size_column_selector_ui"),
+                              ), 
                               shiny::uiOutput(outputId = "sample_size_UI"),
                               shiny::checkboxInput(inputId = "geolocate_panel",
                                                    label = "Geolocate points",
@@ -47,14 +64,20 @@ app_ui <- function(request) {
                                                                                       "Nearest")))
           ),
         mainPanel = 
-          shiny::mainPanel(shiny::plotOutput(outputId = "map_gg"),
-                           uiOutput(outputId = "long_range_UI"), 
-                           uiOutput(outputId = "lat_range_UI"),
-                           DT::DTOutput(outputId = "df_DT")),
-        position = c("left", "right"),
-        fluid = TRUE)
+          shiny::mainPanel(
+            shiny::conditionalPanel(condition = "input.map_type=='Static'", {
+              shiny::plotOutput(outputId = "map_gg")
+            }),
+            shiny::conditionalPanel(condition = "input.map_type=='Dynamic'", {
+              leaflet::leafletOutput("map_lf")
+            }),
+            shiny::uiOutput(outputId = "long_range_UI"), 
+            shiny::uiOutput(outputId = "lat_range_UI"),
+            DT::DTOutput(outputId = "df_DT")),
+            position = c("left", "right"),
+            fluid = TRUE)
+      )
     )
-  )
 }
 
 #' Add external Resources to the Application

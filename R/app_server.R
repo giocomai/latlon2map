@@ -74,9 +74,27 @@ app_server <- function(input, output, session) {
   output$other_columns_selector_ui <- renderUI({
     if (tibble::is_tibble(df_original())) {
       shiny::selectInput(inputId = "other_columns_selector",
-                         label = "Select column(s) with data to keep",
+                         label = "Additional column(s)",
                          choices = colnames(df_original()),
                          multiple = TRUE)
+    }
+  })
+  
+  output$colour_column_selector_ui <- renderUI({
+    if (tibble::is_tibble(df())) {
+      shiny::selectInput(inputId = "colour_column_selector",
+                         label = "Column to use for colour of points",
+                         choices = c("-", colnames(df())),
+                         multiple = FALSE)
+    }
+  })
+  
+  output$size_column_selector_ui <- renderUI({
+    if (tibble::is_tibble(df())) {
+      shiny::selectInput(inputId = "size_column_selector",
+                         label = "Column to use for size of points",
+                         choices = c("-", colnames(df())),
+                         multiple = FALSE)
     }
   })
   
@@ -207,42 +225,115 @@ app_server <- function(input, output, session) {
         }
       }
       
-      return(sf_temp)
+      return(sf_temp %>% sf::st_transform(crs = 4326))
     }
   })
   
   output$df_DT <- DT::renderDT(
-    if (is.null(sf())==FALSE) sf() %>% sf::st_drop_geometry(),
+    if (is.null(df())==FALSE) df(),
     options = list(
       pageLength = 5
     ),
     rownames = FALSE
   )
   
+  ##### maps #####
+  
   output$map_gg <- renderPlot(expr = {
-    
-    gg_map <- ggplot2::ggplot() +
-      ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
-                         sf::st_transform(crs = 4326)) +
-      ggplot2::theme_minimal()
-    
-    if (is.null(df_f())==FALSE) {
-      if (ncol(sf())>1) {
-        gg_map <- gg_map +
-          ggplot2::geom_sf(data = sf() %>% 
-                             sf::st_transform(crs = 4326),
-                           mapping = ggplot2::aes_string(colour = input$other_columns_selector[[1]])) 
-      } else {
-        gg_map <- gg_map +
-          ggplot2::geom_sf(data = sf() %>% 
-                             sf::st_transform(crs = 4326))
-      }
-      gg_map <- gg_map +  
-        ggplot2::scale_x_continuous(limits = as.numeric(input$long_range)) +
-        ggplot2::scale_y_continuous(limits = as.numeric(input$lat_range)) +
+    if (input$map_type=="Static") {
+      gg_map <- ggplot2::ggplot() +
+        ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
+                           sf::st_transform(crs = 4326)) +
         ggplot2::theme_minimal()
+
+        if (is.null(df_f())==FALSE) {
+          if (input$highlight_mode=="Manually selected rows") {
+            sf_selected <- sf() %>% 
+              dplyr::mutate(Selected = is.element(dplyr::row_number(),input$df_DT_rows_selected))
+            if (sum(sf_selected$Selected)>0) {
+              if (input$only_selected==TRUE) {
+                gg_map <- gg_map +
+                  ggplot2::geom_sf(data = sf_selected %>% 
+                                     dplyr::filter(Selected),
+                                   mapping = ggplot2::aes(colour = Selected)) +
+                  ggplot2::scale_color_manual(values = c("#6f2c91")) +
+                  ggplot2::theme(legend.position = "none")
+                
+              } else {
+                gg_map <- gg_map +
+                  ggplot2::geom_sf(data = sf_selected %>% 
+                                     dplyr::filter(!Selected),
+                                   colour = "#a6ce39") +
+                  ggplot2::geom_sf(data = sf_selected %>% 
+                                     dplyr::filter(Selected), colour = "#6f2c91") +
+                  ggplot2::theme(legend.position = "none")
+              }
+            } else {
+              gg_map <- gg_map +
+                ggplot2::geom_sf(data = sf_selected, colour = "#6f2c91")
+            }
+          } else if (ncol(sf())>1) {
+            gg_map <- gg_map +
+              ggplot2::geom_sf(data = sf(),
+                               mapping = ggplot2::aes_string(colour = input$other_columns_selector[[1]])) 
+          } else {
+            gg_map <- gg_map +
+              ggplot2::geom_sf(data = sf())
+          }
+          gg_map <- gg_map +  
+            ggplot2::scale_x_continuous(limits = as.numeric(input$long_range)) +
+            ggplot2::scale_y_continuous(limits = as.numeric(input$lat_range)) 
+        }
+      gg_map
     }
-    gg_map
+  })
+  
+  output$map_lf <- leaflet::renderLeaflet({
+    if (input$map_type=="Dynamic") {
+      base_lf <- leaflet::leaflet() %>%
+        leaflet::addTiles(group = "OpenStreetMap") %>%
+        leaflet::addProviderTiles(provider = "Stamen.Terrain", group = "Terrain") %>%
+        leaflet::addProviderTiles(provider = "Stamen.TonerLite", group = "Black and white") %>%
+        leaflet::addProviderTiles(provider = "Esri.WorldImagery", group = "Satellite") %>% 
+        leaflet::addLayersControl(
+          baseGroups = c("OpenStreetMap",
+                         "Terrain",
+                         "Black and white",
+                         "Satellite"),
+          options = leaflet::layersControlOptions(collapsed = FALSE))
+      if (tibble::is_tibble(sf())==TRUE) {
+        if (input$highlight_mode=="Manually selected rows") {
+          sf_selected <- sf() %>% 
+            dplyr::mutate(Selected = is.element(dplyr::row_number(),input$df_DT_rows_selected)) %>% 
+            dplyr::mutate(selected_colour = dplyr::if_else(condition = Selected,
+                                                           true = "#6f2c91",
+                                                           false = "#a6ce39"))
+          if (sum(sf_selected$Selected)>0) {
+            base_lf %>%
+              leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(!Selected),
+                                        color = ~selected_colour,
+                                        group = "Not selected") %>% 
+              leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
+                                        color = ~selected_colour,
+                                        group = "Selected") %>% 
+              leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                       "Terrain",
+                                                       "Black and white",
+                                                       "Satellite"),
+                                        overlayGroups = c("Selected",
+                                                          "Not selected"))
+          } else {
+            base_lf %>%
+              leaflet::addCircleMarkers(data = sf(),
+                                        color = "#6f2c91")
+          }
+        } else {
+          
+        }
+      } else {
+        base_lf
+      }
+    }
   })
   
   
