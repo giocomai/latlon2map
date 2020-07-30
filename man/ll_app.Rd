@@ -4,9 +4,11 @@
 \alias{ll_app}
 \title{Run the Shiny Application}
 \usage{
-ll_app(...)
+ll_app(max_file_size = 100, ...)
 }
 \arguments{
+\item{max_file_size}{Maximum file size to accept for upload expressed in MB, defaults to 100.}
+
 \item{...}{A series of options to be used inside the app.}
 }
 \description{

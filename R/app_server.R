@@ -5,7 +5,7 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  options(shiny.maxRequestSize=200*1024^2)
+  options(shiny.maxRequestSize=golem::get_golem_options("shiny.maxRequestSize"))
   
   #### UI ####
   
