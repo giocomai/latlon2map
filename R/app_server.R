@@ -6,6 +6,9 @@
 #' @noRd
 app_server <- function(input, output, session) {
   options(shiny.maxRequestSize=golem::get_golem_options("shiny.maxRequestSize"))
+  if (is.null(golem::get_golem_options("ll_folder_path"))==FALSE) {
+    latlon2map::ll_set_folder(path = golem::get_golem_options("ll_folder_path"))
+  }
   
   #### UI ####
   
@@ -22,10 +25,12 @@ app_server <- function(input, output, session) {
     }
   })
   
+  ##### slider latitude/longitude UI #####
+  
   output$long_range_UI <- renderUI({
     if (tibble::is_tibble(df())) {
       if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
-      min_max <- round(c(min(df()$Longitude), max(df()$Longitude)), digits = 2)
+      min_max <- c(min(df()$Longitude), max(df()$Longitude))
         shiny::sliderInput(inputId = "long_range",
                            round = FALSE,
                            label = "Longitude range",
@@ -41,7 +46,7 @@ app_server <- function(input, output, session) {
     if (tibble::is_tibble(df())) {
       if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
         
-        min_max <- round(c(min(df()$Latitude), max(df()$Latitude)), digits = 2)
+        min_max <- c(min(df()$Latitude), max(df()$Latitude))
         
         shiny::sliderInput(inputId = "lat_range",
                            round = TRUE,
@@ -54,6 +59,34 @@ app_server <- function(input, output, session) {
     }
   })
   
+  observe({
+    shiny::updateSliderInput(session = session,
+                             inputId = "long_range",
+                             value = c(input$map_gg_brush[["xmin"]],
+                                       input$map_gg_brush[["xmax"]]))
+    shiny::updateSliderInput(session = session,
+                             inputId = "lat_range",
+                             value = c(input$map_gg_brush[["ymin"]],
+                                       input$map_gg_brush[["ymax"]]))
+    session$resetBrush("map_gg_brush")
+  })
+  
+  output$reset_full_range_UI <- renderUI({
+ #   if (is.null(input$map_gg_brush)==FALSE) {
+      actionButton("reset_full_range", "Reset coordinate range")
+  #  }
+  })
+  
+  observe({
+    input$reset_full_range
+    
+    shiny::updateSliderInput(session = session,
+                             inputId = "long_range",
+                             value =  c(min(df()$Longitude), max(df()$Longitude)))
+    shiny::updateSliderInput(session = session,
+                             inputId = "lat_range",
+                             value = c(min(df()$Latitude), max(df()$Latitude)))
+  })
   
   output$latitude_selector_ui <- renderUI({
     if (tibble::is_tibble(df_original())) {
@@ -232,34 +265,62 @@ app_server <- function(input, output, session) {
     }
   })
   
+  ##### tables #####
+  
   output$df_DT <- DT::renderDT(
-    if (is.null(df())==FALSE) df(),
+    if (is.null(sf())==FALSE) sf() %>% sf::st_drop_geometry(),
     options = list(
-      pageLength = 5
+      pageLength = 5,
+      dom = "tip"
     ),
-    rownames = FALSE
+    rownames = FALSE,
+    filter = "top"
   )
   
   output$df_DT_filtered <- DT::renderDT(
-    if (is.null(df())==FALSE&input$dynamic_filter_check==TRUE) df() %>% 
-      dplyr::filter(Latitude < input$map_lf_bounds[["north"]],
-                    Latitude > input$map_lf_bounds[["south"]],
-                    Longitude < input$map_lf_bounds[["east"]],
-                    Longitude > input$map_lf_bounds[["west"]]),
+    if (is.null(sf())==FALSE) {
+      
+      if (input$dynamic_filter_check==TRUE&input$map_type=="Dynamic") {
+        sf() %>%
+          sf::st_drop_geometry() %>% 
+          dplyr::filter(Latitude < input$map_lf_bounds[["north"]],
+                        Latitude > input$map_lf_bounds[["south"]],
+                        Longitude < input$map_lf_bounds[["east"]],
+                        Longitude > input$map_lf_bounds[["west"]])
+      } else if (input$dynamic_filter_check==TRUE&is.null(input$map_gg_click)==FALSE&input$map_type=="Static") {
+        sf() %>%
+          sf::st_drop_geometry() %>% 
+          shiny::brushedPoints(input$map_gg_brush, xvar = "Longitude", yvar = "Latitude")
+      }
+    },
     options = list(
-      pageLength = 5
+      pageLength = 5,
+      dom = "tip"
     ),
-    rownames = FALSE
+    rownames = FALSE,
+    filter = "top"
   )
   
   output$df_DT_clicked <- DT::renderDT(
-    if (is.null(df())==FALSE&input$dynamic_filter_check==TRUE&is.null(input$map_lf_marker_click)==FALSE) df() %>% 
-      dplyr::filter(Latitude == input$map_lf_marker_click[["lat"]],
-                    Longitude == input$map_lf_marker_click[["lng"]]),
+    if (is.null(sf())==FALSE) {
+      
+      if (input$dynamic_filter_check==TRUE&is.null(input$map_lf_marker_click)==FALSE&input$map_type=="Dynamic") {
+        sf() %>%
+          sf::st_drop_geometry() %>% 
+          dplyr::filter(Latitude == input$map_lf_marker_click[["lat"]],
+                        Longitude == input$map_lf_marker_click[["lng"]]) 
+      } else if (input$dynamic_filter_check==TRUE&is.null(input$map_gg_click)==FALSE&input$map_type=="Static") {
+        sf() %>%
+          sf::st_drop_geometry() %>% 
+          shiny::nearPoints(input$map_gg_click, xvar = "Longitude", yvar = "Latitude")
+      }
+    },
     options = list(
-      pageLength = 5
+      pageLength = 5,
+      dom = "tip"
     ),
-    rownames = FALSE
+    rownames = FALSE,
+    filter = "top"
   )
   
   

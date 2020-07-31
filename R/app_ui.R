@@ -29,12 +29,14 @@ app_ui <- function(request) {
                               shiny::uiOutput(outputId = "latitude_selector_ui"),
                               shiny::uiOutput(outputId = "longitude_selector_ui"),
                               shiny::uiOutput(outputId = "other_columns_selector_ui"),
+                              shiny::uiOutput(outputId = "long_range_UI"),
+                              shiny::uiOutput(outputId = "lat_range_UI"),
+                              shiny::uiOutput(outputId = "reset_full_range_UI"),
                               shiny::uiOutput(outputId = "sample_size_UI"),
-                              shiny::conditionalPanel(condition = "input.map_type=='Dynamic'",
-                                                      shiny::checkboxInput(inputId = "dynamic_filter_check",
-                                                                           label = "Update table to show only data points currently visible",
-                                                                           value = FALSE)
-                              ),
+                              shiny::checkboxInput(inputId = "dynamic_filter_check",
+                                                   label = "Update table to show only data points currently visible",
+                                                   value = FALSE)
+                              ,
                               shiny::conditionalPanel(condition = "input.highlight_mode=='Manually selected rows'",
                                                       shiny::checkboxInput(inputId = "only_selected",
                                                                            label = "Show only selected rows",
@@ -77,19 +79,19 @@ app_ui <- function(request) {
         mainPanel = 
           shiny::mainPanel(
             shiny::conditionalPanel(condition = "input.map_type=='Static'", {
-              shiny::plotOutput(outputId = "map_gg")
+              shiny::plotOutput(outputId = "map_gg", 
+                                click = "map_gg_click",
+                                brush = "map_gg_brush")
             }),
             shiny::conditionalPanel(condition = "input.map_type=='Dynamic'", {
               leaflet::leafletOutput("map_lf")
             }),
-            shiny::uiOutput(outputId = "long_range_UI"),
-            shiny::uiOutput(outputId = "lat_range_UI"),
             shiny::conditionalPanel(condition = "input.dynamic_filter_check==true", 
-              shiny::h3("Visible in current view"),
-              DT::DTOutput(outputId = "df_DT_filtered"),
-              shiny::h3("Last clicked"),
-              DT::DTOutput(outputId = "df_DT_clicked"),
-              shiny::h3("Original table")
+                                    shiny::h3("Last clicked"),
+                                    DT::DTOutput(outputId = "df_DT_clicked"),
+                                    shiny::h3("Visible in current view"),
+                                    DT::DTOutput(outputId = "df_DT_filtered"),
+                                    shiny::h3("Original table")
             ), 
             DT::DTOutput(outputId = "df_DT")),
             position = c("left", "right"),
