@@ -282,17 +282,20 @@ app_server <- function(input, output, session) {
   output$df_DT_filtered <- DT::renderDT(
     if (is.null(sf())==FALSE) {
       
-      if (input$dynamic_filter_check==TRUE&input$map_type=="Dynamic") {
+      if (input$map_type=="Dynamic"&is.null(input$map_lf_bounds)==FALSE) {
         sf() %>%
           sf::st_drop_geometry() %>% 
           dplyr::filter(Latitude < input$map_lf_bounds[["north"]],
                         Latitude > input$map_lf_bounds[["south"]],
                         Longitude < input$map_lf_bounds[["east"]],
                         Longitude > input$map_lf_bounds[["west"]])
-      } else if (input$dynamic_filter_check==TRUE&is.null(input$map_gg_click)==FALSE&input$map_type=="Static") {
+      } else if (is.null(input$map_gg_)==FALSE&input$map_type=="Static") {
         sf() %>%
           sf::st_drop_geometry() %>% 
           shiny::brushedPoints(input$map_gg_brush, xvar = "Longitude", yvar = "Latitude")
+      } else {
+        sf() %>%
+          sf::st_drop_geometry()
       }
     },
     options = list(
@@ -300,29 +303,31 @@ app_server <- function(input, output, session) {
       dom = "tip"
     ),
     rownames = FALSE,
-    filter = "top"
+    filter = "top",
+    caption = "Points visible in current view"
   )
   
   output$df_DT_clicked <- DT::renderDT(
     if (is.null(sf())==FALSE) {
       
-      if (input$dynamic_filter_check==TRUE&is.null(input$map_lf_marker_click)==FALSE&input$map_type=="Dynamic") {
+      if (is.null(input$map_lf_marker_click)==FALSE&input$map_type=="Dynamic") {
         sf() %>%
           sf::st_drop_geometry() %>% 
           dplyr::filter(Latitude == input$map_lf_marker_click[["lat"]],
                         Longitude == input$map_lf_marker_click[["lng"]]) 
-      } else if (input$dynamic_filter_check==TRUE&is.null(input$map_gg_click)==FALSE&input$map_type=="Static") {
+      } else if (is.null(input$map_gg_dblclick)==FALSE&input$map_type=="Static") {
         sf() %>%
           sf::st_drop_geometry() %>% 
-          shiny::nearPoints(input$map_gg_click, xvar = "Longitude", yvar = "Latitude")
+          shiny::nearPoints(input$map_gg_dblclick, xvar = "Longitude", yvar = "Latitude")
       }
     },
     options = list(
-      pageLength = 5,
+      pageLength = 3,
       dom = "tip"
     ),
     rownames = FALSE,
-    filter = "top"
+    filter = "top",
+    caption = "Last clicked"
   )
   
   
