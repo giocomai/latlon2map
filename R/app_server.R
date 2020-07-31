@@ -9,6 +9,7 @@ app_server <- function(input, output, session) {
   if (is.null(golem::get_golem_options("ll_folder_path"))==FALSE) {
     latlon2map::ll_set_folder(path = golem::get_golem_options("ll_folder_path"))
   }
+  shiny::addResourcePath(prefix = "app", directoryPath = system.file("app", package = "latlon2map"))
   
   #### UI ####
   

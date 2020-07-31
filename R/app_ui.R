@@ -70,7 +70,10 @@ app_ui <- function(request) {
                                                       shiny::radioButtons(inputId = "join_type",
                                                                           label = "Match only if within, or also if near (e.g. offshore)?",
                                                                           choices = c("Within",
-                                                                                      "Nearest")))
+                                                                                      "Nearest"))),
+                              shiny::HTML("<hr />"),
+                              #shiny::h3(tags$a("A tool by EDJNet", href='https://www.europeandatajournalism.eu/')),
+                              shiny::h3(tags$a(tags$img(src = fs::path("www", "img", "edjnet_logo_full.svg")), href='https://www.europeandatajournalism.eu/'))
           ),
         mainPanel = 
           shiny::mainPanel(
