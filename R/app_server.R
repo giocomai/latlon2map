@@ -72,20 +72,22 @@ app_server <- function(input, output, session) {
   })
   
   output$reset_full_range_UI <- renderUI({
- #   if (is.null(input$map_gg_brush)==FALSE) {
+    if (tibble::is_tibble(sf())==TRUE) {
+  #    if((sum(input$lat_range!=c(min(df()$Latitude), max(df()$Latitude)))>0|sum(input$long_range!=c(min(df()$Longitude), max(df()$Longitude)))>0))
       actionButton("reset_full_range", "Reset coordinate range")
-  #  }
+    } 
   })
   
   observe({
     input$reset_full_range
-    
-    shiny::updateSliderInput(session = session,
-                             inputId = "long_range",
-                             value =  c(min(df()$Longitude), max(df()$Longitude)))
-    shiny::updateSliderInput(session = session,
-                             inputId = "lat_range",
-                             value = c(min(df()$Latitude), max(df()$Latitude)))
+    if (is.null(input$reset_full_range)==FALSE) {
+        shiny::updateSliderInput(session = session,
+                                 inputId = "long_range",
+                                 value =  c(min(df()$Longitude), max(df()$Longitude)))
+        shiny::updateSliderInput(session = session,
+                                 inputId = "lat_range",
+                                 value = c(min(df()$Latitude), max(df()$Latitude)))
+      }
   })
   
   output$latitude_selector_ui <- renderUI({
