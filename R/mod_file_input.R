@@ -29,10 +29,6 @@ mod_file_input_server <- function(input, output, session){
   df <- reactive({
     readr::read_csv(file = user_file()$datapath)
   })
-
-  observe({
-    cat(paste0(user_file()$name, " uploaded", "\n"))
-  })
   
   return(df)
 }
