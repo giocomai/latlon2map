@@ -124,7 +124,7 @@
     <p>Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_lau_eu</span>(name = <span class='kw'>NULL</span>, year = <span class='fl'>2018</span>, silent = <span class='fl'>FALSE</span>, lau_sf = <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>ll_get_lau_eu</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2018</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>lau_sf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -149,7 +149,7 @@
 #&gt; geometry type:  MULTIPOLYGON
 #&gt; dimension:      XY
 #&gt; bbox:           xmin: -63.15372 ymin: -21.38881 xmax: 55.83573 ymax: 71.18532
-#&gt; CRS:            EPSG:4326
+#&gt; geographic CRS: WGS 84
 #&gt; </span><span style='color: #555555;'># A tibble: 102,552 x 7</span><span>
 #&gt;    LAU_CODE LAU_LABEL GISCO_ID Shape_Leng Shape_Area                  geometry
 #&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;MULTIPOLYGON [°]&gt;</span><span>
@@ -163,7 +163,8 @@
 #&gt; </span><span style='color: #555555;'> 8</span><span> 00078    Barilović HR_00078      0.964    0.020</span><span style='text-decoration: underline;'>2</span><span>  (((15.52517 45.44455, 15…
 #&gt; </span><span style='color: #555555;'> 9</span><span> 00086    Baška     HR_00086      0.728    0.011</span><span style='text-decoration: underline;'>3</span><span>  (((14.76864 44.9336, 14.…
 #&gt; </span><span style='color: #555555;'>10</span><span> 00094    Baška Vo… HR_00094      0.229    0.002</span><span style='text-decoration: underline;'>86</span><span> (((17.03063 43.35638, 17…
-#&gt; </span><span style='color: #555555;'># … with 102,542 more rows, and 1 more variable: CNTR_CODE </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'></div></span></pre>
+#&gt; </span><span style='color: #555555;'># … with 102,542 more rows, and 1 more variable: CNTR_CODE </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -179,7 +180,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

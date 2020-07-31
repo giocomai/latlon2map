@@ -124,7 +124,7 @@
     <p>Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_nuts_us</span>(level = <span class='st'>"county"</span>, resolution = <span class='st'>"500k"</span>, year = <span class='fl'>2018</span>)</pre>
+    <pre class="usage"><span class='fu'>ll_get_nuts_us</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"county"</span>, <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"500k"</span>, <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2018</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,25 +150,8 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>ll_get_nuts_us</span>(level = <span class='st'>"county"</span>,resolution = <span class='st'>"500k"</span>,year = <span class='fl'>2018</span>)</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html</span></div><div class='output co'>#&gt; Simple feature collection with 3233 features and 9 fields
-#&gt; geometry type:  MULTIPOLYGON
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: -179.1489 ymin: -14.5487 xmax: 179.7785 ymax: 71.36516
-#&gt; CRS:            4269
-#&gt; </span><span style='color: #555555;'># A tibble: 3,233 x 10</span><span>
-#&gt;    STATEFP COUNTYFP COUNTYNS AFFGEOID GEOID NAME  LSAD   ALAND AWATER
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 21      007      00516850 0500000… 21007 Ball… 06    6.39</span><span style='color: #555555;'>e</span><span>8 6.95</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 2</span><span> 21      017      00516855 0500000… 21017 Bour… 06    7.50</span><span style='color: #555555;'>e</span><span>8 4.83</span><span style='color: #555555;'>e</span><span>6
-#&gt; </span><span style='color: #555555;'> 3</span><span> 21      031      00516862 0500000… 21031 Butl… 06    1.10</span><span style='color: #555555;'>e</span><span>9 1.39</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 4</span><span> 21      065      00516879 0500000… 21065 Esti… 06    6.56</span><span style='color: #555555;'>e</span><span>8 6.52</span><span style='color: #555555;'>e</span><span>6
-#&gt; </span><span style='color: #555555;'> 5</span><span> 21      069      00516881 0500000… 21069 Flem… 06    9.03</span><span style='color: #555555;'>e</span><span>8 7.18</span><span style='color: #555555;'>e</span><span>6
-#&gt; </span><span style='color: #555555;'> 6</span><span> 21      093      00516893 0500000… 21093 Hard… 06    1.61</span><span style='color: #555555;'>e</span><span>9 1.75</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 7</span><span> 21      099      00516896 0500000… 21099 Hart  06    1.07</span><span style='color: #555555;'>e</span><span>9 1.37</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'> 8</span><span> 21      131      00516912 0500000… 21131 Lesl… 06    1.04</span><span style='color: #555555;'>e</span><span>9 9.19</span><span style='color: #555555;'>e</span><span>6
-#&gt; </span><span style='color: #555555;'> 9</span><span> 21      151      00516919 0500000… 21151 Madi… 06    1.13</span><span style='color: #555555;'>e</span><span>9 1.53</span><span style='color: #555555;'>e</span><span>7
-#&gt; </span><span style='color: #555555;'>10</span><span> 21      155      00516921 0500000… 21155 Mari… 06    8.88</span><span style='color: #555555;'>e</span><span>8 9.89</span><span style='color: #555555;'>e</span><span>6
-#&gt; </span><span style='color: #555555;'># … with 3,223 more rows, and 1 more variable: geometry </span><span style='color: #555555;font-style: italic;'>&lt;MULTIPOLYGON [°]&gt;</span><span></div><div class='input'></div></span></pre>
+    <pre class="examples"><div class='input'><span class='fu'>ll_get_nuts_us</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='st'>"county"</span>,<span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"500k"</span>,<span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2018</span>)</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html</span></div><div class='output co'>#&gt; <span class='warning'>Warning: error 1 in extracting from zip file</span></div><div class='output co'>#&gt; <span class='error'>Error: Cannot open "/Users/runner/R/ll_data/shp/us/county/500k/2018"; The source could be corrupt or not supported. See `st_drivers()` for a list of supported formats.</span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -184,7 +167,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

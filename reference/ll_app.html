@@ -124,11 +124,19 @@
     <p>Run the Shiny Application</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_app</span>(<span class='kw'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ll_app</span>(<span class='kw'>max_file_size</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>ll_folder_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>max_file_size</th>
+      <td><p>Maximum file size to accept for upload expressed in MB, defaults to 100.</p></td>
+    </tr>
+    <tr>
+      <th>ll_folder_path</th>
+      <td><p>If given, sets the folder to use for caching, corresponds to <code><a href='ll_set_folder.html'>ll_set_folder()</a></code>. Useful e.g. for Docker deployments. Defaults to NULL.</p></td>
+    </tr>
     <tr>
       <th>...</th>
       <td><p>A series of options to be used inside the app.</p></td>
@@ -151,7 +159,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
