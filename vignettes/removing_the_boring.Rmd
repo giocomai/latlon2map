@@ -38,11 +38,12 @@ The first thing to do is to set a folder where all data will be cached. This sho
 
 
 ```{r setup}
+library("ggplot2", quietly = TRUE)
 library("dplyr", quietly = TRUE)
 library("sf", quietly = TRUE)
 
 library("latlon2map")
-ll_set_folder(path = "~/R")
+#ll_set_folder(path = "~/R")
 ```
 
 All functions to get maps start with `ll_get_` to facilitate auto-completion, and all of them output `sf` objects with crs 4326. As such, they can be directly used in graphs, without even the need to store them as separate objects.
@@ -120,7 +121,9 @@ ggplot() +
 
 There are more complex geographic data than simple boundary lines. Eurostat for example published a population grid, pointing at how many people lives in each square km of the continent. Such data can be useful for a number of analyses, but they tend to come in big files. Again, `lonlat2map` caches the result, including pre-processed data if a consistent name is provided. 
 
-```{r}
+[the following code chunks are not evaluated for facilitating auto-deploy of the website with vignette]
+
+```{r eval = FALSE}
 name <- "Wien"
 
 sf_location <- ll_get_lau_eu(name = name)
@@ -159,7 +162,7 @@ ggplot() +
 
 `lonlat2map` includes some convenience functions to deal with normally tedious processes, e.g. finding the population-weighted center of an area.
 
-```{r}
+```{r eval = FALSE}
 name = "Palmanova"
 sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high", silent = TRUE)
 
