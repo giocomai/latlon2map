@@ -530,6 +530,20 @@ app_server <- function(input, output, session) {
                                                                     path = con)
                                                  }
   )
+  
+  output$download_df_xlsx <- downloadHandler(filename = "latlon2map.xslx",
+                                            content = function(con) {
+                                              writexl::write_xlsx()(x = sf() %>% sf::st_drop_geometry(),
+                                                               path = con)
+                                            }
+  )
+  
+  output$download_df_ods <- downloadHandler(filename = "latlon2map.ods",
+                                             content = function(con) {
+                                               readODS::write_ods(x = sf() %>% sf::st_drop_geometry(),
+                                                                path = con)
+                                             }
+  )
 
   
 }

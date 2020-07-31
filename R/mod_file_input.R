@@ -27,7 +27,16 @@ mod_file_input_server <- function(input, output, session){
   })
   
   df <- reactive({
-    readr::read_csv(file = user_file()$datapath)
+    if (fs::path_ext(user_file()$name)=="csv") {
+      readr::read_csv(file = user_file()$datapath)
+    } else if (fs::path_ext(user_file()$name)=="tsv"){
+      readr::read_tsv(file = user_file()$datapath)
+    } else if (fs::path_ext(user_file()$name)=="xslx"|fs::path_ext(user_file()$name)=="xsl") {
+      readxl::read_excel(path = user_file()$datapath)
+    } else if (fs::path_ext(user_file()$name)=="ods") {
+      readODS::read_ods(path = user_file()$datapath)
+    }
+    
   })
   
   return(df)
