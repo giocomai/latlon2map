@@ -86,7 +86,15 @@ app_ui <- function(request) {
               leaflet::leafletOutput("map_lf")
             }),
             DT::DTOutput(outputId = "df_DT_clicked"),
-            DT::DTOutput(outputId = "df_DT")),
+            DT::DTOutput(outputId = "df_DT"),
+            shiny::downloadButton(outputId = "download_df_csv",
+                                  label =  "Download dataset (csv)"),
+          shiny::downloadButton(outputId = "download_map_gg_png",
+                                label =  "Download static map as image (png)"),
+          shiny::downloadButton(outputId = "download_map_gg_pdf",
+                                label =  "Download static map as pdf"),
+          shiny::downloadButton(outputId = "download_map_lf_html",
+                                label =  "Download dynamic map as html")),
             position = c("left", "right"),
             fluid = TRUE)
     )

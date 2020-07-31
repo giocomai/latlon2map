@@ -324,68 +324,71 @@ app_server <- function(input, output, session) {
   
   
   ##### maps #####
-  
-  output$map_gg <- renderPlot(expr = {
+  map_gg_reactive <- shiny::reactive({
     if (input$map_type=="Static") {
       gg_map <- ggplot2::ggplot() +
         ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
                            sf::st_transform(crs = 4326)) +
         ggplot2::theme_minimal()
-
-        if (is.null(df_f())==FALSE) {
-          if (input$highlight_mode=="Manually selected rows") {
-            sf_selected <- sf() %>% 
-              dplyr::mutate(Selected = is.element(dplyr::row_number(),input$df_DT_rows_selected))
-            if (sum(sf_selected$Selected)>0) {
-              if (input$only_selected==TRUE) {
-                gg_map <- gg_map +
-                  ggplot2::geom_sf(data = sf_selected %>% 
-                                     dplyr::filter(Selected),
-                                   mapping = ggplot2::aes(colour = Selected)) +
-                  ggplot2::scale_color_manual(values = c("#6f2c91")) +
-                  ggplot2::theme(legend.position = "none")
-                
-              } else {
-                gg_map <- gg_map +
-                  ggplot2::geom_sf(data = sf_selected %>% 
-                                     dplyr::filter(!Selected),
-                                   colour = "#a6ce39") +
-                  ggplot2::geom_sf(data = sf_selected %>% 
-                                     dplyr::filter(Selected), colour = "#6f2c91") +
-                  ggplot2::theme(legend.position = "none")
-              }
+      
+      if (is.null(df_f())==FALSE) {
+        if (input$highlight_mode=="Manually selected rows") {
+          sf_selected <- sf() %>% 
+            dplyr::mutate(Selected = is.element(dplyr::row_number(),input$df_DT_rows_selected))
+          if (sum(sf_selected$Selected)>0) {
+            if (input$only_selected==TRUE) {
+              gg_map <- gg_map +
+                ggplot2::geom_sf(data = sf_selected %>% 
+                                   dplyr::filter(Selected),
+                                 mapping = ggplot2::aes(colour = Selected)) +
+                ggplot2::scale_color_manual(values = c("#6f2c91")) +
+                ggplot2::theme(legend.position = "none")
+              
             } else {
               gg_map <- gg_map +
-                ggplot2::geom_sf(data = sf_selected, colour = "#6f2c91")
-            }
-          } else if (input$highlight_mode=="Data columns") {
-            if (input$colour_column_selector!="-"&input$size_column_selector!="-") {
-              gg_map <- gg_map +
-                ggplot2::geom_sf(data = sf(),
-                                 mapping = ggplot2::aes_string(colour = input$colour_column_selector,
-                                                               size = input$size_column_selector)) 
-            } else if (input$colour_column_selector!="-"&input$size_column_selector=="-") {
-                gg_map <- gg_map +
-                  ggplot2::geom_sf(data = sf(),
-                                   mapping = ggplot2::aes_string(colour = input$colour_column_selector)) 
-            } else if (input$colour_column_selector=="-"&input$size_column_selector!="-") {
-              gg_map <- gg_map +
-                ggplot2::geom_sf(data = sf(),
-                                 mapping = ggplot2::aes_string(size = input$size_column_selector)) 
+                ggplot2::geom_sf(data = sf_selected %>% 
+                                   dplyr::filter(!Selected),
+                                 colour = "#a6ce39") +
+                ggplot2::geom_sf(data = sf_selected %>% 
+                                   dplyr::filter(Selected), colour = "#6f2c91") +
+                ggplot2::theme(legend.position = "none")
             }
           } else {
             gg_map <- gg_map +
-              ggplot2::geom_sf(data = sf())
+              ggplot2::geom_sf(data = sf_selected, colour = "#6f2c91")
           }
-          gg_map <- gg_map +  
-            ggplot2::scale_x_continuous(limits = as.numeric(input$long_range)) +
-            ggplot2::scale_y_continuous(limits = as.numeric(input$lat_range)) 
+        } else if (input$highlight_mode=="Data columns") {
+          if (input$colour_column_selector!="-"&input$size_column_selector!="-") {
+            gg_map <- gg_map +
+              ggplot2::geom_sf(data = sf(),
+                               mapping = ggplot2::aes_string(colour = input$colour_column_selector,
+                                                             size = input$size_column_selector)) 
+          } else if (input$colour_column_selector!="-"&input$size_column_selector=="-") {
+            gg_map <- gg_map +
+              ggplot2::geom_sf(data = sf(),
+                               mapping = ggplot2::aes_string(colour = input$colour_column_selector)) 
+          } else if (input$colour_column_selector=="-"&input$size_column_selector!="-") {
+            gg_map <- gg_map +
+              ggplot2::geom_sf(data = sf(),
+                               mapping = ggplot2::aes_string(size = input$size_column_selector)) 
+          }
+        } else {
+          gg_map <- gg_map +
+            ggplot2::geom_sf(data = sf())
         }
+        gg_map <- gg_map +  
+          ggplot2::scale_x_continuous(limits = as.numeric(input$long_range)) +
+          ggplot2::scale_y_continuous(limits = as.numeric(input$lat_range)) 
+      }
       gg_map
     }
   })
   
-  output$map_lf <- leaflet::renderLeaflet({
+  output$map_gg <- renderPlot(expr = {
+    map_gg_reactive()
+  })
+  
+  map_lf_reactive <- shiny::reactive({
     if (input$map_type=="Dynamic") {
       base_lf <- leaflet::leaflet() %>%
         leaflet::addTiles(group = "OpenStreetMap") %>%
@@ -406,20 +409,20 @@ app_server <- function(input, output, session) {
                                                            true = "#6f2c91",
                                                            false = "#a6ce39"))
           if (sum(sf_selected$Selected)>0) {
-              base_lf %>%
-                leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(!Selected),
-                                          color = ~selected_colour,
-                                          group = "Not selected") %>% 
-                leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
-                                          color = ~selected_colour,
-                                          group = "Selected") %>% 
-                leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
-                                                         "Terrain",
-                                                         "Black and white",
-                                                         "Satellite"),
-                                          overlayGroups = c("Selected",
-                                                            "Not selected"),
-                                          options = leaflet::layersControlOptions(collapsed = FALSE))
+            base_lf %>%
+              leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(!Selected),
+                                        color = ~selected_colour,
+                                        group = "Not selected") %>% 
+              leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
+                                        color = ~selected_colour,
+                                        group = "Selected") %>% 
+              leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
+                                                       "Terrain",
+                                                       "Black and white",
+                                                       "Satellite"),
+                                        overlayGroups = c("Selected",
+                                                          "Not selected"),
+                                        options = leaflet::layersControlOptions(collapsed = FALSE))
           } else {
             base_lf %>%
               leaflet::addCircleMarkers(data = sf(),
@@ -446,7 +449,7 @@ app_server <- function(input, output, session) {
           }
           
           if (input$colour_column_selector!="-"&input$size_column_selector!="-") {
-
+            
             base_lf %>%
               leaflet::addCircleMarkers(data = sf(),
                                         color = ~pal(sf()[[input$colour_column_selector]]),
@@ -459,7 +462,7 @@ app_server <- function(input, output, session) {
               leaflet::addLegend(position = "bottomright",
                                  pal = pal,
                                  values = sf()[[input$colour_column_selector]])
-
+            
           } else if (input$colour_column_selector!="-"&input$size_column_selector=="-") {
             
             base_lf %>%
@@ -473,7 +476,7 @@ app_server <- function(input, output, session) {
               leaflet::addLegend(position = "bottomright",
                                  pal = pal,
                                  values = sf()[[input$colour_column_selector]])
-              
+            
           } else if (input$colour_column_selector=="-"&input$size_column_selector!="-") {
             
             base_lf %>%
@@ -492,6 +495,41 @@ app_server <- function(input, output, session) {
     }
   })
   
+  output$map_lf <- leaflet::renderLeaflet({
+    map_lf_reactive()
+  })
+  
+  ##### Downloads #####
+  
+  output$download_map_gg_png <- downloadHandler(filename = "latlon2map.png",
+                                               content = function(con) {
+                                                 ggplot2::ggsave(filename = con,
+                                                                 plot = map_gg_reactive(),
+                                                                 type = "cairo")
+                                               }
+  )
+  
+  output$download_map_gg_pdf <- downloadHandler(filename = "latlon2map.pdf",
+                                               content = function(con) {
+                                                 ggplot2::ggsave(filename = con,
+                                                                 plot = map_gg_reactive(),
+                                                                 device = cairo_pdf)
+                                               }
+  )
+  
+  output$download_map_lf_html <- downloadHandler(filename = "latlon2map.html",
+                                                content = function(con) {
+                                                  htmlwidgets::saveWidget(widget = map_lf_reactive(),
+                                                                          file = con)
+                                                }
+  )
+  
+  output$download_df_csv <- downloadHandler(filename = "latlon2map.csv",
+                                                 content = function(con) {
+                                                   readr::write_csv(x = sf() %>% sf::st_drop_geometry(),
+                                                                    path = con)
+                                                 }
+  )
 
   
 }
