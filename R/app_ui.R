@@ -33,7 +33,7 @@ app_ui <- function(request) {
                               shiny::uiOutput(outputId = "lat_range_UI"),
                               shiny::uiOutput(outputId = "reset_full_range_UI"),
                               shiny::uiOutput(outputId = "sample_size_UI"),
-                              shiny::conditionalPanel(condition = "input.highlight_mode=='Manually selected rows'",
+                              shiny::conditionalPanel(condition = "input.highlight_mode=='Manually selected rows'&input.map_type=='Static'",
                                                       shiny::checkboxInput(inputId = "only_selected",
                                                                            label = "Show only selected rows",
                                                                            value = FALSE)
@@ -82,12 +82,8 @@ app_ui <- function(request) {
             shiny::conditionalPanel(condition = "input.map_type=='Dynamic'", {
               leaflet::leafletOutput("map_lf")
             }),
-            #shiny::h3("Last clicked"),
             DT::DTOutput(outputId = "df_DT_clicked"),
-            #shiny::h3("Visible in current view"),
-            DT::DTOutput(outputId = "df_DT_filtered")),
-            # shiny::h3("Original table"), 
-            # DT::DTOutput(outputId = "df_DT")),
+            DT::DTOutput(outputId = "df_DT")),
             position = c("left", "right"),
             fluid = TRUE)
     )

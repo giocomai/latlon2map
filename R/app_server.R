@@ -72,7 +72,7 @@ app_server <- function(input, output, session) {
   })
   
   output$reset_full_range_UI <- renderUI({
-    if (tibble::is_tibble(sf())==TRUE) {
+    if (is.data.frame(sf())==TRUE) {
   #    if((sum(input$lat_range!=c(min(df()$Latitude), max(df()$Latitude)))>0|sum(input$long_range!=c(min(df()$Longitude), max(df()$Longitude)))>0))
       actionButton("reset_full_range", "Reset coordinate range")
     } 
@@ -270,16 +270,6 @@ app_server <- function(input, output, session) {
   ##### tables #####
   
   output$df_DT <- DT::renderDT(
-    if (is.null(sf())==FALSE) sf() %>% sf::st_drop_geometry(),
-    options = list(
-      pageLength = 5,
-      dom = "tip"
-    ),
-    rownames = FALSE,
-    filter = "top"
-  )
-  
-  output$df_DT_filtered <- DT::renderDT(
     if (is.null(sf())==FALSE) {
       
       if (input$map_type=="Dynamic"&is.null(input$map_lf_bounds)==FALSE) {
@@ -304,7 +294,7 @@ app_server <- function(input, output, session) {
     ),
     rownames = FALSE,
     filter = "top",
-    caption = "Points visible in current view"
+    caption = "Data points visible in current view"
   )
   
   output$df_DT_clicked <- DT::renderDT(
@@ -407,7 +397,7 @@ app_server <- function(input, output, session) {
                          "Black and white",
                          "Satellite"),
           options = leaflet::layersControlOptions(collapsed = FALSE))
-      if (tibble::is_tibble(sf())==TRUE) {
+      if (is.data.frame(sf())==TRUE) {
         if (input$highlight_mode=="Manually selected rows") {
           sf_selected <- sf() %>% 
             dplyr::mutate(Selected = is.element(dplyr::row_number(),input$df_DT_rows_selected)) %>% 
@@ -415,18 +405,6 @@ app_server <- function(input, output, session) {
                                                            true = "#6f2c91",
                                                            false = "#a6ce39"))
           if (sum(sf_selected$Selected)>0) {
-            if (input$only_selected==TRUE) {
-              base_lf %>%
-                leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(Selected),
-                                          color = ~selected_colour,
-                                          group = "Selected") %>% 
-                leaflet::addLayersControl(baseGroups = c("OpenStreetMap",
-                                                         "Terrain",
-                                                         "Black and white",
-                                                         "Satellite"),
-                                          options = leaflet::layersControlOptions(collapsed = FALSE))
-              
-            } else {
               base_lf %>%
                 leaflet::addCircleMarkers(data = sf_selected %>% dplyr::filter(!Selected),
                                           color = ~selected_colour,
@@ -441,7 +419,6 @@ app_server <- function(input, output, session) {
                                           overlayGroups = c("Selected",
                                                             "Not selected"),
                                           options = leaflet::layersControlOptions(collapsed = FALSE))
-            }
           } else {
             base_lf %>%
               leaflet::addCircleMarkers(data = sf(),
