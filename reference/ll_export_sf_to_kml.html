@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • latlon2map</title>
+<title>Export sf objects into kml file that can be used with Google Earth, Google Maps, etc. — ll_export_sf_to_kml • latlon2map</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Export sf objects into kml file that can be used with Google Earth, Google Maps, etc. — ll_export_sf_to_kml" />
+<meta property="og:description" content="Attention: this function requires libkml." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -112,126 +113,96 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Export sf objects into kml file that can be used with Google Earth, Google Maps, etc.</h1>
+    
+    <div class="hidden name"><code>ll_export_sf_to_kml.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Attention: this function requires libkml.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>ll_export_sf_to_kml</span>(
+  <span class='no'>sf</span>,
+  <span class='no'>path</span>,
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label_text</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>label_font</span> <span class='kw'>=</span> <span class='st'>"Roboto Sans, Noto Sans, Helvetica"</span>,
+  <span class='kw'>label_size</span> <span class='kw'>=</span> <span class='st'>"24pt"</span>,
+  <span class='kw'>label_placement</span> <span class='kw'>=</span> <span class='st'>"m"</span>,
+  <span class='kw'>line_colour</span> <span class='kw'>=</span> <span class='st'>"#FF0000"</span>,
+  <span class='kw'>line_width</span> <span class='kw'>=</span> <span class='st'>"3px"</span>,
+  <span class='kw'>icon_url</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>icon_colour</span> <span class='kw'>=</span> <span class='st'>"#FF0000"</span>,
+  <span class='kw'>fill_colour</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="ll_app.html">ll_app()</a></code> </p>
-        </td>
-        <td><p>Run the Shiny Application</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_bbox.html">ll_bbox()</a></code> </p>
-        </td>
-        <td><p>Provide a bounding box with a consistent, user given ratio</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_create_folders.html">ll_create_folders()</a></code> </p>
-        </td>
-        <td><p>Create folders to store geographic data</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_export_sf_to_kml.html">ll_export_sf_to_kml()</a></code> </p>
-        </td>
-        <td><p>Export sf objects into kml file that can be used with Google Earth, Google Maps, etc.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_find_file.html">ll_find_file()</a></code> </p>
-        </td>
-        <td><p>Find file names. Mostly used internally</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_find_pop_centre.html">ll_find_pop_centre()</a></code> </p>
-        </td>
-        <td><p>Find the population-weighted centre of a municipality</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_lau_eu.html">ll_get_lau_eu()</a></code> </p>
-        </td>
-        <td><p>Gets local administrative units from Eurostat's website</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_nuts_eu.html">ll_get_nuts_eu()</a></code> </p>
-        </td>
-        <td><p>Gets NUTS as sf object from Eurostat's website</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_nuts_it.html">ll_get_nuts_it()</a></code> </p>
-        </td>
-        <td><p>Regions and provinces in Italy (high detail, CC-BY Istat)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_nuts_us.html">ll_get_nuts_us()</a></code> </p>
-        </td>
-        <td><p>Get US counties</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_population_grid.html">ll_get_population_grid()</a></code> </p>
-        </td>
-        <td><p>Get EU 1km population grid</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_population_grid_hr.html">ll_get_population_grid_hr()</a></code> </p>
-        </td>
-        <td><p>Get High Resolution Population Density Maps + Demographic Estimates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_get_world.html">ll_get_world()</a></code> </p>
-        </td>
-        <td><p>Get countries as an sf object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_match.html">ll_match()</a></code> </p>
-        </td>
-        <td><p>Matches a data frame with longitude and latitude to an sf object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ll_set_folder.html">ll_set_folder()</a></code> </p>
-        </td>
-        <td><p>Set folder for caching data</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>sf</th>
+      <td><p>An object of class <code>sf</code></p></td>
+    </tr>
+    <tr>
+      <th>path</th>
+      <td><p>Path where to save the .kml output.</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>Column to be used for names.</p></td>
+    </tr>
+    <tr>
+      <th>label_text</th>
+      <td><p>Column to be used as label text. Defaults to NULL. Corresponds to "LABEL" element in OGR.</p></td>
+    </tr>
+    <tr>
+      <th>label_font</th>
+      <td><p>Font family to be used for the font. Defaults to ""Roboto Sans, Noto Sans, Helvetica"</p></td>
+    </tr>
+    <tr>
+      <th>label_size</th>
+      <td><p>Size of the label. Defaults to "24pt"</p></td>
+    </tr>
+    <tr>
+      <th>label_placement</th>
+      <td><p>Defaults to "m" (centre and middle-aligned). For more options, check: https://gdal.org/user/ogr_feature_style.html</p></td>
+    </tr>
+    <tr>
+      <th>line_colour</th>
+      <td><p>Defaults to "#FF0000" (i.e. white). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.</p></td>
+    </tr>
+    <tr>
+      <th>line_width</th>
+      <td><p>Defaults to "3pt". Line corresponds to "PEN" in OGR. Besides pt (points), other acceptable units are <code>g</code>: Map Ground Units (whatever the map coordinate units are), <code>px</code> Pixels, <code>pt</code> Points (1/72 inch), <code>mm</code> Millimeters, <code>cm</code> Centimeters, <code>in</code> Inches.</p></td>
+    </tr>
+    <tr>
+      <th>icon_url</th>
+      <td><p>Defaults to "" for no URL. Corresponds to "SYMBOL" in OGR. In case of wrong inputs, Google Earth may show you an ugly yellow pushpin instead (i.e. default to http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png). Available icons offered by Google available at this link: http://kml4earth.appspot.com/icons.html</p></td>
+    </tr>
+    <tr>
+      <th>icon_colour</th>
+      <td><p>Defaults to "#FF0000" (i.e. white). Ignored if png, given.</p></td>
+    </tr>
+    <tr>
+      <th>fill_colour</th>
+      <td><p>Defaults to NULL. Fill corresponds to "BRUSH" in OGR. If given, colour to be used for filling polygons.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For further details on the exact meaning of each of the parameters, please consult the documentation of OGR (used by GDAL to pass parameters to .kml): https://gdal.org/user/ogr_feature_style.html</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
