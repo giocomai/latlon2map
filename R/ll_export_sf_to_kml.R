@@ -35,21 +35,33 @@ ll_export_sf_to_kml <- function(sf,
                                 icon_colour = "#FF0000", 
                                 fill_colour = NULL 
                                 ) {
+  if (is.null(fill_colour)==FALSE) {
+    brush <- paste0("BRUSH(fc:", fill_colour, ");")
+  } else {
+    brush <- ""
+  }
+  
+  if (is.null(label_text)==FALSE) {
+    label <- paste0('LABEL(f:', label_font, ",s:", label_size, ',t:', label_text, ",m:", label_placement, ")")
+  } else {
+    label <- ""
+  }
+  
   sf_pre_kml <- sf %>% 
-    dplyr::mutate(OGR_STYLE = paste0(dplyr::if_else(condition = is.null(fill_colour), true = "", false = paste0("BRUSH(fc:", fill_colour, ");")),
+    dplyr::mutate(OGR_STYLE = paste0(brush,
                                      "PEN(c:", line_colour, ",w:", line_width, ");",
                                      'SYMBOL(c:', icon_colour,',id:', icon_url, ');',
-                                     dplyr::if_else(condition = is.null(label_text), true = "", false = paste0('LABEL(f:', label_font, ",s:", label_size, ',t:', label_text, ",m:", label_placement, ")"))))
+                                     label))
   
   if (is.null(name)==FALSE) {
     sf_pre_kml[["name"]] <- sf[[name]]
   }
   
-  if (is.null(name)==FALSE) {
+  if (is.null(description)==FALSE) {
     sf_pre_kml[["description"]] <- sf[[description]]
   }
   
-  sf::st_write(obj = sfsf_pre_kml,
+  sf::st_write(obj = sf_pre_kml,
                dsn = path,
                driver = "libkml")
 }
