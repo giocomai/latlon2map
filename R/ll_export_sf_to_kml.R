@@ -8,6 +8,7 @@
 #' @param path Path where to save the .kml output.
 #' @param name Column to be used for names. 
 #' @param description Column to be used for description.
+#' @param keep_other_columns Logical, defaults to TRUE. If you don't want to keep in the output data columns present in the original `sf` object, set this to FALSE.
 #' @param label_text Column to be used as label text. Defaults to NULL. Corresponds to "LABEL" element in OGR.
 #' @param label_font Font family to be used for the font. Defaults to "Roboto Sans, Noto Sans, Helvetica"
 #' @param label_size Size of the label. Defaults to "24pt"
@@ -25,6 +26,7 @@
 ll_export_sf_to_kml <- function(sf,
                                 path,
                                 name = NULL,
+                                keep_other_columns = TRUE,
                                 description = NULL,
                                 label_text = NULL,
                                 label_font = "Roboto Sans, Noto Sans, Helvetica",
@@ -53,6 +55,11 @@ ll_export_sf_to_kml <- function(sf,
                                      "PEN(c:", line_colour, ",w:", line_width, ");",
                                      'SYMBOL(c:', icon_colour,',id:', icon_url, ');',
                                      label))
+  
+  if (keep_other_columns==FALSE) {
+    sf_pre_kml <- sf_pre_kml %>% 
+      dplyr::select(OGR_STYLE)
+  }
   
   if (is.null(name)==FALSE) {
     sf_pre_kml[["name"]] <- sf[[name]]

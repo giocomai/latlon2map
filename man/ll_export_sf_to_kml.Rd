@@ -8,6 +8,7 @@ ll_export_sf_to_kml(
   sf,
   path,
   name = NULL,
+  keep_other_columns = TRUE,
   description = NULL,
   label_text = NULL,
   label_font = "Roboto Sans, Noto Sans, Helvetica",
@@ -26,6 +27,8 @@ ll_export_sf_to_kml(
 \item{path}{Path where to save the .kml output.}
 
 \item{name}{Column to be used for names.}
+
+\item{keep_other_columns}{Logical, defaults to TRUE. If you don't want to keep in the output data columns present in the original \code{sf} object, set this to FALSE.}
 
 \item{description}{Column to be used for description.}
 
