@@ -133,10 +133,10 @@
   <span class='kw'>label_font</span> <span class='kw'>=</span> <span class='st'>"Roboto Sans, Noto Sans, Helvetica"</span>,
   <span class='kw'>label_size</span> <span class='kw'>=</span> <span class='st'>"24pt"</span>,
   <span class='kw'>label_placement</span> <span class='kw'>=</span> <span class='st'>"m"</span>,
-  <span class='kw'>line_colour</span> <span class='kw'>=</span> <span class='st'>"#FF0000"</span>,
+  <span class='kw'>line_colour</span> <span class='kw'>=</span> <span class='st'>"000000ff"</span>,
   <span class='kw'>line_width</span> <span class='kw'>=</span> <span class='st'>"3px"</span>,
   <span class='kw'>icon_url</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>icon_colour</span> <span class='kw'>=</span> <span class='st'>"#FF0000"</span>,
+  <span class='kw'>icon_colour</span> <span class='kw'>=</span> <span class='st'>"000000ff"</span>,
   <span class='kw'>fill_colour</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -156,12 +156,16 @@
       <td><p>Column to be used for names.</p></td>
     </tr>
     <tr>
+      <th>description</th>
+      <td><p>Column to be used for description.</p></td>
+    </tr>
+    <tr>
       <th>label_text</th>
       <td><p>Column to be used as label text. Defaults to NULL. Corresponds to "LABEL" element in OGR.</p></td>
     </tr>
     <tr>
       <th>label_font</th>
-      <td><p>Font family to be used for the font. Defaults to ""Roboto Sans, Noto Sans, Helvetica"</p></td>
+      <td><p>Font family to be used for the font. Defaults to "Roboto Sans, Noto Sans, Helvetica"</p></td>
     </tr>
     <tr>
       <th>label_size</th>
@@ -173,7 +177,7 @@
     </tr>
     <tr>
       <th>line_colour</th>
-      <td><p>Defaults to "#FF0000" (i.e. white). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.</p></td>
+      <td><p>Defaults to "#ffffffff" (i.e. white, with 100% opacity). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.</p></td>
     </tr>
     <tr>
       <th>line_width</th>
@@ -185,7 +189,7 @@
     </tr>
     <tr>
       <th>icon_colour</th>
-      <td><p>Defaults to "#FF0000" (i.e. white). Ignored if png, given.</p></td>
+      <td><p>Defaults to "#000000ff" (i.e. black, with 100% opacity).</p></td>
     </tr>
     <tr>
       <th>fill_colour</th>
