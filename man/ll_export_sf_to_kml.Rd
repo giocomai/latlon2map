@@ -13,10 +13,10 @@ ll_export_sf_to_kml(
   label_font = "Roboto Sans, Noto Sans, Helvetica",
   label_size = "24pt",
   label_placement = "m",
-  line_colour = "#FF0000",
+  line_colour = "000000ff",
   line_width = "3px",
   icon_url = "",
-  icon_colour = "#FF0000",
+  icon_colour = "000000ff",
   fill_colour = NULL
 )
 }
@@ -27,21 +27,23 @@ ll_export_sf_to_kml(
 
 \item{name}{Column to be used for names.}
 
+\item{description}{Column to be used for description.}
+
 \item{label_text}{Column to be used as label text. Defaults to NULL. Corresponds to "LABEL" element in OGR.}
 
-\item{label_font}{Font family to be used for the font. Defaults to ""Roboto Sans, Noto Sans, Helvetica"}
+\item{label_font}{Font family to be used for the font. Defaults to "Roboto Sans, Noto Sans, Helvetica"}
 
 \item{label_size}{Size of the label. Defaults to "24pt"}
 
 \item{label_placement}{Defaults to "m" (centre and middle-aligned). For more options, check: https://gdal.org/user/ogr_feature_style.html}
 
-\item{line_colour}{Defaults to "#FF0000" (i.e. white). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.}
+\item{line_colour}{Defaults to "#ffffffff" (i.e. white, with 100\% opacity). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.}
 
 \item{line_width}{Defaults to "3pt". Line corresponds to "PEN" in OGR. Besides pt (points), other acceptable units are \code{g}: Map Ground Units (whatever the map coordinate units are), \code{px} Pixels, \code{pt} Points (1/72 inch), \code{mm} Millimeters, \code{cm} Centimeters, \verb{in} Inches.}
 
 \item{icon_url}{Defaults to "" for no URL. Corresponds to "SYMBOL" in OGR. In case of wrong inputs, Google Earth may show you an ugly yellow pushpin instead (i.e. default to http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png). Available icons offered by Google available at this link: http://kml4earth.appspot.com/icons.html}
 
-\item{icon_colour}{Defaults to "#FF0000" (i.e. white). Ignored if png, given.}
+\item{icon_colour}{Defaults to "#000000ff" (i.e. black, with 100\% opacity).}
 
 \item{fill_colour}{Defaults to NULL. Fill corresponds to "BRUSH" in OGR. If given, colour to be used for filling polygons.}
 }
