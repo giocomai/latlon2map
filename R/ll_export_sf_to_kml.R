@@ -32,10 +32,10 @@ ll_export_sf_to_kml <- function(sf,
                                 label_font = "Roboto Sans, Noto Sans, Helvetica",
                                 label_size = "24pt",
                                 label_placement = "m",
-                                line_colour = "000000ff", 
+                                line_colour = "#ffffffff", 
                                 line_width = "3px",
                                 icon_url = "",
-                                icon_colour = "000000ff", 
+                                icon_colour = "#000000ff", 
                                 fill_colour = NULL 
                                 ) {
   if (is.null(fill_colour)==FALSE) {
