@@ -128,6 +128,7 @@
   <span class='no'>sf</span>,
   <span class='no'>path</span>,
   <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>keep_other_columns</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label_text</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>label_font</span> <span class='kw'>=</span> <span class='st'>"Roboto Sans, Noto Sans, Helvetica"</span>,
@@ -154,6 +155,10 @@
     <tr>
       <th>name</th>
       <td><p>Column to be used for names.</p></td>
+    </tr>
+    <tr>
+      <th>keep_other_columns</th>
+      <td><p>Logical, defaults to TRUE. If you don't want to keep in the output data columns present in the original <code>sf</code> object, set this to FALSE.</p></td>
     </tr>
     <tr>
       <th>description</th>
