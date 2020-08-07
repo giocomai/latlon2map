@@ -14,10 +14,11 @@ ll_export_sf_to_kml(
   label_font = "Roboto Sans, Noto Sans, Helvetica",
   label_size = "24pt",
   label_placement = "m",
-  line_colour = "000000ff",
+  label_scale = NULL,
+  line_colour = "#ffffffff",
   line_width = "3px",
   icon_url = "",
-  icon_colour = "000000ff",
+  icon_colour = "#000000ff",
   fill_colour = NULL
 )
 }
@@ -40,6 +41,8 @@ ll_export_sf_to_kml(
 
 \item{label_placement}{Defaults to "m" (centre and middle-aligned). For more options, check: https://gdal.org/user/ogr_feature_style.html}
 
+\item{label_scale}{Scale of label. Defaults to NULL. If given, changes label size (e.g. 1 = default, 2 = twice as big, 0.5, half as big, etc.)}
+
 \item{line_colour}{Defaults to "#ffffffff" (i.e. white, with 100\% opacity). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.}
 
 \item{line_width}{Defaults to "3pt". Line corresponds to "PEN" in OGR. Besides pt (points), other acceptable units are \code{g}: Map Ground Units (whatever the map coordinate units are), \code{px} Pixels, \code{pt} Points (1/72 inch), \code{mm} Millimeters, \code{cm} Centimeters, \verb{in} Inches.}
@@ -57,5 +60,7 @@ ll_export_sf_to_kml(
 Attention: this function requires libkml.
 }
 \details{
+Attention: label styling is not currently functional, likely due to issues in passing arguments to libkml. In order to change label size, use label_scale, which directly edits the xml file.
+
 For further details on the exact meaning of each of the parameters, please consult the documentation of OGR (used by GDAL to pass parameters to .kml): https://gdal.org/user/ogr_feature_style.html
 }
