@@ -134,10 +134,11 @@
   <span class='kw'>label_font</span> <span class='kw'>=</span> <span class='st'>"Roboto Sans, Noto Sans, Helvetica"</span>,
   <span class='kw'>label_size</span> <span class='kw'>=</span> <span class='st'>"24pt"</span>,
   <span class='kw'>label_placement</span> <span class='kw'>=</span> <span class='st'>"m"</span>,
-  <span class='kw'>line_colour</span> <span class='kw'>=</span> <span class='st'>"000000ff"</span>,
+  <span class='kw'>label_scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>line_colour</span> <span class='kw'>=</span> <span class='st'>"#ffffffff"</span>,
   <span class='kw'>line_width</span> <span class='kw'>=</span> <span class='st'>"3px"</span>,
   <span class='kw'>icon_url</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>icon_colour</span> <span class='kw'>=</span> <span class='st'>"000000ff"</span>,
+  <span class='kw'>icon_colour</span> <span class='kw'>=</span> <span class='st'>"#000000ff"</span>,
   <span class='kw'>fill_colour</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
@@ -181,6 +182,10 @@
       <td><p>Defaults to "m" (centre and middle-aligned). For more options, check: https://gdal.org/user/ogr_feature_style.html</p></td>
     </tr>
     <tr>
+      <th>label_scale</th>
+      <td><p>Scale of label. Defaults to NULL. If given, changes label size (e.g. 1 = default, 2 = twice as big, 0.5, half as big, etc.)</p></td>
+    </tr>
+    <tr>
       <th>line_colour</th>
       <td><p>Defaults to "#ffffffff" (i.e. white, with 100% opacity). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.</p></td>
     </tr>
@@ -209,7 +214,8 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For further details on the exact meaning of each of the parameters, please consult the documentation of OGR (used by GDAL to pass parameters to .kml): https://gdal.org/user/ogr_feature_style.html</p>
+    <p>Attention: label styling is not currently functional, likely due to issues in passing arguments to libkml. In order to change label size, use label_scale, which directly edits the xml file.</p>
+<p>For further details on the exact meaning of each of the parameters, please consult the documentation of OGR (used by GDAL to pass parameters to .kml): https://gdal.org/user/ogr_feature_style.html</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
