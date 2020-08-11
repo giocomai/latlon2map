@@ -19,6 +19,7 @@ ll_export_sf_to_kml(
   line_width = "3px",
   icon_url = "",
   icon_colour = "#000000ff",
+  icon_scale = NULL,
   fill_colour = NULL
 )
 }
@@ -50,6 +51,8 @@ ll_export_sf_to_kml(
 \item{icon_url}{Defaults to "" for no URL. Corresponds to "SYMBOL" in OGR. In case of wrong inputs, Google Earth may show you an ugly yellow pushpin instead (i.e. default to http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png). Available icons offered by Google available at this link: http://kml4earth.appspot.com/icons.html}
 
 \item{icon_colour}{Defaults to "#000000ff" (i.e. black, with 100\% opacity).}
+
+\item{icon_scale}{Defaults to NULL. If given, changes icon size (e.g. 1 = default, 2 = twice as big, 0.5, half as big, etc.)}
 
 \item{fill_colour}{Defaults to NULL. Fill corresponds to "BRUSH" in OGR. If given, colour to be used for filling polygons.}
 }

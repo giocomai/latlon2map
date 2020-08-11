@@ -18,6 +18,7 @@
 #' @param label_placement Defaults to "m" (centre and middle-aligned). For more options, check: https://gdal.org/user/ogr_feature_style.html
 #' @param icon_url Defaults to "" for no URL. Corresponds to "SYMBOL" in OGR. In case of wrong inputs, Google Earth may show you an ugly yellow pushpin instead (i.e. default to http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png). Available icons offered by Google available at this link: http://kml4earth.appspot.com/icons.html
 #' @param icon_colour Defaults to "#000000ff" (i.e. black, with 100% opacity).
+#' @param icon_scale Defaults to NULL. If given, changes icon size (e.g. 1 = default, 2 = twice as big, 0.5, half as big, etc.)
 #' @param line_colour Defaults to "#ffffffff" (i.e. white, with 100% opacity). Line corresponds to "PEN" in OGR. Accepts 8-digit hex codes to include transparency.
 #' @param line_width Defaults to "3pt". Line corresponds to "PEN" in OGR. Besides pt (points), other acceptable units are `g`: Map Ground Units (whatever the map coordinate units are), `px` Pixels, `pt` Points (1/72 inch), `mm` Millimeters, `cm` Centimeters, `in` Inches.
 #' @param fill_colour Defaults to NULL. Fill corresponds to "BRUSH" in OGR. If given, colour to be used for filling polygons. 
@@ -39,7 +40,8 @@ ll_export_sf_to_kml <- function(sf,
                                 line_colour = "#ffffffff", 
                                 line_width = "3px",
                                 icon_url = "",
-                                icon_colour = "#000000ff", 
+                                icon_colour = "#000000ff",
+                                icon_scale = NULL,
                                 fill_colour = NULL 
                                 ) {
   if (is.null(fill_colour)==FALSE) {
@@ -57,7 +59,7 @@ ll_export_sf_to_kml <- function(sf,
   sf_pre_kml <- sf %>% 
     dplyr::mutate(OGR_STYLE = paste0(brush,
                                      "PEN(c:", line_colour, ",w:", line_width, ");",
-                                     'SYMBOL(c:', icon_colour,',id:', icon_url, ');',
+                                     'SYMBOL(c:', icon_colour,',id:"', icon_url, '");',
                                      label))
   
   if (keep_other_columns==FALSE) {
@@ -77,7 +79,7 @@ ll_export_sf_to_kml <- function(sf,
                dsn = path,
                driver = "libkml")
   
-  if (is.null(label_scale)==FALSE) {
+  if (is.null(label_scale)==FALSE|is.null(icon_scale)==FALSE) {
     xml_list <- xml2::read_xml(x = path) %>% 
       xml2::as_list()
     id_of_placemarks <- seq_along(purrr::pluck(xml_list,"kml", "Document", "Document"))[-1]
@@ -88,15 +90,28 @@ ll_export_sf_to_kml <- function(sf,
         xml_list[["kml"]][["Document"]][["Document"]][[i]][[new_item_location]] <- "Style"
       }
       
-      if (is.element("LabelStyle", names(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]]))==FALSE) {
-        new_item_location <- length(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]])+1
-        xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][[new_item_location]] <- "LabelStyle"
+      if (is.null(label_scale)==FALSE) {
+        if (is.element("LabelStyle", names(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]]))==FALSE) {
+          new_item_location <- length(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]])+1
+          xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][[new_item_location]] <- "LabelStyle"
+        }
+        
+        new_item_location <- length(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["LabelStyle"]])+1
+        xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["LabelStyle"]][[new_item_location]] <- "scale"
+        xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["LabelStyle"]][["scale"]][[1]] <- label_scale
       }
       
+      if (is.null(icon_scale)==FALSE) {
+        if (is.element("LabelStyle", names(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]]))==FALSE) {
+          new_item_location <- length(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]])+1
+          xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][[new_item_location]] <- "IconStyle"
+        }
+        
+        new_item_location <- length(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["IconStyle"]])+1
+        xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["IconStyle"]][[new_item_location]] <- "scale"
+        xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["IconStyle"]][["scale"]][[1]] <- icon_scale
+      }
       
-      new_item_location <- length(xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["LabelStyle"]])+1
-      xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["LabelStyle"]][[new_item_location]] <- "scale"
-      xml_list[["kml"]][["Document"]][["Document"]][[i]][["Style"]][["LabelStyle"]][["scale"]][[1]] <- label_scale
     }
     xml_list %>% 
       xml2::as_xml_document() %>% 
