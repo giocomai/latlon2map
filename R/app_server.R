@@ -326,8 +326,26 @@ app_server <- function(input, output, session) {
   ##### maps #####
   map_gg_reactive <- shiny::reactive({
     if (input$map_type=="Static") {
+      if (input$geolocate_panel==TRUE) {
+        if (is.element("Country (World)", input$geolocate_selector)) {
+          base_sf <- latlon2map::ll_get_world(resolution = 60) 
+        } else if (is.element("NUTS0", input$geolocate_selector)) {
+          base_sf <- latlon2map::ll_get_nuts_eu(level = 0)
+        } else if (is.element("NUTS1", input$geolocate_selector)) {
+          base_sf <- latlon2map::ll_get_nuts_eu(level = 1)
+        } else if (is.element("NUTS2", input$geolocate_selector)) {
+          base_sf <- latlon2map::ll_get_nuts_eu(level = 2) 
+        } else if (is.element("NUTS3", input$geolocate_selector)) {
+          base_sf <- latlon2map::ll_get_nuts_eu(level = 3)
+        } else if (is.element("LAU", input$geolocate_selector)) {
+          base_sf <- latlon2map::ll_get_lau_eu()
+        }
+      } else {
+        base_sf <- latlon2map::ll_get_world(resolution = 60)
+      }
+      
       gg_map <- ggplot2::ggplot() +
-        ggplot2::geom_sf(data = latlon2map::ll_get_world(resolution = 60) %>% 
+        ggplot2::geom_sf(data = base_sf %>% 
                            sf::st_transform(crs = 4326)) +
         ggplot2::theme_minimal()
       
