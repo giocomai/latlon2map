@@ -136,6 +136,51 @@ app_server <- function(input, output, session) {
     }
   })
   
+  output$filter_columns_selector_ui <- renderUI({
+    if (tibble::is_tibble(df())) {
+
+        
+        available_choices <- c("Latitude", "Longitude")
+        
+        if (is.character(input$other_columns_selector)==TRUE) {
+          available_choices <- c(available_choices, input$other_columns_selector)
+        }
+        
+        if (input$geolocate_panel==TRUE) {
+          if (is.element("Country (World)", input$geolocate_selector)) {
+            base_sf <- latlon2map::ll_get_world(resolution = 60) 
+          } else if (is.element("NUTS0", input$geolocate_selector)) {
+            base_sf <- latlon2map::ll_get_nuts_eu(level = 0)
+          } else if (is.element("NUTS1", input$geolocate_selector)) {
+            base_sf <- latlon2map::ll_get_nuts_eu(level = 1)
+          } else if (is.element("NUTS2", input$geolocate_selector)) {
+            base_sf <- latlon2map::ll_get_nuts_eu(level = 2) 
+          } else if (is.element("NUTS3", input$geolocate_selector)) {
+            base_sf <- latlon2map::ll_get_nuts_eu(level = 3)
+          } else if (is.element("LAU", input$geolocate_selector)) {
+            base_sf <- latlon2map::ll_get_lau_eu()
+          }
+          available_choices <- c(available_choices, colnames(base_sf %>% sf::st_drop_geometry()))
+        }
+        
+        
+        shiny::selectInput(inputId = "filter_column_selector",
+                           label = "Column to use for filtering data",
+                           choices = c("-", available_choices),
+                           multiple = FALSE)
+    }
+  })
+  
+  output$filter_columns_string_ui <- renderUI({
+    if (tibble::is_tibble(df())) {
+
+        shiny::textInput(inputId = "filter_string",
+                         label = "String to use for filtering")
+
+    }
+  })
+  
+  
   #### read file ####
   
   df_original <- callModule(mod_file_input_server, "file_input_ui_1")
@@ -157,14 +202,14 @@ app_server <- function(input, output, session) {
   
   df_f <- reactive({
     if (tibble::is_tibble(df())) {
-       if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
+      if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
         if (is.numeric(input$sample_size)&is.numeric(input$long_range)&is.numeric(input$lat_range)) {
-          df() %>% 
-            dplyr::slice(base::sample(x = 1:nrow(df()),
-                                      size = input$sample_size,
-                                      replace = FALSE)) %>% 
-            dplyr::filter(Longitude>=input$long_range[1]&Longitude<=input$long_range[2],
-                          Latitude>=input$lat_range[1]&Latitude<=input$lat_range[2])
+              df() %>% 
+                dplyr::slice(base::sample(x = 1:nrow(df()),
+                                          size = input$sample_size,
+                                          replace = FALSE)) %>% 
+                dplyr::filter(Longitude>=input$long_range[1]&Longitude<=input$long_range[2],
+                              Latitude>=input$lat_range[1]&Latitude<=input$lat_range[2])
         }
       }
     }
@@ -264,6 +309,17 @@ app_server <- function(input, output, session) {
         }
       }
       
+      if (is.null(input$filter_column_selector)==FALSE) {
+        if (input$filter_column_selector!="-") {
+          filter_column_selector_sym <- rlang::sym(input$filter_column_selector)
+          
+          sf_temp <- sf_temp %>% 
+            dplyr::filter(stringr::str_detect(string = !!filter_column_selector_sym,
+                                              pattern = stringr::regex(pattern = input$filter_string,
+                                                                       ignore_case = TRUE))) 
+        }
+      }
+      
       return(sf_temp %>% sf::st_transform(crs = 4326))
     }
   })
@@ -280,7 +336,7 @@ app_server <- function(input, output, session) {
                         Latitude > input$map_lf_bounds[["south"]],
                         Longitude < input$map_lf_bounds[["east"]],
                         Longitude > input$map_lf_bounds[["west"]])
-      } else if (is.null(input$map_gg_)==FALSE&input$map_type=="Static") {
+      } else if (is.null(input$map_gg_brush)==FALSE&input$map_type=="Static") {
         sf() %>%
           sf::st_drop_geometry() %>% 
           shiny::brushedPoints(input$map_gg_brush, xvar = "Longitude", yvar = "Latitude")

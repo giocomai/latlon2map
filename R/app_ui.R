@@ -29,6 +29,8 @@ app_ui <- function(request) {
                               shiny::uiOutput(outputId = "latitude_selector_ui"),
                               shiny::uiOutput(outputId = "longitude_selector_ui"),
                               shiny::uiOutput(outputId = "other_columns_selector_ui"),
+                              shiny::uiOutput(outputId = "filter_columns_selector_ui"),
+                              shiny::uiOutput(outputId = "filter_columns_string_ui"),
                               shiny::uiOutput(outputId = "long_range_UI"),
                               shiny::uiOutput(outputId = "lat_range_UI"),
                               shiny::uiOutput(outputId = "reset_full_range_UI"),
