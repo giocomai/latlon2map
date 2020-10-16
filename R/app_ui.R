@@ -96,6 +96,8 @@ app_ui <- function(request) {
             shiny::downloadButton(outputId = "download_df_xlsx",
                                   label =  "Download dataset (xlsx)"),
             shiny::hr(),
+            shiny::HTML("<b>N.B. Remember to set the sample slider to its maximum value in order to include all data if this is your final export</b>"), 
+            shiny::hr(),
             shiny::downloadButton(outputId = "download_map_gg_png",
                                   label =  "Download static map as image (png)"),
             shiny::downloadButton(outputId = "download_map_gg_pdf",
