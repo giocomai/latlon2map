@@ -78,8 +78,8 @@ Check all the available options looking at the help files, e.g. `?ll_get_nuts_eu
 
 The package may include data from other statistical services; currently, it integrates geographic data published by Istat in Italy to have higher detail.
 
-This for example shows the boundary of the city of Bologna, in Italy. The data for the specific geographic unit are also cached separately, so a second run of this code will give the result almost immediatelye (to clarify: if will not open the full dataset and filter for Bologna, but will open a pre-cached file with only the data for Bologna to increase speed and reduce memory requirements).
-```{r}
+This for example shows the boundary of the city of Bologna, in Italy. The data for the specific geographic unit are also cached separately, so a second run of this code will give the result almost immediately (to clarify: if will not open the full dataset and filter for Bologna, but will open a pre-cached file with only the data for Bologna to increase speed and reduce memory requirements).
+```{r eval=FALSE}
 ggplot()+
   geom_sf(data = ll_get_nuts_it(name = "Bologna", level = "lau", resolution = "high"))
 ```
@@ -97,7 +97,7 @@ Another small nuisance is related to including in the same post maps or areas wi
 
 For example, Portugal and the Netherlands have different shapes, but I'd like to have all maps in my my post with the same height/width ratio. This is slightly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function `ll_bbox` takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. 
 
-```{r}
+```{r eval = FALSE}
 remotes::install_github("paleolimbot/ggspatial", upgrade = "never", quiet = TRUE)
 library("ggspatial")
 
@@ -109,7 +109,7 @@ ggplot() +
 
 ...we can have this all of them with the same proportion.
 
-```{r}
+```{r eval = FALSE}
 ggplot() +
     annotation_map_tile(type = "stamenbw", zoomin = 0, cachedir = fs::path(ll_set_folder(), "ll_data")) +
     geom_sf(data = sf::st_as_sfc(ll_bbox(sf = sf_reference,ratio = "4:3")), fill = NA, color = NA) +
