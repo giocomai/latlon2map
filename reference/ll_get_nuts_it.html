@@ -124,13 +124,13 @@
     <p>2019 / WGS84 UTM32N</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_nuts_it</span>(
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2019</span>,
-  <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='st'>"low"</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ll_get_nuts_it</span><span class='op'>(</span>
+  name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  level <span class='op'>=</span> <span class='fl'>2</span>,
+  year <span class='op'>=</span> <span class='fl'>2019</span>,
+  resolution <span class='op'>=</span> <span class='st'>"low"</span>,
+  silent <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,7 +148,9 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span>(<span class='st'>"~/R/"</span>)</div><div class='output co'>#&gt; [1] "~/R/"</div><div class='input'><span class='fu'>ll_get_nuts_it</span>()</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>ℹ</span><span> Istat (CC-BY)</span></div><div class='output co'>#&gt; Simple feature collection with 20 features and 5 fields
+    <pre class="examples"><div class='input'><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='st'>"~/R/"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "~/R/"</div><div class='input'><span class='fu'>ll_get_nuts_it</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>ℹ</span><span> Istat (CC-BY)</span></div><div class='output co'>#&gt; Simple feature collection with 20 features and 5 fields
 #&gt; geometry type:  MULTIPOLYGON
 #&gt; dimension:      XY
 #&gt; bbox:           xmin: 6.626621 ymin: 35.49369 xmax: 18.52038 ymax: 47.09178
@@ -175,7 +177,8 @@
 #&gt; </span><span style='color: #555555;'>17</span><span>       4      17 Basilica…    1.01</span><span style='color: #555555;'>e</span><span>10   </span><span style='text-decoration: underline;'>614</span><span>205. (((15.88733 41.12954, 15.8918…
 #&gt; </span><span style='color: #555555;'>18</span><span>       5      19 Sicilia      2.58</span><span style='color: #555555;'>e</span><span>10  1</span><span style='text-decoration: underline;'>337</span><span>033. (((15.62035 38.27271, 15.6225…
 #&gt; </span><span style='color: #555555;'>19</span><span>       5      20 Sardegna     2.41</span><span style='color: #555555;'>e</span><span>10  1</span><span style='text-decoration: underline;'>438</span><span>597. (((8.364244 39.03288, 8.36430…
-#&gt; </span><span style='color: #555555;'>20</span><span>       4      18 Calabria     1.52</span><span style='color: #555555;'>e</span><span>10   </span><span style='text-decoration: underline;'>837</span><span>820. (((16.62777 40.12973, 16.6393…</div><div class='input'><span class='fu'>ll_get_nuts_it</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Rimini"</span>)</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>ℹ</span><span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>ℹ</span><span> Istat (CC-BY)</span></div><div class='output co'>#&gt; Simple feature collection with 0 features and 5 fields
+#&gt; </span><span style='color: #555555;'>20</span><span>       4      18 Calabria     1.52</span><span style='color: #555555;'>e</span><span>10   </span><span style='text-decoration: underline;'>837</span><span>820. (((16.62777 40.12973, 16.6393…</div><div class='input'><span class='fu'>ll_get_nuts_it</span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Rimini"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>ℹ</span><span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'></span><span style='color: #BBBB00;'>ℹ</span><span> Istat (CC-BY)</span></div><div class='output co'>#&gt; Simple feature collection with 0 features and 5 fields
 #&gt; bbox:           xmin: NA ymin: NA xmax: NA ymax: NA
 #&gt; geographic CRS: WGS 84
 #&gt; </span><span style='color: #555555;'># A tibble: 0 x 6</span><span>
@@ -196,7 +199,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

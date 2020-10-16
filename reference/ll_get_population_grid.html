@@ -126,15 +126,15 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
 More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Population_grids</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_population_grid</span>(
-  <span class='kw'>year</span> <span class='kw'>=</span> <span class='fl'>2011</span>,
-  <span class='kw'>match_sf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>match_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>match_country</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>join</span> <span class='kw'>=</span> <span class='kw pkg'>sf</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/sf/man/geos_binary_pred.html'>st_intersects</a></span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>population_grid_sf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ll_get_population_grid</span><span class='op'>(</span>
+  year <span class='op'>=</span> <span class='fl'>2011</span>,
+  match_sf <span class='op'>=</span> <span class='cn'>NULL</span>,
+  match_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  match_country <span class='op'>=</span> <span class='cn'>NULL</span>,
+  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>,
+  silent <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  population_grid_sf <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -180,7 +180,7 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

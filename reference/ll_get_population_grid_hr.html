@@ -126,14 +126,14 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
 Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_population_grid_hr</span>(
-  <span class='no'>geo</span>,
-  <span class='kw'>match_sf</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>match_name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>join</span> <span class='kw'>=</span> <span class='kw pkg'>sf</span><span class='kw ns'>::</span><span class='no'><a href='https://rdrr.io/pkg/sf/man/geos_binary_pred.html'>st_intersects</a></span>,
-  <span class='kw'>source_url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>ll_get_population_grid_hr</span><span class='op'>(</span>
+  <span class='va'>geo</span>,
+  match_sf <span class='op'>=</span> <span class='cn'>NULL</span>,
+  match_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>,
+  source_url <span class='op'>=</span> <span class='cn'>NULL</span>,
+  silent <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -185,7 +185,7 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
