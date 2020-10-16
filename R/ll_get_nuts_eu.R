@@ -49,12 +49,12 @@ ll_get_nuts_eu <- function(name = NULL,
                                       file_type = "rds")
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(rds_file_location))
+      return(readr::read_rds(file = rds_file_location))
     }
   }
   
   if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(path = rds_file)
+    sf <- readr::read_rds(file = rds_file)
   } else {
     
     shp_folder <- ll_find_file(geo = "eu",
@@ -88,13 +88,13 @@ ll_get_nuts_eu <- function(name = NULL,
     }
     sf <- sf::read_sf(fs::path(shp_folder, paste0("4326-nuts", level))) 
     readr::write_rds(x = sf,
-                     path = rds_file)
+                     file = rds_file)
   }
   if (is.null(name)==FALSE) {
     sf <- sf %>% 
       dplyr::filter(NUTS_NAME == name)
     readr::write_rds(x = sf,
-                     path = rds_file_location)
+                     file = rds_file_location)
   }
   return(sf)
 }

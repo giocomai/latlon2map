@@ -40,14 +40,14 @@ ll_get_lau_eu <- function(name = NULL,
                                       file_type = "rds")
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(rds_file_location))
+      return(readr::read_rds(file = rds_file_location))
     }
   }
   
   if (is.null(lau_sf)==FALSE) {
     sf <- lau_sf
   } else if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(rds_file)
+    sf <- readr::read_rds(file = rds_file)
   } else {
     shp_folder <- ll_find_file(geo = "eu",
                                level = "lau",
@@ -75,7 +75,7 @@ ll_get_lau_eu <- function(name = NULL,
                                                      pattern = "[[A-Z]][[A-Z]]")) %>% 
       sf::st_transform(crs = 4326)
     readr::write_rds(x = sf,
-                     path = rds_file)
+                     file = rds_file)
     
   }
   
@@ -83,7 +83,7 @@ ll_get_lau_eu <- function(name = NULL,
     sf <- sf %>% 
       dplyr::filter(LAU_LABEL == name)
     readr::write_rds(x = sf,
-                     path = rds_file_location)
+                     file = rds_file_location)
   }
   
   return(sf)

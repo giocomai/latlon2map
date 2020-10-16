@@ -39,7 +39,7 @@ ll_get_population_grid_hr <- function(geo,
                                       file_type = "rds")
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(rds_file_location))
+      return(readr::read_rds(file = rds_file_location))
     }
   }
   
@@ -57,7 +57,7 @@ ll_get_population_grid_hr <- function(geo,
                            file_type = "rds")
   
   if (fs::file_exists(rds_file)&is.null(match_sf)) {
-    sf <- readr::read_rds(path = rds_file)
+    sf <- readr::read_rds(file = rds_file)
   } else {
     csv_folder <- ll_find_file(geo = geo,
                                level = 0,
@@ -133,7 +133,7 @@ ll_get_population_grid_hr <- function(geo,
       
       if (is.null(match_name)==FALSE) {
         readr::write_rds(x = sf,
-                         path = rds_file_location)
+                         file = rds_file_location)
       }
       
       return(sf)
@@ -143,7 +143,7 @@ ll_get_population_grid_hr <- function(geo,
       sf::st_as_sf(coords = c("Lon", "Lat"), crs = 4326)
     
     readr::write_rds(x = sf,
-                     path = rds_file)
+                     file = rds_file)
   }
 
   return(sf)

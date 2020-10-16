@@ -38,7 +38,7 @@ ll_get_population_grid <- function(year = 2011,
                                       file_type = "rds")
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(rds_file_location))
+      return(readr::read_rds(file = rds_file_location))
     }
   }
   
@@ -57,7 +57,7 @@ ll_get_population_grid <- function(year = 2011,
   if (is.null(population_grid_sf)==FALSE) {
     sf <- population_grid_sf
   } else if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(path = rds_file)
+    sf <- readr::read_rds(file = rds_file)
   } else {
     shp_folder <- ll_find_file(geo = "eu",
                                level = "eu",
@@ -91,7 +91,7 @@ ll_get_population_grid <- function(year = 2011,
         dplyr::filter(CNTR_CODE == match_country)
     }
     readr::write_rds(x = sf,
-                     path = rds_file)
+                     file = rds_file)
   }
 
   if (is.null(match_sf)==FALSE) {
@@ -103,7 +103,7 @@ ll_get_population_grid <- function(year = 2011,
   
   if (is.null(match_name)==FALSE) {
     readr::write_rds(x = sf,
-                     path = rds_file_location)
+                     file = rds_file_location)
   }
   return(sf)
 }

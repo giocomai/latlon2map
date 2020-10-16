@@ -26,7 +26,7 @@ ll_get_world <- function(resolution = "60",
                            file_type = "rds")
   
   if (fs::file_exists(rds_file)) {
-    return(readr::read_rds(path = rds_file))
+    return(readr::read_rds(file = rds_file))
   }
   
   shp_folder <- ll_find_file(geo = "world",
