@@ -96,14 +96,16 @@ app_ui <- function(request) {
             shiny::downloadButton(outputId = "download_df_xlsx",
                                   label =  "Download dataset (xlsx)"),
             shiny::hr(),
-          shiny::downloadButton(outputId = "download_map_gg_png",
-                                label =  "Download static map as image (png)"),
-          shiny::downloadButton(outputId = "download_map_gg_pdf",
-                                label =  "Download static map as pdf"),
-          shiny::downloadButton(outputId = "download_map_lf_html",
-                                label =  "Download dynamic map as html")),
-            position = c("left", "right"),
-            fluid = TRUE)
+            shiny::downloadButton(outputId = "download_map_gg_png",
+                                  label =  "Download static map as image (png)"),
+            shiny::downloadButton(outputId = "download_map_gg_pdf",
+                                  label =  "Download static map as pdf"),
+            shiny::downloadButton(outputId = "download_map_lf_html",
+                                  label =  "Download dynamic map as html"),
+            shiny::hr(),
+            shiny::HTML("<a href='https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries'>© EuroGeographics for the administrative boundaries</a>")),
+        position = c("left", "right"),
+        fluid = TRUE)
     )
   )
 }
