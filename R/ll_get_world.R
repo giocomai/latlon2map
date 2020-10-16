@@ -58,6 +58,6 @@ ll_get_world <- function(resolution = "60",
   sf <- sf::read_sf(fs::path(shp_folder, paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp"))) %>% 
     sf::st_transform(crs = 4326)
   readr::write_rds(x = sf,
-                   path = rds_file)
+                   file = rds_file)
   return(sf)
 }
