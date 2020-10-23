@@ -10,6 +10,7 @@
 #'
 #' @examples
 #' 
+#' \dontrun{
 #' # The following two graphs will have same 4:3 aspect ratio
 #' ll_set_folder("~/R/")
 #' library("ggspatial")
@@ -37,6 +38,8 @@
 #'           fill = NA,
 #'           alpha = 0.8)
 #'                  
+#' }
+
 ll_bbox <- function(sf,
                     ratio = "4:3") {
   
@@ -70,5 +73,7 @@ ll_bbox <- function(sf,
     bbox[1] <- bbox[1]-change
     bbox[3] <- bbox[3]+change
   }
-  return(bbox %>% sf::st_as_sfc() %>% sf::st_transform(crs = 4326) %>% sf::st_bbox())
+  return(bbox %>% sf::st_as_sfc() %>%
+           sf::st_transform(crs = 4326) %>%
+           sf::st_bbox())
 }

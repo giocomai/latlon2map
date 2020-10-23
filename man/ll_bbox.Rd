@@ -19,6 +19,7 @@ This is useful in particular to make geom_sf()-based ggplots with consistent asp
 }
 \examples{
 
+\dontrun{
 # The following two graphs will have same 4:3 aspect ratio
 ll_set_folder("~/R/")
 library("ggspatial")
@@ -46,4 +47,5 @@ sf_location <- ll_get_nuts_it(name = "Pinzolo", level = "lau", resolution = "low
           fill = NA,
           alpha = 0.8)
                  
+}
 }
