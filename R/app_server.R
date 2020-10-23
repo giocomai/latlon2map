@@ -435,16 +435,16 @@ app_server <- function(input, output, session) {
           if (input$colour_column_selector!="-"&input$size_column_selector!="-") {
             gg_map <- gg_map +
               ggplot2::geom_sf(data = sf(),
-                               mapping = ggplot2::aes_string(colour = input$colour_column_selector,
-                                                             size = input$size_column_selector)) 
+                               mapping = ggplot2::aes_q(colour = as.name(input$colour_column_selector),
+                                                             size = as.name(input$size_column_selector))) 
           } else if (input$colour_column_selector!="-"&input$size_column_selector=="-") {
             gg_map <- gg_map +
               ggplot2::geom_sf(data = sf(),
-                               mapping = ggplot2::aes_string(colour = input$colour_column_selector)) 
+                               mapping = ggplot2::aes_q(colour = as.name(input$colour_column_selector))) 
           } else if (input$colour_column_selector=="-"&input$size_column_selector!="-") {
             gg_map <- gg_map +
               ggplot2::geom_sf(data = sf(),
-                               mapping = ggplot2::aes_string(size = input$size_column_selector)) 
+                               mapping = ggplot2::aes_q(size = as.name(input$size_column_selector))) 
           }
         } else {
           gg_map <- gg_map +
