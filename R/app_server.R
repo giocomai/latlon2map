@@ -31,7 +31,7 @@ app_server <- function(input, output, session) {
   output$long_range_UI <- renderUI({
     if (tibble::is_tibble(df())) {
       if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
-      min_max <- c(min(df()$Longitude), max(df()$Longitude))
+      min_max <- c(min(df()$Longitude, na.rm = TRUE), max(df()$Longitude, na.rm = TRUE))
         shiny::sliderInput(inputId = "long_range",
                            round = FALSE,
                            label = "Longitude range",
@@ -47,7 +47,7 @@ app_server <- function(input, output, session) {
     if (tibble::is_tibble(df())) {
       if (sum(is.element(colnames(df()), c("Latitude", "Longitude")))==2) {
         
-        min_max <- c(min(df()$Latitude), max(df()$Latitude))
+        min_max <- c(min(df()$Latitude, na.rm = TRUE), max(df()$Latitude, na.rm = TRUE))
         
         shiny::sliderInput(inputId = "lat_range",
                            round = TRUE,
@@ -84,10 +84,10 @@ app_server <- function(input, output, session) {
     if (is.null(input$reset_full_range)==FALSE) {
         shiny::updateSliderInput(session = session,
                                  inputId = "long_range",
-                                 value =  c(min(df()$Longitude), max(df()$Longitude)))
+                                 value =  c(min(df()$Longitude, na.rm = TRUE), max(df()$Longitude, na.rm = TRUE)))
         shiny::updateSliderInput(session = session,
                                  inputId = "lat_range",
-                                 value = c(min(df()$Latitude), max(df()$Latitude)))
+                                 value = c(min(df()$Latitude, na.rm = TRUE), max(df()$Latitude, na.rm = TRUE)))
       }
   })
   
