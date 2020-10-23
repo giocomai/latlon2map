@@ -7,7 +7,20 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width = 6,
+  fig.height = 4.5
+)
 
+library("ggplot2")
+theme_set(theme_void(base_family = "Roboto Condensed") +
+            theme(title = element_text(size = 14, face = "bold"),
+                  plot.subtitle = element_text(face = "plain"),
+                  plot.caption = element_text(face = "plain")))
+```
 
 There are a number of small things that unneccesarily complicate using geographic data in Europe. The fact that even mapping data released by Eurostat [are not distributed with a license that allows for their re-distribution](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units), makes it more difficult to liberally pre-process and distribute such data as is common for example in the United States where they are usually released in the public domain.^[The licensing is particularly problematic since it does not allow to use the data "for commercial purposes": does this mean that data journalists can or cannot use these data? If somebody in relevant EU institutions reads this, I beg you, please, please, release geographic data in the public domain.] But beyond the licensing, there are still a number of small operations to do - find the data, download, uncompress, import in a useful format - and they all take time, and are boring, and demotivating. 
 
@@ -24,59 +37,45 @@ The core idea of `latlon2map` is to make the process of caching geographic datas
 The first thing to do is to set a folder where all data will be cached. This should normally by a folder that you do not sync, e.g. 
 
 
-
-```r
+```{r setup}
 library("ggplot2", quietly = TRUE)
 library("dplyr", quietly = TRUE)
 library("sf", quietly = TRUE)
 
 library("latlon2map")
 ll_set_folder(path = "~/R")
-#> [1] "~/R"
 ```
 
 All functions to get maps start with `ll_get_` to facilitate auto-completion, and all of them output `sf` objects with crs 4326. As such, they can be directly used in graphs, without even the need to store them as separate objects.
 
 If I want a map with local administrative units in the UK, for example, I can run the following code.
 
-
-```r
+```{r uk_lau, eval = TRUE}
 ggplot()+
   geom_sf(data = ll_get_lau_eu() %>%
             filter(CNTR_CODE == "UK"))
-#> ℹ © EuroGeographics for the administrative boundaries
-```
 
-![plot of chunk uk_lau](figure/uk_lau-1.png)
+```
 
 
 The first time that this is run it will download data from Eurostat's website, unzip it, import as an `sf` object, and store it locally for quick retrieval. This means that if you run the same piece of code a second time, it will print the map almost instantly. 
 
 Here is for example the code for having NUTS2 regions in Italy.
 
-
-```r
+```{r it_nuts2_lr}
 ggplot()+
   geom_sf(data = ll_get_nuts_eu(level = 2) %>%
             filter(CNTR_CODE == "IT"))
-#> ℹ © EuroGeographics for the administrative boundaries
-#> ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries
-```
 
-![plot of chunk it_nuts2_lr](figure/it_nuts2_lr-1.png)
+```
 
 Or with higher resolution:
 
-
-```r
+```{r it_nuts2_hr}
 ggplot()+
   geom_sf(data = ll_get_nuts_eu(level = 2, resolution = 1) %>%
             filter(CNTR_CODE == "IT"))
-#> ℹ © EuroGeographics for the administrative boundaries
-#> ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries
 ```
-
-![plot of chunk it_nuts2_hr](figure/it_nuts2_hr-1.png)
 
 
 Check all the available options looking at the help files, e.g. `?ll_get_nuts_eu`.
@@ -84,17 +83,12 @@ Check all the available options looking at the help files, e.g. `?ll_get_nuts_eu
 The package may include data from other statistical services; currently, it integrates geographic data published by Istat in Italy to have higher detail.
 
 This for example shows the boundary of the city of Bologna, in Italy. The data for the specific geographic unit are also cached separately, so a second run of this code will give the result almost immediately (to clarify: if will not open the full dataset and filter for Bologna, but will open a pre-cached file with only the data for Bologna to increase speed and reduce memory requirements).
-
-```r
+```{r bologna_lau_hr, eval=TRUE}
 ggplot()+
   geom_sf(data = ll_get_nuts_it(name = "Bologna",
                                 level = "lau",
                                 resolution = "high"))
-#> ℹ Source: https://www.istat.it/it/archivio/222527
-#> ℹ Istat (CC-BY)
 ```
-
-![plot of chunk bologna_lau_hr](figure/bologna_lau_hr-1.png)
 
 
 What is important is that this code can easily be shared and will work even if the geographics datasets are not previously present on the computer where the same code will be run. Even if you have many different projects using this data, only one copy will need to be stored on a given workstation. 
@@ -109,8 +103,7 @@ Another small nuisance is related to including in the same post maps or areas wi
 
 For example, Portugal and the Netherlands have different shapes, but I'd like to have all maps in my my post with the same height/width ratio. This is slightly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function `ll_bbox` takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. 
 
-
-```r
+```{r sweden_bw_thin, eval = TRUE, message = FALSE, warning=FALSE}
 remotes::install_github("paleolimbot/ggspatial", upgrade = "never", quiet = TRUE)
 library("ggspatial")
 
@@ -123,30 +116,14 @@ ggplot() +
   geom_sf(data = sf_reference, colour = "darkred", fill = NA)
 ```
 
-![plot of chunk sweden_bw_thin](figure/sweden_bw_thin-1.png)
-
 ...we can have this all of them with the same proportion.
 
-
-```r
+```{r sweden_be_4_3, eval = TRUE}
 ggplot() +
     annotation_map_tile(type = "stamenbw", zoomin = 0, cachedir = fs::path(ll_set_folder(), "ll_data")) +
     geom_sf(data = sf::st_as_sfc(ll_bbox(sf = sf_reference,ratio = "4:3")), fill = NA, color = NA) +
   geom_sf(data = sf_reference, colour = "darkred", fill = NA)
-#> Zoom: 5
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> ellps WGS 84 in CRS definition: +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1
-#> +units=m +nadgrids=@null +wktext +no_defs
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> datum WGS_1984 in CRS definition
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> ellps WGS 84 in CRS definition: +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1
-#> +units=m +nadgrids=@null +wktext +no_defs
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> datum WGS_1984 in CRS definition
 ```
-
-![plot of chunk sweden_be_4_3](figure/sweden_be_4_3-1.png)
 
 
 ## Get the population grid
@@ -155,8 +132,7 @@ There are more complex geographic data than simple boundary lines. Eurostat for 
 
 [the following code chunks are not evaluated for facilitating auto-deploy of the website with vignette]
 
-
-```r
+```{r viewnna_pop_grid, eval = TRUE, message=FALSE, warning=FALSE}
 name <- "Wien"
 
 sf_location <- ll_get_lau_eu(name = name)
@@ -191,22 +167,17 @@ ggplot() +
        Base map data by OpenStreetMap, under ODbL.")
 ```
 
-![plot of chunk viewnna_pop_grid](figure/viewnna_pop_grid-1.png)
-
 ## Population-weighted centre
 
 `lonlat2map` includes some convenience functions to deal with normally tedious processes, e.g. finding the population-weighted center of an area.
 
-
-```r
+```{r pop_weighted_centre_palmanova, eval = TRUE}
 name = "Palmanova"
 sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high", silent = TRUE)
 
 centroid <- sf::st_centroid(sf_location %>%
                               sf::st_transform(crs = 3857)) %>%
   sf::st_transform(crs = 4326)
-#> Warning in st_centroid.sf(sf_location %>% sf::st_transform(crs = 3857)): st_centroid assumes attributes
-#> are constant over geometries of x
 
 desired_bbox <- st_as_sfc(ll_bbox(sf = sf_location, ratio = "4:3"))
 
@@ -221,7 +192,6 @@ sf_location_grid <- ll_get_population_grid(match_sf = sf_location,
 pop_centroid <- ll_find_pop_centre(sf_location = sf_location,
                                    sf_population_grid = sf_location_grid,
                                    power = 2)
-#> Warning in st_centroid.sf(.): st_centroid assumes attributes are constant over geometries of x
 
 ggplot() +
     annotation_map_tile(type = "stamenbw", zoomin = 0, cachedir = fs::path(ll_set_folder(), "ll_data")) +
@@ -253,25 +223,12 @@ Centroid in red, population-weighted centre in blue",
        Data source population grid information: Eurostat, EFGS
        Map tiles by Stamen Design, under CC BY 3.0
        Base map data by OpenStreetMap, under ODbL.")
-#> Zoom: 14
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> ellps WGS 84 in CRS definition: +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1
-#> +units=m +nadgrids=@null +wktext +no_defs
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> datum WGS_1984 in CRS definition
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> ellps WGS 84 in CRS definition: +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1
-#> +units=m +nadgrids=@null +wktext +no_defs
-#> Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded
-#> datum WGS_1984 in CRS definition
+  
 ```
-
-![plot of chunk pop_weighted_centre_palmanova](figure/pop_weighted_centre_palmanova-1.png)
 
 The function is flexible, and can be used with more granular population data such as those [distributed by Facebook](https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/), which can be loaded with the function `ll_get_population_grid_hr()`.
 
-
-```r
+```{r pop_weighted_centre_palmanova_hr, eval=TRUE, message=FALSE,warning=FALSE}
 lau_grid_name_temp <- stringr::str_c(name, "_lau_hr-st_intersects")
 
 sf_location_grid_hr <- ll_get_population_grid_hr(geo = "IT", 
@@ -315,8 +272,6 @@ Centroid in red, population-weighted centre in blue",
        Map tiles by Stamen Design, under CC BY 3.0
        Base map data by OpenStreetMap, under ODbL.")
 ```
-
-![plot of chunk pop_weighted_centre_palmanova_hr](figure/pop_weighted_centre_palmanova_hr-1.png)
 
 
 ## More to come
