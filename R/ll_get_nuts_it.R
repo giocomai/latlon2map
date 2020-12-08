@@ -3,6 +3,7 @@
 #' 2019 / WGS84 UTM32N
 #' 
 #' @param level Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.
+#' @param year Defaults to 2020 (latest available).
 #' 
 #' @return
 #' @export
@@ -13,7 +14,7 @@
 #' ll_get_nuts_it(name = "Rimini")
 ll_get_nuts_it <- function(name = NULL,
                            level = 2,
-                           year = 2019,
+                           year = 2020,
                            resolution = "low",
                            silent = FALSE) {
   if (silent==FALSE) {

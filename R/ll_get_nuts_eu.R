@@ -4,7 +4,7 @@
 #'
 #' @param level Defaults to 3, corresponding to nuts3. Available values are: 0, 1, 2, and 3.
 #' @param resolution Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available)-
-#' @param year Defaults to 2016. Available values: 2016, 2013, 2010, 2006, 2001
+#' @param year Defaults to 2021 Available values: 2021, 2016, 2013, 2010, 2006, 2003
 #' @return NUTS in sf format
 #' @export
 #'
@@ -13,7 +13,7 @@
 ll_get_nuts_eu <- function(name = NULL, 
                            level = 3,
                            resolution = 60,
-                           year = 2016,
+                           year = 2021,
                            silent = FALSE) {
   
   resolution <- stringr::str_pad(string = resolution, width = 2, side = "left", pad = 0)

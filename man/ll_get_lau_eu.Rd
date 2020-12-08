@@ -4,10 +4,10 @@
 \alias{ll_get_lau_eu}
 \title{Gets local administrative units from Eurostat's website}
 \usage{
-ll_get_lau_eu(name = NULL, year = 2018, silent = FALSE, lau_sf = NULL)
+ll_get_lau_eu(name = NULL, year = 2019, silent = FALSE, lau_sf = NULL)
 }
 \arguments{
-\item{year}{Year of mapping, defaults to most recent (2018). Availalble values: 2017, 2018}
+\item{year}{Year of mapping, defaults to most recent (2019). Availalble values: 2016, 2017, 2018, 2019.}
 
 \item{lau_sf}{sf object, exactly such as the one that would be returned by \code{ll_get_lau_eu()}. Used to speed-up computation when bulk processing.}
 }

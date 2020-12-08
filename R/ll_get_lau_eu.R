@@ -2,7 +2,7 @@
 #'
 #' Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18
 #'
-#' @param year Year of mapping, defaults to most recent (2018). Availalble values: 2017, 2018
+#' @param year Year of mapping, defaults to most recent (2019). Availalble values: 2016, 2017, 2018, 2019.
 #' @param lau_sf sf object, exactly such as the one that would be returned by `ll_get_lau_eu()`. Used to speed-up computation when bulk processing.
 #'
 #' @return European LAU in sf format
@@ -14,7 +14,7 @@
 #' ll_get_lau_eu()
 #' 
 ll_get_lau_eu <- function(name = NULL,
-                          year = 2018,
+                          year = 2019,
                           silent = FALSE, 
                           lau_sf = NULL) {
   if (silent==FALSE) {
@@ -55,8 +55,7 @@ ll_get_lau_eu <- function(name = NULL,
                                year = year,
                                name = "abl",
                                file_type = "shp")
-    
-    source_url <- paste0("https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/LAU-", year, "-01M-SH.zip")
+    source_url <- paste0("https://gisco-services.ec.europa.eu/distribution/v2/lau/download/ref-lau-", year, "-01m.shp.zip")
     zip_file <- ll_find_file(geo = "eu",
                              level = "lau",
                              resolution = "1m",

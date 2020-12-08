@@ -8,7 +8,7 @@ ll_get_nuts_eu(
   name = NULL,
   level = 3,
   resolution = 60,
-  year = 2016,
+  year = 2021,
   silent = FALSE
 )
 }
@@ -17,7 +17,7 @@ ll_get_nuts_eu(
 
 \item{resolution}{Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available)-}
 
-\item{year}{Defaults to 2016. Available values: 2016, 2013, 2010, 2006, 2001}
+\item{year}{Defaults to 2021 Available values: 2021, 2016, 2013, 2010, 2006, 2003}
 }
 \value{
 NUTS in sf format
