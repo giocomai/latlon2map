@@ -67,8 +67,21 @@ ll_get_lau_eu <- function(name = NULL,
       download.file(url = source_url,
                     destfile = zip_file)
     }
+    zip_folder <- ll_find_file(geo = "eu",
+                               level = "lau",
+                               resolution = "1m",
+                               year = year,
+                               name = "abl",
+                               file_type = "zip") %>% 
+      fs::path_dir()
+    
     unzip(zipfile = zip_file,
+          exdir = zip_folder)
+    
+    unzip(zipfile = fs::path(zip_folder, paste0("LAU_RG_01M_", year, "_4326.shp.zip")),
           exdir = shp_folder)
+    
+    
     sf <- sf::read_sf(shp_folder) %>% 
       dplyr::mutate(CNTR_CODE = stringr::str_extract(string = GISCO_ID,
                                                      pattern = "[[A-Z]][[A-Z]]")) %>% 
