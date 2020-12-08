@@ -128,7 +128,7 @@
   name <span class='op'>=</span> <span class='cn'>NULL</span>,
   level <span class='op'>=</span> <span class='fl'>3</span>,
   resolution <span class='op'>=</span> <span class='fl'>60</span>,
-  year <span class='op'>=</span> <span class='fl'>2016</span>,
+  year <span class='op'>=</span> <span class='fl'>2021</span>,
   silent <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
@@ -145,7 +145,7 @@
     </tr>
     <tr>
       <th>year</th>
-      <td><p>Defaults to 2016. Available values: 2016, 2013, 2010, 2006, 2001</p></td>
+      <td><p>Defaults to 2021 Available values: 2021, 2016, 2013, 2010, 2006, 2003</p></td>
     </tr>
     </table>
 
@@ -155,25 +155,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='ll_get_lau_eu.html'>ll_get_lau_eu</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; Simple feature collection with 102552 features and 6 fields
-#&gt; geometry type:  MULTIPOLYGON
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: -63.15372 ymin: -21.38881 xmax: 55.83573 ymax: 71.18532
-#&gt; geographic CRS: WGS 84
-#&gt; </span><span style='color: #555555;'># A tibble: 102,552 x 7</span><span>
-#&gt;    LAU_CODE LAU_LABEL GISCO_ID Shape_Leng Shape_Area                  geometry
-#&gt;  </span><span style='color: #555555;'>*</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;MULTIPOLYGON [°]&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> 0000     Reykjaví… IS_0000       2.83     0.050</span><span style='text-decoration: underline;'>7</span><span>  (((-21.58641 64.01809, -…
-#&gt; </span><span style='color: #555555;'> 2</span><span> 00019    Andrijaš… HR_00019      0.279    0.004</span><span style='text-decoration: underline;'>52</span><span> (((18.76285 45.21731, 18…
-#&gt; </span><span style='color: #555555;'> 3</span><span> 00027    Antunovac HR_00027      0.431    0.006</span><span style='text-decoration: underline;'>58</span><span> (((18.60095 45.46151, 18…
-#&gt; </span><span style='color: #555555;'> 4</span><span> 00035    Babina G… HR_00035      0.466    0.009</span><span style='text-decoration: underline;'>07</span><span> (((18.48985 45.12331, 18…
-#&gt; </span><span style='color: #555555;'> 5</span><span> 00043    Bakar     HR_00043      0.666    0.014</span><span style='text-decoration: underline;'>4</span><span>  (((14.55529 45.28892, 14…
-#&gt; </span><span style='color: #555555;'> 6</span><span> 00051    Bale - V… HR_00051      0.404    0.009</span><span style='text-decoration: underline;'>42</span><span> (((13.73536 44.98583, 13…
-#&gt; </span><span style='color: #555555;'> 7</span><span> 00060    Barban    HR_00060      0.544    0.010</span><span style='text-decoration: underline;'>3</span><span>  (((14.03816 45.00417, 14…
-#&gt; </span><span style='color: #555555;'> 8</span><span> 00078    Barilović HR_00078      0.964    0.020</span><span style='text-decoration: underline;'>2</span><span>  (((15.52517 45.44455, 15…
-#&gt; </span><span style='color: #555555;'> 9</span><span> 00086    Baška     HR_00086      0.728    0.011</span><span style='text-decoration: underline;'>3</span><span>  (((14.76864 44.9336, 14.…
-#&gt; </span><span style='color: #555555;'>10</span><span> 00094    Baška Vo… HR_00094      0.229    0.002</span><span style='text-decoration: underline;'>86</span><span> (((17.03063 43.35638, 17…
-#&gt; </span><span style='color: #555555;'># … with 102,542 more rows, and 1 more variable: CNTR_CODE </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span></div></span></pre>
+</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span><span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; <span class='error'>Error: Cannot open "/Users/runner/R/ll_data/shp/eu/lau/1m/2019"; The source could be corrupt or not supported. See `st_drivers()` for a list of supported formats.</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
