@@ -92,8 +92,13 @@ ll_get_lau_eu <- function(name = NULL,
   }
   
   if (is.null(name)==FALSE) {
-    sf <- sf %>% 
-      dplyr::filter(LAU_LABEL == name)
+    if (is.element("LAU_LABEL", colnames(sf))==TRUE) {
+      sf <- sf %>% 
+        dplyr::filter(LAU_LABEL == name)
+    } else {
+      sf <- sf %>% 
+        dplyr::filter(LAU_NAME == name)
+    }
     readr::write_rds(x = sf,
                      file = rds_file_location)
   }
