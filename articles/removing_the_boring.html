@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -69,8 +69,7 @@
 
       
 
-      </header><script src="removing_the_boring_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="removing_the_boring_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="removing_the_boring_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="removing_the_boring_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Removing the boring parts from geocomputation with European data</h1>
@@ -93,7 +92,7 @@
 <p>The core idea of <code>latlon2map</code> is to make the process of caching geographic datasets as frictionless but also as transparent as possible.</p>
 <p>The first thing to do is to set a folder where all data will be cached. This should normally by a folder that you do not sync, e.g. </p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://ggplot2.tidyverse.org">"ggplot2"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org">"dplyr"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://r-spatial.github.io/sf/">"sf"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
@@ -155,7 +154,7 @@
 <p>For example, Portugal and the Netherlands have different shapes, but I’d like to have all maps in my my post with the same height/width ratio. This is slightly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function <code>ll_bbox</code> takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. </p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"paleolimbot/ggspatial"</span>, upgrade <span class="op">=</span> <span class="st">"never"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://paleolimbot.github.io/ggspatial">"ggspatial"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://paleolimbot.github.io/ggspatial/">"ggspatial"</a></span><span class="op">)</span>
 
 <span class="va">sf_reference</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span>, resolution <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"SE"</span><span class="op">)</span>
 
