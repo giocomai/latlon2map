@@ -39,9 +39,9 @@ ll_osm_download <- function(countries,
         country
       )
       local_file <- fs::path(country_folder, fs::path_file(link))
-      usethis::ui_info(x = "If the download is not successful, please download manually - {usethis::ui_path(link)} - and store in this location: {usethis::ui_path(local_file)}")
       if (fs::file_exists(local_file) == FALSE | overwrite == TRUE) {
         fs::dir_create(country_folder)
+        usethis::ui_info(x = "If the download is not successful, please download manually - {usethis::ui_path(link)} - and store in this location: {usethis::ui_path(local_file)}")
         download.file(url = link, destfile = local_file)
       }
     }
