@@ -53,7 +53,8 @@ ll_osm_download <- function(countries,
 
 #' Extract from zip shape files of roads from previously downloaded
 #'
-#' @param countries The name of one or more geographic entities from files typically previously downloaded with `sn_download_osm()`
+#' @param countries The name of one or more geographic entities from files typically previously downloaded with `ll_osm_download()`
+#' @param overwrite Logical, defaults to FALSE. If TRUE, extracts files from zip even if folder already existing.
 #' @return Nothing, used for its side effects (extracts shapefiles from country-level zip files)
 #' @examples
 #' \dontrun{
@@ -63,7 +64,7 @@ ll_osm_download <- function(countries,
 #' @export
 #'
 
-ll_osm_extract_roads <- function(countries) {
+ll_osm_extract_roads <- function(countries, overwrite = FALSE) {
 
   base_folder <- fs::path(latlon2map::ll_set_folder(), "osm_roads_shp")
   fs::dir_create(path = base_folder, recurse = TRUE)
@@ -103,10 +104,11 @@ ll_osm_extract_roads <- function(countries) {
                                              fs::path_file() %>%
                                              stringr::str_remove(pattern = "-latest-free.shp.zip"))
                                 
-                                
-                                unzip(zipfile = current_zip_file,
-                                      files = files_to_extract,
-                                      exdir = current_street_shp_folder)
+                                if (fs::file_exists(path = current_street_shp_folder)==FALSE|overwrite==TRUE) {
+                                  unzip(zipfile = current_zip_file,
+                                        files = files_to_extract,
+                                        exdir = current_street_shp_folder)
+                                }
                                 
                               })
                 }

@@ -4,10 +4,12 @@
 \alias{ll_osm_extract_roads}
 \title{Extract from zip shape files of roads from previously downloaded}
 \usage{
-ll_osm_extract_roads(countries)
+ll_osm_extract_roads(countries, overwrite = FALSE)
 }
 \arguments{
-\item{countries}{The name of one or more geographic entities from files typically previously downloaded with \code{sn_download_osm()}}
+\item{countries}{The name of one or more geographic entities from files typically previously downloaded with \code{ll_osm_download()}}
+
+\item{overwrite}{Logical, defaults to FALSE. If TRUE, extracts files from zip even if folder already existing.}
 }
 \value{
 Nothing, used for its side effects (extracts shapefiles from country-level zip files)
