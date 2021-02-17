@@ -24,6 +24,9 @@ jobs:
       - name: install harfbuzz
         run: sudo apt-get install libharfbuzz-dev libfribidi-dev
 
+      - name: install libudunits2-dev
+        run: sudo apt-get install libudunits2-dev
+
       - name: Query dependencies
         run: |
           install.packages('remotes')
