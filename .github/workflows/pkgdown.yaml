@@ -24,8 +24,8 @@ jobs:
       - name: install harfbuzz
         run: sudo apt-get install libharfbuzz-dev libfribidi-dev
 
-      - name: install libudunits2-dev
-        run: sudo apt-get install libudunits2-dev
+      - name: install libudunits2
+        run: sudo apt-get install libudunits2-dev libudunits2-0 libgdal-dev
 
       - name: Query dependencies
         run: |
