@@ -4,12 +4,14 @@
 \alias{ll_osm_download}
 \title{Download OSM data for whole countries from Geofabrik.}
 \usage{
-ll_osm_download(countries, overwrite = FALSE)
+ll_osm_download(countries, overwrite = FALSE, wget = FALSE)
 }
 \arguments{
 \item{countries}{One or more country names. For details on available country names see the dataset included in this package: \code{ll_osm_countries}}
 
 \item{overwrite}{Logical, defaults to FALSE. If true, downloads new files even if already present.}
+
+\item{wget}{Logical, defaults to FALSE. If TRUE, it downloads files with wget (if available), otherwise uses default method. Setting wget to TRUE may contribute to prevent download timeouts; notice that apparent freeze of the download progress in the console are common, and mostly the download is just continuing in the background (for reference, check file size in folder.)}
 }
 \value{
 Used only for its side effects (downloads osm data).

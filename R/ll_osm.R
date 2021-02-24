@@ -6,6 +6,7 @@
 #'
 #' @param countries One or more country names. For details on available country names see the dataset included in this package: `ll_osm_countries`
 #' @param overwrite Logical, defaults to FALSE. If true, downloads new files even if already present.
+#' @param wget Logical, defaults to FALSE. If TRUE, it downloads files with wget (if available), otherwise uses default method. Setting wget to TRUE may contribute to prevent download timeouts; notice that apparent freeze of the download progress in the console are common, and mostly the download is just continuing in the background (for reference, check file size in folder.)
 #' @return Used only for its side effects (downloads osm data).
 #' @examples
 #'
@@ -15,7 +16,8 @@
 #' }
 #' @export
 ll_osm_download <- function(countries,
-                            overwrite = FALSE) {
+                            overwrite = FALSE,
+                            wget = FALSE) {
   countries_available_l <- is.element(stringr::str_to_lower(countries), ll_osm_countries$country)
   if (Reduce(x = countries_available_l, f = `&`) == FALSE) {
     missing_countries <- glue::glue_collapse(x = countries[!countries_available_l], sep = ", ", last = ", and ")
@@ -42,7 +44,12 @@ ll_osm_download <- function(countries,
       if (fs::file_exists(local_file) == FALSE | overwrite == TRUE) {
         fs::dir_create(country_folder)
         usethis::ui_info(x = "If the download is not successful, please download manually - {usethis::ui_path(link)} - and store in this location: {usethis::ui_path(local_file)}")
-        download.file(url = link, destfile = local_file)
+        if (wget==TRUE) {
+          download.file(url = link, destfile = local_file, method = "wget")
+        } else {
+          download.file(url = link, destfile = local_file)  
+        }
+        
       }
     }
   )

@@ -3,7 +3,7 @@
 #' 2019 / WGS84 UTM32N
 #' 
 #' @param level Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.
-#' @param year Defaults to 2020 (latest available).
+#' @param year Defaults to 2021 (latest available).
 #' 
 #' @return
 #' @export
@@ -14,7 +14,7 @@
 #' ll_get_nuts_it(name = "Rimini")
 ll_get_nuts_it <- function(name = NULL,
                            level = 2,
-                           year = 2020,
+                           year = 2021,
                            resolution = "low",
                            silent = FALSE) {
   if (silent==FALSE) {
@@ -91,20 +91,20 @@ ll_get_nuts_it <- function(name = NULL,
     
     if (level == "lau") {
       sf <- sf::read_sf(fs::path(shp_folder,
-                                 paste0("Limiti01012019", g_name),
-                                 paste0("Com01012019", g_name)))
+                                 paste0("Limiti0101", year, g_name),
+                                 paste0("Com0101", year, g_name)))
     } else if (level == 1) {
       sf <- sf::read_sf(fs::path(shp_folder,
-                                 paste0("Limiti01012019", g_name),
-                                 paste0("RipGeo01012019", g_name)))
+                                 paste0("Limiti0101", year, g_name),
+                                 paste0("RipGeo0101", year, g_name)))
     } else if (level == 2) {
       sf <- sf::read_sf(fs::path(shp_folder,
-                                 paste0("Limiti01012019", g_name),
-                                 paste0("Reg01012019", g_name)))
+                                 paste0("Limiti0101", year, g_name),
+                                 paste0("Reg0101", year, g_name)))
     } else if (level == 3) {
       sf <- sf::read_sf(fs::path(shp_folder,
-                                 paste0("Limiti01012019", g_name),
-                                 paste0("ProvCM01012019", g_name)))
+                                 paste0("Limiti0101", year, g_name),
+                                 paste0("ProvCM0101", year, g_name)))
     }
     sf <- sf %>% 
       sf::st_transform(crs = 4326)

@@ -7,7 +7,7 @@
 ll_get_nuts_it(
   name = NULL,
   level = 2,
-  year = 2020,
+  year = 2021,
   resolution = "low",
   silent = FALSE
 )
@@ -15,7 +15,7 @@ ll_get_nuts_it(
 \arguments{
 \item{level}{Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.}
 
-\item{year}{Defaults to 2020 (latest available).}
+\item{year}{Defaults to 2021 (latest available).}
 }
 \value{
 
