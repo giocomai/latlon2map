@@ -96,7 +96,8 @@ app_server <- function(input, output, session) {
       shiny::selectInput(inputId = "latitude_selector",
                          label = "Latitude column:",
                          choices = c("-", colnames(df_original())),
-                         selected = NA)
+                         selected = NA,
+                         selectize = FALSE)
     }
   })
   
@@ -105,7 +106,8 @@ app_server <- function(input, output, session) {
       shiny::selectInput(inputId = "longitude_selector",
                          label = "Longitude column:",
                          choices = c("-", colnames(df_original())),
-                         selected = NA)
+                         selected = NA,
+                         selectize = FALSE)
     }
   })
   
@@ -183,7 +185,7 @@ app_server <- function(input, output, session) {
   
   #### read file ####
   
-  df_original <- callModule(mod_file_input_server, "file_input_ui_1")
+  df_original <- mod_file_input_server("file_input_ui_1")
   
   df <- reactive({
     if (is.character(input$latitude_selector)==TRUE&is.character(input$longitude_selector)==TRUE) {
