@@ -1,16 +1,20 @@
 #' Get countries as an sf object
 #'
 #' @param resolution Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available)-
-#' @param year Defaults to 2016. Available values: 2016, 2013, 2010, 2006, 2001
+#' @param year Defaults to 2020. Available values: 2020, 2016, 2013, 2010, 2006, 2001
 #'
 #' @return
 #' @export
 #'
 #' @examples
 ll_get_world <- function(resolution = "60",
-                         year = 2016, 
+                         year = 2020, 
                          name = NULL) {
-  resolution <- stringr::str_pad(string = resolution, width = 2, side = "left", pad = 0)
+  
+  resolution <- stringr::str_pad(string = resolution,
+                                 width = 2,
+                                 side = "left",
+                                 pad = 0)
   usethis::ui_info("Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries")
   usethis::ui_info("© EuroGeographics for the administrative boundaries")
   ll_create_folders(geo = "world",
