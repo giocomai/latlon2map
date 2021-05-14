@@ -116,7 +116,8 @@ app_server <- function(input, output, session) {
       shiny::selectInput(inputId = "other_columns_selector",
                          label = "Additional column(s)",
                          choices = colnames(df_original()),
-                         multiple = TRUE)
+                         multiple = TRUE,
+                         selectize = FALSE)
     }
   })
   
@@ -125,7 +126,8 @@ app_server <- function(input, output, session) {
       shiny::selectInput(inputId = "colour_column_selector",
                          label = "Column to use for colour of points",
                          choices = c("-", colnames(df())),
-                         multiple = FALSE)
+                         multiple = FALSE,
+                         selectize = FALSE)
     }
   })
   
@@ -134,7 +136,8 @@ app_server <- function(input, output, session) {
       shiny::selectInput(inputId = "size_column_selector",
                          label = "Column to use for size of points",
                          choices = c("-", colnames(df())),
-                         multiple = FALSE)
+                         multiple = FALSE,
+                         selectize = FALSE)
     }
   })
   
@@ -169,7 +172,8 @@ app_server <- function(input, output, session) {
         shiny::selectInput(inputId = "filter_column_selector",
                            label = "Column to use for filtering data",
                            choices = c("-", available_choices),
-                           multiple = FALSE)
+                           multiple = FALSE,
+                           selectize = FALSE)
     }
   })
   
