@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Countries and geographic entities for which shapefiles are made availabile by Geofabrik — ll_osm_countries • latlon2map</title>
+<title>Download OSM data in geopackage format for regions, provinces, and municipalities in Italy. — ll_osm_download_it • latlon2map</title>
 
 
 <!-- jquery -->
@@ -39,11 +39,8 @@
 
 
 
-<meta property="og:title" content="Countries and geographic entities for which shapefiles are made availabile by Geofabrik — ll_osm_countries" />
-<meta property="og:description" content="A dataset with all names of countries, continents, as included in the Geofabrik database.
-They are used to download files with ll_osm_download()
-A dataset with all names of geographic entities available for direct download as geopackage files
-They are used to download files with ll_osm_download_it()" />
+<meta property="og:title" content="Download OSM data in geopackage format for regions, provinces, and municipalities in Italy. — ll_osm_download_it" />
+<meta property="og:description" content="See ll_osm_it_gpkg for all available files." />
 
 
 
@@ -118,54 +115,54 @@ They are used to download files with ll_osm_download_it()" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Countries and geographic entities for which shapefiles are made availabile by Geofabrik</h1>
+    <h1>Download OSM data in geopackage format for regions, provinces, and municipalities in Italy.</h1>
     
-    <div class="hidden name"><code>ll_osm_countries.Rd</code></div>
+    <div class="hidden name"><code>ll_osm_download_it.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A dataset with all names of countries, continents, as included in the Geofabrik database.
-They are used to download files with <code><a href='ll_osm_download.html'>ll_osm_download()</a></code></p>
-<p>A dataset with all names of geographic entities available for direct download as geopackage files
-They are used to download files with <code><a href='ll_osm_download_it.html'>ll_osm_download_it()</a></code></p>
+    <p>See <code>ll_osm_it_gpkg</code> for all available files.</p>
     </div>
 
-    <pre class="usage"><span class='va'>ll_osm_countries</span>
+    <pre class="usage"><span class='fu'>ll_osm_download_it</span><span class='op'>(</span>
+  level <span class='op'>=</span> <span class='st'>"comuni"</span>,
+  name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  code <span class='op'>=</span> <span class='cn'>NULL</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  wget <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
-<span class='va'>ll_osm_countries</span></pre>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>level</th>
+      <td><p>One of "regioni", "provincie", "comuni". Defaults to "comuni".</p></td>
+    </tr>
+    <tr>
+      <th>name</th>
+      <td><p>Name of geographic entity. Check <code>ll_osm_it_gpkg</code> or <code><a href='ll_get_nuts_it.html'>ll_get_nuts_it()</a></code> for valid names.</p></td>
+    </tr>
+    <tr>
+      <th>code</th>
+      <td><p>Used in alternative to name. Check <code>ll_osm_it_gpkg</code> or <code><a href='ll_get_nuts_it.html'>ll_get_nuts_it()</a></code> for valid values.</p></td>
+    </tr>
+    <tr>
+      <th>wget</th>
+      <td><p>Logical, defaults to FALSE. If TRUE, it downloads files with wget (if available), otherwise uses default method. Setting wget to TRUE may contribute to prevent download timeouts; notice that apparent freeze of the download progress in the console are common, and mostly the download is just continuing in the background (for reference, check file size in folder.)</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <p>Used only for its side effects (downloads osm data).</p>
 
-    <p>A tibble</p><dl>
-<dt>continent</dt><dd><p>Name of the continent</p></dd>
-<dt>country</dt><dd><p>Name of the country</p></dd>
-<dt>link</dt><dd><p>Link to shapefiles in a tibble</p></dd>
-
-</dl>
-
-<p>A tibble</p><dl>
-<dt>continent</dt><dd><p>Name of the continent</p></dd>
-<dt>country</dt><dd><p>Name of the country</p></dd>
-<dt>link</dt><dd><p>Link to shapefiles in a tibble</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
-
-    <p><a href='http://download.geofabrik.de/'>http://download.geofabrik.de/</a></p>
-<p><a href='http://download.geofabrik.de/'>http://download.geofabrik.de/</a></p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Links to shapefiles are stored as tibbles. Unnest to see them, e.g.
-<code>ll_osm_countries %&gt;% tidyr::unnest(link)</code>
-or for a single country:
-<code>ll_osm_countries %&gt;% dplyr::filter(country == "italy") %&gt;% tidyr::unnest(link)</code></p>
-<p>Links to shapefiles are stored as tibbles. Unnest to see them, e.g.
-<code>ll_osm_countries %&gt;% tidyr::unnest(link)</code>
-or for a single country:
-<code>ll_osm_countries %&gt;% dplyr::filter(country == "italy") %&gt;% tidyr::unnest(link)</code></p>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>ll_osm_download_it</span><span class='op'>(</span>level <span class='op'>=</span> <span class='st'>"comuni"</span>, name <span class='op'>=</span> <span class='st'>"Trento"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
