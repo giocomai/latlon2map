@@ -137,3 +137,64 @@ ll_osm_download_it <- function(level = "comuni",
     }
   )
 }
+
+
+#' Extract OSM data for regions, provinces, and municipalities in Italy.
+#'
+#' See `ll_osm_it_gpkg` for all available files.
+#'
+#' @param level One of "regioni", "provincie", "comuni". Defaults to "comuni". 
+#' @param name Name of geographic entity. Check `ll_osm_it_gpkg` or `ll_get_nuts_it()` for valid names.
+#' @param code Used in alternative to name. Check `ll_osm_it_gpkg` or `ll_get_nuts_it()` for valid values. 
+#' @param layer Defaults to "lines". Must be one of "points", "lines", "multilinestrings", "multipolygons", or "other_relations"
+#'
+#' @return An sf object.
+#' @export
+#'
+#' @examples
+#' 
+#' \dontrun{
+#' ll_osm_extract_it(level = "comuni", name = "Trento")
+#' }
+#' 
+ll_osm_extract_it <- function(level = "comuni",
+                              name = NULL, 
+                              code = NULL, 
+                              layer = "lines") {
+  
+  ll_osm_download_it(level = level,
+                     name = name,
+                     code = code)
+  
+  base_folder <- fs::path(latlon2map::ll_set_folder(),
+                          "osm_it_gpkg",
+                          stringr::str_to_lower(level))
+  
+  available_files <- fs::dir_ls(path = base_folder,
+                                recurse = FALSE,
+                                type = "file",
+                                glob = "*.gpkg") %>%
+    tibble::enframe(name = NULL,
+                    value = "local_files") %>% 
+    dplyr::mutate(filename = fs::path_file(local_files)) %>% 
+    dplyr::mutate(code = stringr::str_extract(string = filename,
+                                              pattern = "[[:digit:]]+")) %>% 
+    dplyr::left_join(y = ll_osm_it_gpkg[[level]],
+                     by = "code") %>% 
+    dplyr::mutate(name = stringr::str_to_lower(name),
+                  code = as.numeric(code))
+
+  
+  if (is.null(name)==FALSE) {
+    selected_files <- tibble::tibble(name = stringr::str_to_lower(name)) %>% 
+      dplyr::left_join(y = available_files, by = "name")
+  } else if (is.null(code)==FALSE) {
+    selected_files <- tibble::tibble(code = as.numeric(code)) %>% 
+      dplyr::left_join(y = available_files, by = "code")
+  }
+  
+  extracted_sf <- sf::st_read(dsn = selected_files[["local_files"]],
+                              layer = layer)
+  
+  extracted_sf
+}
