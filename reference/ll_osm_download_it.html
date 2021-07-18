@@ -129,7 +129,8 @@
   name <span class='op'>=</span> <span class='cn'>NULL</span>,
   code <span class='op'>=</span> <span class='cn'>NULL</span>,
   overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  wget <span class='op'>=</span> <span class='cn'>FALSE</span>
+  wget <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -150,6 +151,10 @@
     <tr>
       <th>wget</th>
       <td><p>Logical, defaults to FALSE. If TRUE, it downloads files with wget (if available), otherwise uses default method. Setting wget to TRUE may contribute to prevent download timeouts; notice that apparent freeze of the download progress in the console are common, and mostly the download is just continuing in the background (for reference, check file size in folder.)</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>Logical, defaults to FALSE. If TRUE no messages about download advancement are printed.</p></td>
     </tr>
     </table>
 
