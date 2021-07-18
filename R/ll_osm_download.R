@@ -86,13 +86,16 @@ ll_osm_download_it <- function(level = "comuni",
       missing_names <- glue::glue_collapse(x = name[!available_l],
                                            sep = ", ",
                                            last = ", and ")
-      usethis::ui_oops("The following places are not available: {missing_names}")
-      usethis::ui_info("See the internal dataset `ll_osm_it_gpkg` for a list of available places")
-      usethis::ui_stop("Please input an accepted geographic entity name")
+      if (quiet==FALSE) {
+        usethis::ui_oops("The following places are not available: {missing_names}")
+        usethis::ui_info("See the internal dataset `ll_osm_it_gpkg` for a list of available places")
+        usethis::ui_stop("Please input an accepted geographic entity name")
+      }
+      
     }
     
     downloads_df <- tibble::tibble(name = stringr::str_to_lower(name),
-                   level = stringr::str_to_lower(level)) %>% 
+                                   level = stringr::str_to_lower(level)) %>% 
       dplyr::left_join(y = ll_osm_it_gpkg[[level]] %>%
                          dplyr::mutate(name = stringr::str_to_lower(name)),
                        by = "name") 
@@ -104,9 +107,11 @@ ll_osm_download_it <- function(level = "comuni",
         missing_codes <- glue::glue_collapse(x = code[!available_l],
                                              sep = ", ",
                                              last = ", and ")
-        usethis::ui_oops("The following places are not available: {missing_codes}")
-        usethis::ui_info("See the internal dataset `ll_osm_it_gpkg` for a list of available places")
-        usethis::ui_stop("Please input an accepted geographic entity name")
+        if (quiet==FALSE) {
+          usethis::ui_oops("The following places are not available: {missing_codes}")
+          usethis::ui_info("See the internal dataset `ll_osm_it_gpkg` for a list of available places")
+          usethis::ui_stop("Please input an accepted geographic entity name")
+        }
       }
       downloads_df <- tibble::tibble(code = code,
                                      level = stringr::str_to_lower(level)) %>% 
@@ -114,9 +119,9 @@ ll_osm_download_it <- function(level = "comuni",
                          by = "code") 
     }
   }
-
   
-
+  
+  
   base_folder <- fs::path(latlon2map::ll_set_folder(),
                           "osm_it_gpkg",
                           stringr::str_to_lower(level))
@@ -193,7 +198,7 @@ ll_osm_extract_it <- function(level = "comuni",
                      by = "code") %>% 
     dplyr::mutate(name = stringr::str_to_lower(name),
                   code = as.numeric(code))
-
+  
   
   if (is.null(name)==FALSE) {
     selected_files <- tibble::tibble(name = stringr::str_to_lower(name)) %>% 
