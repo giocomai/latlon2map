@@ -9,7 +9,8 @@ ll_osm_download_it(
   name = NULL,
   code = NULL,
   overwrite = FALSE,
-  wget = FALSE
+  wget = FALSE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ ll_osm_download_it(
 \item{code}{Used in alternative to name. Check \code{ll_osm_it_gpkg} or \code{ll_get_nuts_it()} for valid values.}
 
 \item{wget}{Logical, defaults to FALSE. If TRUE, it downloads files with wget (if available), otherwise uses default method. Setting wget to TRUE may contribute to prevent download timeouts; notice that apparent freeze of the download progress in the console are common, and mostly the download is just continuing in the background (for reference, check file size in folder.)}
+
+\item{quiet}{Logical, defaults to FALSE. If TRUE no messages about download advancement are printed.}
 }
 \value{
 Used only for its side effects (downloads osm data).

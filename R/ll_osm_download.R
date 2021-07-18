@@ -66,6 +66,7 @@ ll_osm_download <- function(countries,
 #' @param name Name of geographic entity. Check `ll_osm_it_gpkg` or `ll_get_nuts_it()` for valid names.
 #' @param code Used in alternative to name. Check `ll_osm_it_gpkg` or `ll_get_nuts_it()` for valid values. 
 #' @param wget Logical, defaults to FALSE. If TRUE, it downloads files with wget (if available), otherwise uses default method. Setting wget to TRUE may contribute to prevent download timeouts; notice that apparent freeze of the download progress in the console are common, and mostly the download is just continuing in the background (for reference, check file size in folder.)
+#' @param quiet Logical, defaults to FALSE. If TRUE no messages about download advancement are printed.
 #' @return Used only for its side effects (downloads osm data).
 #' @examples
 #'
@@ -77,7 +78,8 @@ ll_osm_download_it <- function(level = "comuni",
                                name = NULL, 
                                code = NULL,
                                overwrite = FALSE,
-                               wget = FALSE) {
+                               wget = FALSE,
+                               quiet = FALSE) {
   if (is.null(name)==FALSE) {
     available_l <- is.element(stringr::str_to_lower(name), stringr::str_to_lower(ll_osm_it_gpkg[[level]]$name))
     if (Reduce(x = available_l, f = `&`) == FALSE) {
@@ -128,9 +130,14 @@ ll_osm_download_it <- function(level = "comuni",
         fs::dir_create(base_folder)
         usethis::ui_info(x = "If the download is not successful, please download manually - {usethis::ui_path(link)} - and store in this location: {usethis::ui_path(local_file)}")
         if (wget==TRUE) {
-          download.file(url = link, destfile = local_file, method = "wget")
+          download.file(url = link,
+                        destfile = local_file,
+                        method = "wget", 
+                        quiet = quiet)
         } else {
-          download.file(url = link, destfile = local_file)  
+          download.file(url = link,
+                        destfile = local_file,
+                        quiet = quiet)  
         }
         
       }
@@ -147,6 +154,7 @@ ll_osm_download_it <- function(level = "comuni",
 #' @param name Name of geographic entity. Check `ll_osm_it_gpkg` or `ll_get_nuts_it()` for valid names.
 #' @param code Used in alternative to name. Check `ll_osm_it_gpkg` or `ll_get_nuts_it()` for valid values. 
 #' @param layer Defaults to "lines". Must be one of "points", "lines", "multilinestrings", "multipolygons", or "other_relations"
+#' @param quiet Logical, defaults to FALSE. If TRUE, supresses messages generated when reading the geopackage file.
 #'
 #' @return An sf object.
 #' @export
@@ -160,11 +168,13 @@ ll_osm_download_it <- function(level = "comuni",
 ll_osm_extract_it <- function(level = "comuni",
                               name = NULL, 
                               code = NULL, 
-                              layer = "lines") {
+                              layer = "lines", 
+                              quiet = FALSE) {
   
   ll_osm_download_it(level = level,
                      name = name,
-                     code = code)
+                     code = code, 
+                     quiet = quiet)
   
   base_folder <- fs::path(latlon2map::ll_set_folder(),
                           "osm_it_gpkg",
@@ -194,7 +204,8 @@ ll_osm_extract_it <- function(level = "comuni",
   }
   
   extracted_sf <- sf::st_read(dsn = selected_files[["local_files"]],
-                              layer = layer)
+                              layer = layer, 
+                              quiet = quiet)
   
   extracted_sf
 }

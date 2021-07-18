@@ -4,7 +4,13 @@
 \alias{ll_osm_extract_it}
 \title{Extract OSM data for regions, provinces, and municipalities in Italy.}
 \usage{
-ll_osm_extract_it(level = "comuni", name = NULL, code = NULL, layer = "lines")
+ll_osm_extract_it(
+  level = "comuni",
+  name = NULL,
+  code = NULL,
+  layer = "lines",
+  quiet = FALSE
+)
 }
 \arguments{
 \item{level}{One of "regioni", "provincie", "comuni". Defaults to "comuni".}
@@ -14,6 +20,8 @@ ll_osm_extract_it(level = "comuni", name = NULL, code = NULL, layer = "lines")
 \item{code}{Used in alternative to name. Check \code{ll_osm_it_gpkg} or \code{ll_get_nuts_it()} for valid values.}
 
 \item{layer}{Defaults to "lines". Must be one of "points", "lines", "multilinestrings", "multipolygons", or "other_relations"}
+
+\item{quiet}{Logical, defaults to FALSE. If TRUE, supresses messages generated when reading the geopackage file.}
 }
 \value{
 An sf object.
