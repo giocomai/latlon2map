@@ -43,12 +43,17 @@ in a separate folder for system-wide caching: you will not need to
 re-download again geographic files for different projects, and you will
 not unncessarily sync multiple copies of those files for each project
 that needs them. You need to call e.g. `ll_set_folder("~/R/")` once per
-session.
+session. Given that you may well download big files that take longer
+than the 60 seconds to download, you are advised to set a reasonably
+high timeout for downloads at the beginning of each session.
 
 ``` r
 library("latlon2map")
-ll_set_folder("~/R/")
-#> [1] "~/R/"
+ll_set_folder(fs::path(fs::path_home_r(),
+                              "R",
+                              "ll_data"))
+#> /home/g/R/ll_data
+options(timeout = 6000)
 ```
 
 There are currently a number of functions facilitating downloads of
