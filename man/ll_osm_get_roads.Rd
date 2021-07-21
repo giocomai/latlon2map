@@ -7,7 +7,7 @@
 ll_osm_get_roads(country)
 }
 \arguments{
-\item{country}{The name of one or more geographic entities from files typically previously downloaded with \code{sn_download_osm()}}
+\item{country}{The name of one or more geographic entities from files typically previously downloaded with \code{ll_osm_download()}}
 }
 \value{
 Nothing, used for its side effects (extracts shapefiles from country-level zip files)

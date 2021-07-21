@@ -11,12 +11,16 @@
 #' @export
 #'
 
-ll_osm_extract_roads <- function(countries, overwrite = FALSE) {
+ll_osm_extract_roads <- function(countries,
+                                 overwrite = FALSE) {
 
-  base_folder <- fs::path(latlon2map::ll_set_folder(), "osm_roads_shp")
+  base_folder <- fs::path(latlon2map::ll_set_folder(),
+                          "osm_roads_shp")
+  
   fs::dir_create(path = base_folder, recurse = TRUE)
   
-  fs::dir_create(path = fs::path(latlon2map::ll_set_folder(), "osm_roads_shp"))
+  fs::dir_create(path = fs::path(latlon2map::ll_set_folder(),
+                                 "osm_roads_shp"))
   
   purrr::walk(.x = tolower(countries),
               .f = function(current_country) {
@@ -64,7 +68,7 @@ ll_osm_extract_roads <- function(countries, overwrite = FALSE) {
 
 #' Extract shape files of roads from previously downloaded
 #'
-#' @param country The name of one or more geographic entities from files typically previously downloaded with `sn_download_osm()`
+#' @param country The name of one or more geographic entities from files typically previously downloaded with `ll_osm_download()`
 #' @return Nothing, used for its side effects (extracts shapefiles from country-level zip files)
 #' @examples
 #' \dontrun{
@@ -82,7 +86,7 @@ ll_osm_get_roads <- function(country) {
              "osm_roads_shp",
              country)
   if (fs::file_exists(country_street_shp_folder)==FALSE) {
-    sn_extract_streets(countries = country)
+    ll_osm_extract_roads(countries = country)
   }
   
   street_folders <- fs::dir_ls(path = country_street_shp_folder,
