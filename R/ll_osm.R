@@ -1,6 +1,7 @@
 #' Extract from zip shape files of roads from previously downloaded
 #'
 #' @param countries The name of one or more geographic entities from files typically previously downloaded with `ll_osm_download()`
+#' @param download_if_missing Logical, defaults to TRUE. If TRUE, downloads country files with `ll_osm_download()` if they are not available locally.
 #' @param overwrite Logical, defaults to FALSE. If TRUE, extracts files from zip even if folder already existing.
 #' @return Nothing, used for its side effects (extracts shapefiles from country-level zip files)
 #' @examples
@@ -12,6 +13,7 @@
 #'
 
 ll_osm_extract_roads <- function(countries,
+                                 download_if_missing = TRUE,
                                  overwrite = FALSE) {
 
   base_folder <- fs::path(latlon2map::ll_set_folder(),
@@ -28,8 +30,12 @@ ll_osm_extract_roads <- function(countries,
                                                        "osm_countries_shp_zip",
                                                        current_country)
                 if (fs::file_exists(current_country_zip_folder)==FALSE) {
-                  usethis::ui_info(glue::glue("'{current_country}' is not available locally. You can download it with 'sn_download_osm('{current_country}')'."))
-                  usethis::ui_stop(glue::glue("{current_country} not available."))
+                  if (download_if_missing==TRUE) {
+                    usethis::ui_info(glue::glue("'{current_country}' is not available locally. It will now be downloaded."))
+                  } else {
+                    usethis::ui_info(glue::glue("'{current_country}' is not available locally. You can download it with 'll_osm_download('{current_country}')'."))
+                    usethis::ui_stop(glue::glue("{current_country} not available."))
+                  }
                 } else {
                   local_files <- fs::dir_ls(path = current_country_zip_folder,
                                             recurse = FALSE,
