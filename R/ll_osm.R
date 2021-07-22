@@ -32,6 +32,7 @@ ll_osm_extract_roads <- function(countries,
                 if (fs::file_exists(current_country_zip_folder)==FALSE) {
                   if (download_if_missing==TRUE) {
                     usethis::ui_info(glue::glue("'{current_country}' is not available locally. It will now be downloaded."))
+                    ll_osm_download(current_country)
                   } else {
                     usethis::ui_info(glue::glue("'{current_country}' is not available locally. You can download it with 'll_osm_download('{current_country}')'."))
                     usethis::ui_stop(glue::glue("{current_country} not available."))
