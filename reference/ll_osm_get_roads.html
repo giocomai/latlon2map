@@ -124,7 +124,7 @@
     <p>Extract shape files of roads from previously downloaded</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_osm_get_roads</span><span class='op'>(</span><span class='va'>country</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ll_osm_get_roads</span><span class='op'>(</span><span class='va'>country</span>, silent <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -133,11 +133,15 @@
       <th>country</th>
       <td><p>The name of one or more geographic entities from files typically previously downloaded with <code><a href='ll_osm_download.html'>ll_osm_download()</a></code></p></td>
     </tr>
+    <tr>
+      <th>silent</th>
+      <td><p>Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Nothing, used for its side effects (extracts shapefiles from country-level zip files)</p>
+    <p>All roads in a country by OpenStreetMap.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

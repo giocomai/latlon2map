@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Gets NUTS as sf object from Eurostat's website — ll_get_nuts_eu • latlon2map</title>
+<title>Get all streets available in OpenStreetMap located in given local administrative unit. — ll_osm_lau_streets • latlon2map</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Gets NUTS as sf object from Eurostat's website — ll_get_nuts_eu" />
-<meta property="og:description" content="Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts16" />
+<meta property="og:title" content="Get all streets available in OpenStreetMap located in given local administrative unit. — ll_osm_lau_streets" />
+<meta property="og:description" content="Relies on the output of ll_get_lau_eu() for the boundaries of local administrative units." />
 
 
 
@@ -115,65 +115,42 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Gets NUTS as sf object from Eurostat's website</h1>
+    <h1>Get all streets available in OpenStreetMap located in given local administrative unit.</h1>
     
-    <div class="hidden name"><code>ll_get_nuts_eu.Rd</code></div>
+    <div class="hidden name"><code>ll_osm_lau_streets.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts16</p>
+    <p>Relies on the output of <code><a href='ll_get_lau_eu.html'>ll_get_lau_eu()</a></code> for the boundaries of local administrative units.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_nuts_eu</span><span class='op'>(</span>
-  name <span class='op'>=</span> <span class='cn'>NULL</span>,
-  level <span class='op'>=</span> <span class='fl'>3</span>,
-  resolution <span class='op'>=</span> <span class='fl'>60</span>,
-  year <span class='op'>=</span> <span class='fl'>2021</span>,
-  silent <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ll_osm_lau_streets</span><span class='op'>(</span><span class='va'>gisco_id</span>, unnamed_streets <span class='op'>=</span> <span class='cn'>TRUE</span>, year <span class='op'>=</span> <span class='fl'>2019</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>level</th>
-      <td><p>Defaults to 3, corresponding to nuts3. Available values are: 0, 1, 2, and 3.</p></td>
+      <th>gisco_id</th>
+      <td><p>Gisco identifier.</p></td>
     </tr>
     <tr>
-      <th>resolution</th>
-      <td><p>Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available)-</p></td>
-    </tr>
-    <tr>
-      <th>year</th>
-      <td><p>Defaults to 2021 Available values: 2021, 2016, 2013, 2010, 2006, 2003</p></td>
+      <th>unnamed_streets</th>
+      <td><p>Defaults to TRUE. If FALSE, it drops all streets with missing "name" or missing "fclass".</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>NUTS in sf format</p>
+    
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ll_get_lau_eu.html'>ll_get_lau_eu</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; Simple feature collection with 99207 features and 9 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: -63.15372 ymin: -21.38881 xmax: 55.83573 ymax: 71.18531
-#&gt; Geodetic CRS:  WGS 84
-#&gt; <span style='color: #949494;'># A tibble: 99,207 × 10</span>
-#&gt;    GISCO_ID  CNTR_CODE LAU_ID LAU_NAME  POP_2019 POP_DENS_2 AREA_KM2  YEAR FID  
-#&gt;  <span style='color: #BCBCBC;'>*</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> CZ_579271 CZ        579271 Horní Ol…      313       24.6    12.7   <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 2</span> CZ_579289 CZ        579289 Vísky           55       39.8     1.38  <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 3</span> CZ_579297 CZ        579297 Hostinné      <span style='text-decoration: underline;'>4</span>361      534.      8.16  <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 4</span> CZ_579301 CZ        579301 Hřibojedy      221       39.1     5.65  <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 5</span> CZ_579319 CZ        579319 Chotěvice     <span style='text-decoration: underline;'>1</span>067       53.1    20.1   <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 6</span> AT_40718  AT        40718  Traunkir…     <span style='text-decoration: underline;'>1</span>660       90.7    18.3   <span style='text-decoration: underline;'>2</span>019 AT_4…
-#&gt; <span style='color: #BCBCBC;'> 7</span> CZ_579327 CZ        579327 Choustní…      589       47.2    12.5   <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 8</span> CZ_579335 CZ        579335 Chvaleč        674       39.0    17.3   <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 9</span> CZ_579343 CZ        579343 Štítov          59       22.3     2.64  <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #BCBCBC;'>10</span> CZ_579351 CZ        579351 Janské L…      699       50.8    13.7   <span style='text-decoration: underline;'>2</span>019 CZ_5…
-#&gt; <span style='color: #949494;'># … with 99,197 more rows, and 1 more variable: geometry &lt;MULTIPOLYGON [°]&gt;</span></div></pre>
+    <pre class="examples"><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>ll_osm_lau_streets</span><span class='op'>(</span>gisco_id  <span class='op'>=</span> <span class='st'>"IT_022205"</span>, unnamed_streets <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

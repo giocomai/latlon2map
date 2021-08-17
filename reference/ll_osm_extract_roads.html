@@ -124,7 +124,7 @@
     <p>Extract from zip shape files of roads from previously downloaded</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_osm_extract_roads</span><span class='op'>(</span><span class='va'>countries</span>, overwrite <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ll_osm_extract_roads</span><span class='op'>(</span><span class='va'>countries</span>, download_if_missing <span class='op'>=</span> <span class='cn'>TRUE</span>, overwrite <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,6 +132,10 @@
     <tr>
       <th>countries</th>
       <td><p>The name of one or more geographic entities from files typically previously downloaded with <code><a href='ll_osm_download.html'>ll_osm_download()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>download_if_missing</th>
+      <td><p>Logical, defaults to TRUE. If TRUE, downloads country files with <code><a href='ll_osm_download.html'>ll_osm_download()</a></code> if they are not available locally.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
