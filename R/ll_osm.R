@@ -32,7 +32,10 @@ ll_osm_extract_roads <- function(countries,
                 if (fs::file_exists(current_country_zip_folder)==FALSE) {
                   if (download_if_missing==TRUE) {
                     usethis::ui_info(glue::glue("'{current_country}' is not available locally. It will now be downloaded."))
-                    ll_osm_download(current_country)
+                    ll_osm_download(countries = current_country)
+                    ll_osm_extract_roads(countries = current_country,
+                                         download_if_missing = FALSE,
+                                         overwrite = FALSE)
                   } else {
                     usethis::ui_info(glue::glue("'{current_country}' is not available locally. You can download it with 'll_osm_download('{current_country}')'."))
                     usethis::ui_stop(glue::glue("{current_country} not available."))
@@ -76,7 +79,8 @@ ll_osm_extract_roads <- function(countries,
 #' Extract shape files of roads from previously downloaded
 #'
 #' @param country The name of one or more geographic entities from files typically previously downloaded with `ll_osm_download()`
-#' @return Nothing, used for its side effects (extracts shapefiles from country-level zip files)
+#' @param silent Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.
+#' @return All roads in a country by OpenStreetMap.
 #' @examples
 #' \dontrun{
 #' ll_osm_get_roads(country = "Romania")
@@ -85,13 +89,18 @@ ll_osm_extract_roads <- function(countries,
 #' @export
 #'
 
-ll_osm_get_roads <- function(country) {
+ll_osm_get_roads <- function(country,
+                             silent= FALSE) {
+  if (silent==FALSE) {
+    usethis::ui_info(x = "© OpenStreetMap contributors")
+  }
   country <- stringr::str_to_lower(country)
   
   country_street_shp_folder <-
     fs::path(latlon2map::ll_set_folder(),
              "osm_roads_shp",
              country)
+  
   if (fs::file_exists(country_street_shp_folder)==FALSE) {
     ll_osm_extract_roads(countries = country)
   }

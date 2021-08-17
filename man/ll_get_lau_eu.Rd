@@ -4,10 +4,22 @@
 \alias{ll_get_lau_eu}
 \title{Gets local administrative units from Eurostat's website}
 \usage{
-ll_get_lau_eu(name = NULL, year = 2019, silent = FALSE, lau_sf = NULL)
+ll_get_lau_eu(
+  gisco_id = NULL,
+  name = NULL,
+  year = 2019,
+  silent = FALSE,
+  lau_sf = NULL
+)
 }
 \arguments{
+\item{gisco_id}{Gisco identifier of the relevant administrative unit. If given, takes precedence over name.}
+
+\item{name}{Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both \code{name} and \code{gisco_id} are NULL, then it returns all municipalities.}
+
 \item{year}{Year of mapping, defaults to most recent (2019). Availalble values: 2016, 2017, 2018, 2019.}
+
+\item{silent}{Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.}
 
 \item{lau_sf}{sf object, exactly such as the one that would be returned by \code{ll_get_lau_eu()}. Used to speed-up computation when bulk processing.}
 }
