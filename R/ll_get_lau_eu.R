@@ -4,7 +4,7 @@
 #'
 #' @param name Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both `name` and `gisco_id` are NULL, then it returns all municipalities.
 #' @param gisco_id Gisco identifier of the relevant administrative unit. If given, takes precedence over name. 
-#' @param year Year of mapping, defaults to most recent (2019). Availalble values: 2016, 2017, 2018, 2019.
+#' @param year Year of mapping, defaults to most recent (2020). Available starting with 2011.
 #' @param lau_sf sf object, exactly such as the one that would be returned by `ll_get_lau_eu()`. Used to speed-up computation when bulk processing.
 #' @param silent Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.
 #'
@@ -18,7 +18,7 @@
 #' 
 ll_get_lau_eu <- function(gisco_id = NULL, 
                           name = NULL,
-                          year = 2019,
+                          year = 2020,
                           silent = FALSE, 
                           lau_sf = NULL) {
   if (silent==FALSE) {
@@ -139,6 +139,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 #' 
 #' @param gisco_id Gisco identifier.
 #' @param unnamed_streets Defaults to TRUE. If FALSE, it drops all streets with missing "name" or missing "fclass".
+#' @param year Year of mapping, defaults to most recent (2020). Available starting with 2011.
 #'
 #' @return
 #' @export
@@ -150,7 +151,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 #' }
 ll_osm_lau_streets <- function(gisco_id,
                                unnamed_streets = TRUE,
-                               year = 2019) {
+                               year = 2020) {
   
   gisco_cc <- stringr::str_extract(string = gisco_id,
                                        pattern = "[A-Z][A-Z]") %>% 
@@ -159,6 +160,9 @@ ll_osm_lau_streets <- function(gisco_id,
   city_code <- stringr::str_extract(string = gisco_id,
                                     pattern = "[[:digit:]]+")
   
+  current_lau_boundary <- ll_get_lau_eu(gisco_id = gisco_id,
+                                        year = year)
+  current_lau_bbox <- sf::st_bbox(current_lau_boundary)
   
   if (unnamed_streets==TRUE) {
     ll_create_folders(geo = "eu",
@@ -210,7 +214,7 @@ ll_osm_lau_streets <- function(gisco_id,
     regions_to_load <- current_country_bboxes %>% 
       dplyr::filter(purrr::map_lgl(.x = current_country_bboxes$bbox,
                                        .f = function(current_bbox) {
-                                         bbox_to_check$xmin < current_bbox$xmax & current_bbox$xmin < bbox_to_check$xmax & bbox_to_check$ymin <  current_bbox$ymax & current_bbox$ymin < bbox_to_check$ymax     
+                                         current_lau_bbox$xmin < current_bbox$xmax & current_bbox$xmin < current_lau_bbox$xmax & current_lau_bbox$ymin <  current_bbox$ymax & current_bbox$ymin < current_lau_bbox$ymax     
                                        }))
     ll_osm_extract_roads(countries = country_full_name)
 
@@ -226,13 +230,11 @@ ll_osm_lau_streets <- function(gisco_id,
   
   if (unnamed_streets==TRUE) {
     city_roads <- city_roads_pre %>% 
-      sf::st_intersection(ll_get_lau_eu(gisco_id = gisco_id,
-                                        year = year))
+      sf::st_intersection(current_lau_boundary)
   } else {
     city_roads <- city_roads_pre %>%
       dplyr::filter(is.na(name)==FALSE, is.na(fclass)==FALSE) %>% 
-      sf::st_intersection(ll_get_lau_eu(gisco_id = gisco_id,
-                                        year = year)) %>% 
+      sf::st_intersection(current_lau_boundary) %>% 
       dplyr::group_by(name) %>%
       dplyr::summarise() %>% 
       dplyr::ungroup()

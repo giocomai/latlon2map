@@ -7,7 +7,7 @@
 ll_get_lau_eu(
   gisco_id = NULL,
   name = NULL,
-  year = 2019,
+  year = 2020,
   silent = FALSE,
   lau_sf = NULL
 )
@@ -17,7 +17,7 @@ ll_get_lau_eu(
 
 \item{name}{Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both \code{name} and \code{gisco_id} are NULL, then it returns all municipalities.}
 
-\item{year}{Year of mapping, defaults to most recent (2019). Availalble values: 2016, 2017, 2018, 2019.}
+\item{year}{Year of mapping, defaults to most recent (2020). Available starting with 2011.}
 
 \item{silent}{Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.}
 

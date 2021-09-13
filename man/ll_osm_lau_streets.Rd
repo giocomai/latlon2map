@@ -4,12 +4,14 @@
 \alias{ll_osm_lau_streets}
 \title{Get all streets available in OpenStreetMap located in given local administrative unit.}
 \usage{
-ll_osm_lau_streets(gisco_id, unnamed_streets = TRUE, year = 2019)
+ll_osm_lau_streets(gisco_id, unnamed_streets = TRUE, year = 2020)
 }
 \arguments{
 \item{gisco_id}{Gisco identifier.}
 
 \item{unnamed_streets}{Defaults to TRUE. If FALSE, it drops all streets with missing "name" or missing "fclass".}
+
+\item{year}{Year of mapping, defaults to most recent (2020). Available starting with 2011.}
 }
 \value{
 
