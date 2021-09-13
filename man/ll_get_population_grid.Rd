@@ -5,7 +5,7 @@
 \title{Get EU 1km population grid}
 \usage{
 ll_get_population_grid(
-  year = 2011,
+  year = 2018,
   match_sf = NULL,
   match_name = NULL,
   match_country = NULL,
@@ -15,9 +15,9 @@ ll_get_population_grid(
 )
 }
 \arguments{
-\item{year}{Defaults to 2011. Currently, the EU population grid is available only for the year 2011.}
+\item{year}{Defaults to 2018. Currently, the EU population grid is available only for the year 2006, 2011, and 2018.}
 
-\item{match_sf}{An sf object to me matched with the population grid. If not given, full grid is returned.}
+\item{match_sf}{An sf object to be matched with the population grid. If not given, full grid is returned.}
 
 \item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
 

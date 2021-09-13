@@ -3,8 +3,8 @@
 #' Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat
 #' More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Population_grids
 #'
-#' @param year Defaults to 2011. Currently, the EU population grid is available only for the year 2011.
-#' @param match_sf An sf object to me matched with the population grid. If not given, full grid is returned.
+#' @param year Defaults to 2018. Currently, the EU population grid is available only for the year 2006, 2011, and 2018.
+#' @param match_sf An sf object to be matched with the population grid. If not given, full grid is returned.
 #' @param match_name A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.
 #' @param match_country Defaults to NULL. If given, used to speed up processing. 
 #' @param population_grid_sf Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.
@@ -13,12 +13,12 @@
 #' @export
 #'
 #' @examples
-ll_get_population_grid <- function(year = 2011,
+ll_get_population_grid <- function(year = 2018,
                                    match_sf = NULL,
-                                   match_name = NULL, 
+                                   match_name = NULL,
                                    match_country = NULL,
-                                   join = sf::st_intersects, 
-                                   silent = FALSE, 
+                                   join = sf::st_intersects,
+                                   silent = FALSE,
                                    population_grid_sf = NULL) {
   if (silent==FALSE) {
     usethis::ui_info(x = "Data source population grid information: Eurostat, EFGS")
@@ -72,7 +72,18 @@ ll_get_population_grid <- function(year = 2011,
                              year = year,
                              name = "population_grid",
                              file_type = "zip")
-    source_url <- paste0("https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/GEOSTAT-grid-POP-1K-", year, "-V2-0-1.zip")
+
+    if (year == 2018) {
+      source_url <- "https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip"
+    } else if (year == 2011) {
+      source_url <- "https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/GEOSTAT-grid-POP-1K-2011-V2-0-1.zip"
+    } else if (year == 2006 ) {
+      source_url <- "https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/GEOSTAT_Grid_POP_2006_1K.zip"
+    } else (
+      usethis::ui_stop("Please provide a valid year.")
+    )
+    
+    
     
     if (fs::file_exists(zip_file)==FALSE) {
       download.file(url = source_url,
@@ -81,14 +92,25 @@ ll_get_population_grid <- function(year = 2011,
     unzip(zipfile = zip_file,
           exdir = shp_folder)
     
-    sf <- sf::read_sf(fs::path(shp_folder, "Version 2_0_1", "GEOSTATReferenceGrid"))  %>%
-      dplyr::right_join(readr::read_csv(fs::path(shp_folder, "Version 2_0_1", "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv")),
-                        by = "GRD_ID") %>% 
-      sf::st_transform(crs = 4326)
+    if (year == 2018) {
+      sf <- sf::read_sf(fs::path(shp_folder), layer = "JRC_POPULATION_2018") %>% 
+        sf::st_transform(crs = 4326)
+    } else {
+      sf <- sf::read_sf(fs::path(shp_folder, "Version 2_0_1", "GEOSTATReferenceGrid"))  %>%
+        dplyr::right_join(readr::read_csv(fs::path(shp_folder, "Version 2_0_1", "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv")),
+                          by = "GRD_ID") %>% 
+        sf::st_transform(crs = 4326)
+    }
+
     
     if (is.null(match_country)==FALSE) {
-      sf <- sf %>%
-        dplyr::filter(CNTR_CODE == match_country)
+      if (year == 2018) {
+        sf <- sf %>%
+          dplyr::filter(CNTR_ID == match_country)
+      } else {
+        sf <- sf %>%
+          dplyr::filter(CNTR_CODE == match_country)
+      }
     }
     readr::write_rds(x = sf,
                      file = rds_file)

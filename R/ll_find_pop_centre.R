@@ -50,6 +50,9 @@ ll_find_pop_centre <- function(sf_location,
                                             if (is.element("TOT_P", colnames(temp))) {
                                               temp  <- temp %>% 
                                                 dplyr::rename(Population = TOT_P)
+                                            } else if (is.element("TOT_P_2018", colnames(temp))) {
+                                              temp  <- temp %>% 
+                                                dplyr::rename(Population = TOT_P_2018)
                                             }
                                             temp %>% 
                                               dplyr::summarise(Population = (sum(Population)), id = x)
@@ -67,7 +70,11 @@ ll_find_pop_centre <- function(sf_location,
   if (is.element("TOT_P", colnames(sf_location_grid))) {
     sf_location_grid  <- sf_location_grid %>% 
       dplyr::rename(Population = TOT_P)
+  }  else if (is.element("TOT_P_2018", colnames(sf_location_grid))) {
+    sf_location_grid  <- sf_location_grid %>% 
+      dplyr::rename(Population = TOT_P_2018)
   }
+  
   sf_pop_centre <- dplyr::bind_cols(sf_location_grid %>% 
                                       sf::st_drop_geometry() %>% 
                                       dplyr::select(Population),
