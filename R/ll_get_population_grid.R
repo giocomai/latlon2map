@@ -95,9 +95,18 @@ ll_get_population_grid <- function(year = 2018,
     if (year == 2018) {
       sf <- sf::read_sf(fs::path(shp_folder), layer = "JRC_POPULATION_2018") %>% 
         sf::st_transform(crs = 4326)
-    } else {
+    } else if (year == 2011) {
       sf <- sf::read_sf(fs::path(shp_folder, "Version 2_0_1", "GEOSTATReferenceGrid"))  %>%
         dplyr::right_join(readr::read_csv(fs::path(shp_folder, "Version 2_0_1", "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv")),
+                          by = "GRD_ID") %>% 
+        sf::st_transform(crs = 4326)
+    } else if (year == 2006) {
+      sf <- sf::read_sf(fs::path(shp_folder)) %>% 
+        dplyr::rename(GRD_ID = .data$GRD_INSPIR) %>% 
+        dplyr::right_join(readr::read_delim(file = fs::path(shp_folder, "GEOSTAT_grid_EU_POP_2006_1K_V1_1_1.csv"),
+                                            delim = ";",
+                                          col_names = c("GRD_ID", "POP_TOT", "YEAR", "METHD_CL", "CNTR_CODE", "DATA_SRC"),
+                                          col_types = "c", ),
                           by = "GRD_ID") %>% 
         sf::st_transform(crs = 4326)
     }
@@ -106,10 +115,10 @@ ll_get_population_grid <- function(year = 2018,
     if (is.null(match_country)==FALSE) {
       if (year == 2018) {
         sf <- sf %>%
-          dplyr::filter(CNTR_ID == match_country)
+          dplyr::filter(stringr::str_detect(string = CNTR_ID, pattern = match_country))
       } else {
         sf <- sf %>%
-          dplyr::filter(CNTR_CODE == match_country)
+          dplyr::filter(stringr::str_detect(string = CNTR_CODE, pattern = match_country))
       }
     }
     readr::write_rds(x = sf,
