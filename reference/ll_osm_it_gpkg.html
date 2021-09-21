@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find the population-weighted centre of a municipality — ll_find_pop_centre • latlon2map</title>
+<title>Geographic entities in Italy for which geopackage files are availabile — ll_osm_it_gpkg • latlon2map</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,9 @@
 
 
 
-<meta property="og:title" content="Find the population-weighted centre of a municipality — ll_find_pop_centre" />
-<meta property="og:description" content="Find the population-weighted centre of a municipality" />
+<meta property="og:title" content="Geographic entities in Italy for which geopackage files are availabile — ll_osm_it_gpkg" />
+<meta property="og:description" content="A dataset with all names of geographic entities available for direct download as geopackage files
+They are used to download files with ll_osm_download_it()" />
 
 
 
@@ -115,67 +116,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find the population-weighted centre of a municipality</h1>
+    <h1>Geographic entities in Italy for which geopackage files are availabile</h1>
     
-    <div class="hidden name"><code>ll_find_pop_centre.Rd</code></div>
+    <div class="hidden name"><code>ll_osm_it_gpkg.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Find the population-weighted centre of a municipality</p>
+    <p>A dataset with all names of geographic entities available for direct download as geopackage files
+They are used to download files with <code><a href='ll_osm_download_it.html'>ll_osm_download_it()</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_find_pop_centre</span><span class='op'>(</span>
-  <span class='va'>sf_location</span>,
-  <span class='va'>sf_population_grid</span>,
-  power <span class='op'>=</span> <span class='fl'>2</span>,
-  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>
-<span class='op'>)</span></pre>
-
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>sf_location</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>sf_population_grid</th>
-      <td></td>
-    </tr>
-    <tr>
-      <th>power</th>
-      <td><p>Defaults to 2. To give more weight to cells with higher population density, raise the number of residents by the power of.</p></td>
-    </tr>
-    <tr>
-      <th>join</th>
-      <td><p>Defaults to sf::st_intersects.</p></td>
-    </tr>
-    </table>
-
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    
+    <pre class="usage"><span class='va'>ll_osm_it_gpkg</span></pre>
 
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='st'>"~/R/"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "~/R/"</div><div class='input'><span class='va'>name</span> <span class='op'>=</span> <span class='st'>"Pinzolo"</span>
-<span class='va'>sf_location</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_nuts_it.html'>ll_get_nuts_it</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='va'>name</span>, level <span class='op'>=</span> <span class='st'>"lau"</span>, resolution <span class='op'>=</span> <span class='st'>"high"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Istat (CC-BY)</span></div><div class='input'>
-<span class='va'>lau_grid_name_temp</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='st'>"_lau_high-st_intersects"</span><span class='op'>)</span>
+    <p>A list of tibbles</p>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-<span class='va'>sf_location_grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_population_grid.html'>ll_get_population_grid</a></span><span class='op'>(</span>match_sf <span class='op'>=</span> <span class='va'>sf_location</span>,
-                                          match_name <span class='op'>=</span> <span class='va'>lau_grid_name_temp</span>,
-                                          match_country <span class='op'>=</span> <span class='st'>"IT"</span>,
-                                          join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Data source population grid information: Eurostat, EFGS</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat</span></div><div class='input'>
+    <p><a href='https://osmit-estratti.wmcloud.org/'>https://osmit-estratti.wmcloud.org/</a></p>
 
-<span class='va'>pop_centre</span> <span class='op'>&lt;-</span> <span class='fu'>ll_find_pop_centre</span><span class='op'>(</span>sf_location <span class='op'>=</span> <span class='va'>sf_location</span>,
-                                 sf_population_grid <span class='op'>=</span> <span class='va'>sf_location_grid</span>,
-                                 power <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: st_centroid assumes attributes are constant over geometries of x</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
