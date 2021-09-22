@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find the population-weighted centre of a municipality — ll_find_pop_centre • latlon2map</title>
+<title>Gets correspondence tables between local administrative units and nuts from Eurostat's website — ll_get_lau_nuts_concordance • latlon2map</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Find the population-weighted centre of a municipality — ll_find_pop_centre" />
-<meta property="og:description" content="Find the population-weighted centre of a municipality" />
+<meta property="og:title" content="Gets correspondence tables between local administrative units and nuts from Eurostat's website — ll_get_lau_nuts_concordance" />
+<meta property="og:description" content="Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau" />
 
 
 
@@ -115,67 +115,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find the population-weighted centre of a municipality</h1>
+    <h1>Gets correspondence tables between local administrative units and nuts from Eurostat's website</h1>
     
-    <div class="hidden name"><code>ll_find_pop_centre.Rd</code></div>
+    <div class="hidden name"><code>ll_get_lau_nuts_concordance.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Find the population-weighted centre of a municipality</p>
+    <p>Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_find_pop_centre</span><span class='op'>(</span>
-  <span class='va'>sf_location</span>,
-  <span class='va'>sf_population_grid</span>,
-  power <span class='op'>=</span> <span class='fl'>2</span>,
-  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ll_get_lau_nuts_concordance</span><span class='op'>(</span>lau_year <span class='op'>=</span> <span class='fl'>2019</span>, nuts_year <span class='op'>=</span> <span class='fl'>2016</span>, silent <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>sf_location</th>
-      <td></td>
+      <th>lau_year</th>
+      <td><p>Defaults to 2019. See <code>ll_lau_nuts_concordance_links</code> for details on available combinations.</p></td>
     </tr>
     <tr>
-      <th>sf_population_grid</th>
-      <td></td>
+      <th>nuts_year</th>
+      <td><p>Defaults to 2016. See <code>ll_lau_nuts_concordance_links</code> for details on available combinations.</p></td>
     </tr>
     <tr>
-      <th>power</th>
-      <td><p>Defaults to 2. To give more weight to cells with higher population density, raise the number of residents by the power of.</p></td>
-    </tr>
-    <tr>
-      <th>join</th>
-      <td><p>Defaults to sf::st_intersects.</p></td>
+      <th>silent</th>
+      <td><p>Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
+    <p>A tibble with a correspondence table.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-
+    <p>Warning: due to issues in the original data, nuts may not always correspond to the given year for all countries, e.g. in files with nuts 2016 one may find nuts 2013 for single country, e.g. Italy.
+Do check the sources for details and ensure complete matching.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='st'>"~/R/"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "~/R/"</div><div class='input'><span class='va'>name</span> <span class='op'>=</span> <span class='st'>"Pinzolo"</span>
-<span class='va'>sf_location</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_nuts_it.html'>ll_get_nuts_it</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='va'>name</span>, level <span class='op'>=</span> <span class='st'>"lau"</span>, resolution <span class='op'>=</span> <span class='st'>"high"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Istat (CC-BY)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: downloaded length 33199514 != reported length 70779155</span></div><div class='output co'>#&gt; <span class='warning'>Warning: URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012021.zip': Timeout of 60 seconds was reached</span></div><div class='output co'>#&gt; <span class='error'>Error in download.file(url = source_url, destfile = zip_file): download from 'http://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012021.zip' failed</span></div><div class='input'>
-<span class='va'>lau_grid_name_temp</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='st'>"_lau_high-st_intersects"</span><span class='op'>)</span>
-
-<span class='va'>sf_location_grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_population_grid.html'>ll_get_population_grid</a></span><span class='op'>(</span>match_sf <span class='op'>=</span> <span class='va'>sf_location</span>,
-                                          match_name <span class='op'>=</span> <span class='va'>lau_grid_name_temp</span>,
-                                          match_country <span class='op'>=</span> <span class='st'>"IT"</span>,
-                                          join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Data source population grid information: Eurostat, EFGS</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: downloaded length 66967954 != reported length 76915213</span></div><div class='output co'>#&gt; <span class='warning'>Warning: URL 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip': Timeout of 60 seconds was reached</span></div><div class='output co'>#&gt; <span class='error'>Error in download.file(url = source_url, destfile = zip_file): download from 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip' failed</span></div><div class='input'>
-
-<span class='va'>pop_centre</span> <span class='op'>&lt;-</span> <span class='fu'>ll_find_pop_centre</span><span class='op'>(</span>sf_location <span class='op'>=</span> <span class='va'>sf_location</span>,
-                                 sf_population_grid <span class='op'>=</span> <span class='va'>sf_location_grid</span>,
-                                 power <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in dplyr::select(., geometry): object 'sf_location' not found</span></div></pre>
+</div><div class='output co'>#&gt; [1] "~/R/"</div><div class='input'><span class='fu'>ll_get_lau_nuts_concordance</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> For details, see: https://ec.europa.eu/eurostat/web/nuts/local-administrative-units</span></div><div class='output co'>#&gt; <span class='error'>Error in loadNamespace(x): there is no package called ‘readxl’</span></div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>lau_with_nuts_df</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_lau_eu.html'>ll_get_lau_eu</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fl'>2018</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_geometry.html'>st_drop_geometry</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>LAU_NAME</span><span class='op'>)</span><span class='op'>==</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span>gisco_id <span class='op'>=</span> <span class='va'>GISCO_ID</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate-joins.html'>left_join</a></span><span class='op'>(</span>y <span class='op'>=</span> <span class='fu'>ll_get_lau_nuts_concordance</span><span class='op'>(</span>lau_year <span class='op'>=</span> <span class='fl'>2018</span>,
+                                                   nuts_year <span class='op'>=</span> <span class='fl'>2016</span><span class='op'>)</span>,
+                   by <span class='op'>=</span> <span class='st'>"gisco_id"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
