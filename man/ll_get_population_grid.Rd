@@ -23,6 +23,8 @@ ll_get_population_grid(
 
 \item{match_country}{Defaults to NULL. If given, used to speed up processing.}
 
+\item{join}{The function to use for filtering. Defaults to sf::st_intersects. Alternative includes the likes of sf::st_within, sf::st_touches, etc.}
+
 \item{population_grid_sf}{Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.}
 }
 \value{

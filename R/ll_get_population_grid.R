@@ -8,6 +8,7 @@
 #' @param match_name A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.
 #' @param match_country Defaults to NULL. If given, used to speed up processing. 
 #' @param population_grid_sf Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.
+#' @param join The function to use for filtering. Defaults to sf::st_intersects. Alternative includes the likes of sf::st_within, sf::st_touches, etc.
 #'
 #' @return An sf object with the population grid.
 #' @export
@@ -115,26 +116,28 @@ ll_get_population_grid <- function(year = 2018,
     if (is.null(match_country)==FALSE) {
       if (year == 2018) {
         sf <- sf %>%
-          dplyr::filter(stringr::str_detect(string = CNTR_ID, pattern = match_country))
+          dplyr::filter(stringr::str_detect(string = CNTR_ID,
+                                            pattern = match_country))
       } else {
         sf <- sf %>%
-          dplyr::filter(stringr::str_detect(string = CNTR_CODE, pattern = match_country))
+          dplyr::filter(stringr::str_detect(string = CNTR_CODE,
+                                            pattern = match_country))
       }
     }
-    readr::write_rds(x = sf,
-                     file = rds_file)
+    saveRDS(object = sf,
+            file = rds_file)
   }
 
   if (is.null(match_sf)==FALSE) {
     sf <- sf::st_filter(x = sf %>% sf::st_transform(crs = 3857),
                         y = match_sf %>% sf::st_transform(crs = 3857),
-                        join = join) %>%
+                        .predicate = join) %>%
       sf::st_transform(crs = 4326)
   }
   
   if (is.null(match_name)==FALSE) {
-    readr::write_rds(x = sf,
-                     file = rds_file_location)
+    saveRDS(object = sf,
+            file = rds_file_location)
   }
   return(sf)
 }
