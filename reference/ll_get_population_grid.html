@@ -156,6 +156,10 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
       <td><p>Defaults to NULL. If given, used to speed up processing.</p></td>
     </tr>
     <tr>
+      <th>join</th>
+      <td><p>The function to use for filtering. Defaults to sf::st_intersects. Alternative includes the likes of sf::st_within, sf::st_touches, etc.</p></td>
+    </tr>
+    <tr>
       <th>population_grid_sf</th>
       <td><p>Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.</p></td>
     </tr>
