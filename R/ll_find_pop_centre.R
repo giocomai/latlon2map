@@ -53,6 +53,9 @@ ll_find_pop_centre <- function(sf_location,
                                             } else if (is.element("TOT_P_2018", colnames(temp))) {
                                               temp  <- temp %>% 
                                                 dplyr::rename(Population = TOT_P_2018)
+                                            } else if (is.element("POP_2020", colnames(temp))) {
+                                              temp  <- temp %>% 
+                                                dplyr::rename(Population = POP_2020)
                                             }
                                             temp %>% 
                                               dplyr::summarise(Population = (sum(Population)), id = x)
