@@ -7,11 +7,18 @@ set_rhdx_config(hdx_site = "prod")
 get_rhdx_config()
 
 library("tidyverse")
-hr <- search_datasets(
+hr1 <- search_datasets(
   query = "High Resolution Population Density Maps",
   rows = 1000
 )
 
+hr2 <- search_datasets(
+  query = "High Resolution Population Density Maps",
+  rows = 1000,
+  start = 1000
+)
+
+hr <- c(hr1,hr2)
 
 pb <- progress::progress_bar$new(total = length(hr))
 
