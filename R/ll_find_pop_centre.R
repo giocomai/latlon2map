@@ -41,7 +41,7 @@ ll_find_pop_centre <- function(sf_location,
                                         .f = function(x) {
                                           temp <- sf::st_filter(x = sf_population_grid %>% sf::st_transform(crs = 3857),
                                                                 y = sf_polygon %>% dplyr::slice(x) %>% sf::st_transform(crs = 3857),
-                                                                join = join) %>% 
+                                                                .predicate  = join) %>% 
                                             sf::st_drop_geometry() 
                                           
                                           if (nrow(temp)==0) {
@@ -66,10 +66,11 @@ ll_find_pop_centre <- function(sf_location,
     
   }
   
-  sf_location_grid <- sf::st_filter(x = sf_population_grid %>% sf::st_transform(crs = 3857),
-                                    y = sf_location %>% sf::st_transform(crs = 3857),
-                                    join = join) %>% 
+  sf_location_grid <- sf::st_filter(x = sf_population_grid,
+                                    y = sf_location,
+                                    .predicate = join) %>% 
     sf::st_transform(crs = 4326)
+  
   if (is.element("TOT_P", colnames(sf_location_grid))) {
     sf_location_grid  <- sf_location_grid %>% 
       dplyr::rename(Population = TOT_P)
@@ -82,7 +83,6 @@ ll_find_pop_centre <- function(sf_location,
                                       sf::st_drop_geometry() %>% 
                                       dplyr::select(Population),
                                     sf_location_grid %>% 
-                                      sf::st_transform(crs = 3857) %>% 
                                       sf::st_centroid() %>% 
                                       sf::st_transform(crs = 4326) %>% 
                                       sf::st_coordinates() %>% 
@@ -94,16 +94,20 @@ ll_find_pop_centre <- function(sf_location,
   # sf_location_grid %>% 
   #   dplyr::filter(Population>=median(Population))
   
-  if (sf::st_intersects(x = sf_location %>% sf::st_transform(crs = 3857), y = sf_pop_centre %>% sf::st_transform(crs = 3857), sparse = FALSE)==FALSE) {
-    sf_cell <- sf_location_grid %>% sf::st_transform(crs = 3857) %>% 
-      dplyr::slice(sf::st_nearest_feature(x = sf_pop_centre %>% sf::st_transform(crs = 3857),
-                                           y =  sf_location_grid %>% sf::st_transform(crs = 3857)))
+  
+  # if the pop-weighted centre is out of the boundary,
+  # take the closest closest cell, crop it with the boundary,
+  # and use the centroid of the remaining part
+  if (sf::st_intersects(x = sf_location,
+                        y = sf_pop_centre,
+                        sparse = FALSE)==FALSE) {
+    sf_cell <- sf_location_grid %>% 
+      dplyr::slice(sf::st_nearest_feature(x = sf_pop_centre,
+                                           y =  sf_location_grid))
     
     sf_cell_intersection <- sf::st_intersection(sf_cell,
-                                                sf_location %>%
-                                                  sf::st_transform(crs = 3857))
-    sf_pop_centre <- sf::st_centroid(sf_cell_intersection %>%
-                                       sf::st_transform(crs = 3857)) %>%
+                                                sf_location)
+    sf_pop_centre <- sf::st_centroid(sf_cell_intersection) %>%
       sf::st_transform(crs = 4326)
   }
   sf_pop_centre 
