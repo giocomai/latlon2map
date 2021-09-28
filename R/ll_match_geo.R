@@ -17,18 +17,19 @@ ll_match <- function(data,
                      join = sf::st_intersects,
                      sample = NULL,
                      match = longlat2map::ll_get_world()) {
-  if (is.null(sample)==FALSE) {
+  if (is.null(sample) == FALSE) {
     data <- data %>% dplyr::sample_n(size = sample)
   }
-  
-  if (is.element("sf", class(data))==FALSE) {
-    sf_data <- data %>% 
-      sf::st_as_sf(coords = c(longitude,latitude), crs = 4326)
+
+  if (is.element("sf", class(data)) == FALSE) {
+    sf_data <- data %>%
+      sf::st_as_sf(coords = c(longitude, latitude), crs = 4326)
   } else {
     sf_data <- data
   }
 
   sf::st_join(sf_data %>% sf::st_transform(crs = 4326),
-              match %>% sf::st_transform(crs = 4326),
-              join = join)
+    match %>% sf::st_transform(crs = 4326),
+    join = join
+  )
 }

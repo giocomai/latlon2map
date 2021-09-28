@@ -20,6 +20,5 @@ ll_get_nuts_us(level = "county", resolution = "500k", year = 2018)
 Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 }
 \examples{
-ll_get_nuts_us(level = "county",resolution = "500k",year = 2018)
-
+ll_get_nuts_us(level = "county", resolution = "500k", year = 2018)
 }

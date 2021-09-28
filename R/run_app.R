@@ -8,15 +8,16 @@
 #' @importFrom golem with_golem_options
 ll_app <- function(max_file_size = 100,
                    ll_folder_path = NULL,
-  ...
-) {
+                   ...) {
   with_golem_options(
     app = shinyApp(
-      ui = app_ui, 
+      ui = app_ui,
       server = app_server
-    ), 
-    golem_opts = list(shiny.maxRequestSize=max_file_size*1024^2,
-                      ll_folder_path = ll_folder_path,
-                      ...)
+    ),
+    golem_opts = list(
+      shiny.maxRequestSize = max_file_size * 1024^2,
+      ll_folder_path = ll_folder_path,
+      ...
+    )
   )
 }

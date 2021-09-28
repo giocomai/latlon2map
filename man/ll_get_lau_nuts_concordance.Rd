@@ -27,14 +27,17 @@ Do check the sources for details and ensure complete matching.
 
 ll_set_folder("~/R/")
 ll_get_lau_nuts_concordance()
-
 \dontrun{
-lau_with_nuts_df <- ll_get_lau_eu(year = 2018) \%>\% 
-  sf::st_drop_geometry() \%>\% 
-  filter(is.na(LAU_NAME)==FALSE) \%>\% 
-  dplyr::rename(gisco_id = GISCO_ID) \%>\% 
-  dplyr::left_join(y = ll_get_lau_nuts_concordance(lau_year = 2018,
-                                                   nuts_year = 2016),
-                   by = "gisco_id")
+lau_with_nuts_df <- ll_get_lau_eu(year = 2018) \%>\%
+  sf::st_drop_geometry() \%>\%
+  filter(is.na(LAU_NAME) == FALSE) \%>\%
+  dplyr::rename(gisco_id = GISCO_ID) \%>\%
+  dplyr::left_join(
+    y = ll_get_lau_nuts_concordance(
+      lau_year = 2018,
+      nuts_year = 2016
+    ),
+    by = "gisco_id"
+  )
 }
 }

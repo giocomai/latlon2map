@@ -20,8 +20,7 @@ ll_osm_lau_streets(gisco_id, unnamed_streets = TRUE, year = 2020)
 Relies on the output of \code{ll_get_lau_eu()} for the boundaries of local administrative units.
 }
 \examples{
-
 \dontrun{
-ll_osm_lau_streets(gisco_id  = "IT_022205", unnamed_streets = FALSE)
+ll_osm_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
 }
 }

@@ -33,5 +33,4 @@ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administr
 
 ll_set_folder("~/R/")
 ll_get_lau_eu()
-
 }

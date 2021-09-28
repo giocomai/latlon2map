@@ -18,19 +18,19 @@ ll_osm_countries <-
     .f = function(current_continent) {
       print(current_continent)
       current_continent_page <- xml2::read_html(x = glue::glue("http://download.geofabrik.de/{current_continent}/"))
-      
+
       current_links <- current_continent_page %>%
         rvest::html_nodes(xpath = paste0("//a")) %>%
         xml2::xml_attr("href") %>%
         tibble::enframe(name = NULL, value = "links")
-      
+
       current_countries_df <- current_links %>%
         dplyr::filter(stringr::str_detect(
           string = links,
           pattern = stringr::fixed(".html")
         )) %>%
         dplyr::transmute(country = fs::path_ext_remove(links))
-      
+
       small_countries_df <-
         current_links %>%
         dplyr::filter(stringr::str_ends(
@@ -43,15 +43,15 @@ ll_osm_countries <-
           link = glue::glue("http://download.geofabrik.de/{current_continent}/{links}")
         ) %>%
         tidyr::nest(link = c(link))
-      
-      
+
+
       big_countries_c <- dplyr::anti_join(
         x = current_countries_df,
         y = small_countries_df,
         by = "country"
       )
-      
-      
+
+
       big_countries_df <- purrr::map_dfr(
         .x = big_countries_c$country,
         .f = function(current_big_country) {
@@ -65,7 +65,7 @@ ll_osm_countries <-
             rvest::html_nodes(xpath = paste0("//a")) %>%
             xml2::xml_attr("href") %>%
             stringr::str_subset(pattern = "-latest-free.shp.zip$")
-          
+
           if (length(current_big_country_links) == 0) {
             return(NULL)
           } else {
@@ -79,7 +79,7 @@ ll_osm_countries <-
           }
         }
       )
-      
+
       dplyr::bind_rows(
         small_countries_df,
         big_countries_df

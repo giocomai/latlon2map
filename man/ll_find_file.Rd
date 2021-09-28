@@ -7,14 +7,6 @@
 ll_find_file(geo, level, resolution, year, name = "abl", file_type = "rds")
 }
 \arguments{
-\item{geo}{}
-
-\item{level}{}
-
-\item{resolution}{}
-
-\item{year}{}
-
 \item{name}{Name of specific dataset being downloaded. Defaults to abl, i.e. administrative boundary line}
 
 \item{file_type}{}

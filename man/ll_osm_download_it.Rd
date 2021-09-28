@@ -31,7 +31,6 @@ Used only for its side effects (downloads osm data).
 See \code{ll_osm_it_gpkg} for all available files.
 }
 \examples{
-
 \dontrun{
 ll_osm_download_it(level = "comuni", name = "Trento")
 }

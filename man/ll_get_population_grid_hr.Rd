@@ -20,8 +20,6 @@ ll_get_population_grid_hr(
 
 \item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
 
-\item{join}{}
-
 \item{source_url}{A direct link to the zipped version of the csv file in the original database, if automatic download with the country code does not work. For example, for Italy this would be "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"}
 
 \item{silent}{}

@@ -7,11 +7,13 @@
 
 #' @examples
 ll_set_folder <- function(path = NULL) {
-  if(is.null(path)) {
+  if (is.null(path)) {
     path <- Sys.getenv("ll_base_folder")
   } else {
     Sys.setenv(ll_base_folder = path)
   }
-  if (path=="") {path <- getwd()}
+  if (path == "") {
+    path <- getwd()
+  }
   path
 }
