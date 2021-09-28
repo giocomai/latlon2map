@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
       </span>
     </div>
 
@@ -144,36 +144,39 @@
     <p>A bounding box vector, same as with <code><a href='https://r-spatial.github.io/sf/reference/st_bbox.html'>sf::st_bbox()</a></code>, but with the given ratio set and compatible with crs 4326.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='co'># The following two graphs will have same 4:3 aspect ratio</span>
 <span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='st'>"~/R/"</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='st'><a href='https://paleolimbot.github.io/ggspatial/'>"ggspatial"</a></span><span class='op'>)</span>
 
 <span class='va'>sf_location</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_nuts_it.html'>ll_get_nuts_it</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Palmanova"</span>, level <span class='op'>=</span> <span class='st'>"lau"</span>, resolution <span class='op'>=</span> <span class='st'>"low"</span><span class='op'>)</span>
 
- <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
- <span class='fu'><a href='https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html'>annotation_map_tile</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"osm"</span>, zoomin <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, cachedir <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span><span class='op'>(</span><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"ll_data"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html'>annotation_map_tile</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"osm"</span>, zoomin <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, cachedir <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span><span class='op'>(</span><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"ll_data"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sfc.html'>st_as_sfc</a></span><span class='op'>(</span><span class='fu'>ll_bbox</span><span class='op'>(</span><span class='va'>sf_location</span><span class='op'>)</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='cn'>NA</span>, color <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>sf_location</span>,
-          colour <span class='op'>=</span> <span class='st'>"darkred"</span>,
-          size <span class='op'>=</span> <span class='fl'>2</span>,
-          fill <span class='op'>=</span> <span class='cn'>NA</span>,
-          alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
-   
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>sf_location</span>,
+    colour <span class='op'>=</span> <span class='st'>"darkred"</span>,
+    size <span class='op'>=</span> <span class='fl'>2</span>,
+    fill <span class='op'>=</span> <span class='cn'>NA</span>,
+    alpha <span class='op'>=</span> <span class='fl'>0.8</span>
+  <span class='op'>)</span>
+
 
 <span class='va'>sf_location</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_nuts_it.html'>ll_get_nuts_it</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Pinzolo"</span>, level <span class='op'>=</span> <span class='st'>"lau"</span>, resolution <span class='op'>=</span> <span class='st'>"low"</span><span class='op'>)</span>
 
- <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
- <span class='fu'><a href='https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html'>annotation_map_tile</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"osm"</span>, zoomin <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, cachedir <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span><span class='op'>(</span><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"ll_data"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
+<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
+  <span class='fu'><a href='https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html'>annotation_map_tile</a></span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"osm"</span>, zoomin <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>, cachedir <span class='op'>=</span> <span class='fu'>fs</span><span class='fu'>::</span><span class='fu'><a href='http://fs.r-lib.org/reference/path.html'>path</a></span><span class='op'>(</span><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"ll_data"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sfc.html'>st_as_sfc</a></span><span class='op'>(</span><span class='fu'>ll_bbox</span><span class='op'>(</span><span class='va'>sf_location</span><span class='op'>)</span><span class='op'>)</span>, fill <span class='op'>=</span> <span class='cn'>NA</span>, color <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>sf_location</span>,
-          colour <span class='op'>=</span> <span class='st'>"darkred"</span>,
-          size <span class='op'>=</span> <span class='fl'>2</span>,
-          fill <span class='op'>=</span> <span class='cn'>NA</span>,
-          alpha <span class='op'>=</span> <span class='fl'>0.8</span><span class='op'>)</span>
-                 
+  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggsf.html'>geom_sf</a></span><span class='op'>(</span>
+    data <span class='op'>=</span> <span class='va'>sf_location</span>,
+    colour <span class='op'>=</span> <span class='st'>"darkred"</span>,
+    size <span class='op'>=</span> <span class='fl'>2</span>,
+    fill <span class='op'>=</span> <span class='cn'>NA</span>,
+    alpha <span class='op'>=</span> <span class='fl'>0.8</span>
+  <span class='op'>)</span>
 <span class='op'>}</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
