@@ -8,17 +8,16 @@ ll_find_pop_centre(
   sf_location,
   sf_population_grid,
   power = 2,
-  join = sf::st_intersects
+  join = sf::st_intersects,
+  adjusted = FALSE
 )
 }
 \arguments{
-\item{sf_location}{}
-
-\item{sf_population_grid}{}
-
 \item{power}{Defaults to 2. To give more weight to cells with higher population density, raise the number of residents by the power of.}
 
 \item{join}{Defaults to sf::st_intersects.}
+
+\item{adjusted}{If adjusted is set to TRUE, join is ignored. The population of cells along the boundary line are weighted by the share of the cell included within the border.}
 }
 \value{
 
@@ -29,18 +28,22 @@ Find the population-weighted centre of a municipality
 \examples{
 
 ll_set_folder("~/R/")
-name = "Pinzolo"
+name <- "Pinzolo"
 sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high")
 
 lau_grid_name_temp <- stringr::str_c(name, "_lau_high-st_intersects")
 
-sf_location_grid <- ll_get_population_grid(match_sf = sf_location,
-                                          match_name = lau_grid_name_temp,
-                                          match_country = "IT",
-                                          join = sf::st_intersects)
+sf_location_grid <- ll_get_population_grid(
+  match_sf = sf_location,
+  match_name = lau_grid_name_temp,
+  match_country = "IT",
+  join = sf::st_intersects
+)
 
 
-pop_centre <- ll_find_pop_centre(sf_location = sf_location,
-                                 sf_population_grid = sf_location_grid,
-                                 power = 2)
+pop_centre <- ll_find_pop_centre(
+  sf_location = sf_location,
+  sf_population_grid = sf_location_grid,
+  power = 2
+)
 }
