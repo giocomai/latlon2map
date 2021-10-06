@@ -2,7 +2,7 @@
 #'
 #' Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 #'
-#' @param geo Three letter country codes 
+#' @param geo Three letter country codes. If a two letter country code is given, it will tentatively be converted to a three-letter country code. Check consistency.
 #' @param level Defaults to 0. Available labels, depending on data availability for the specific country, between 0 and 3. 
 #' @param year Defaults to "".
 #'
@@ -15,6 +15,12 @@ ll_get_gadm <- function(geo,
                         level = 0) {
   usethis::ui_info("Source_ https://gadm.org/")
   usethis::ui_info("The data are freely available for academic use and other non-commercial use. Redistribution, or commercial use, is not allowed without prior permission. Using the data to create maps for academic publishing is allowed.")
+  
+  if (nchar(geo)==2) {
+    geo <- countrycode::countrycode(sourcevar = geo,
+                                    origin = "iso2c",
+                                    destination = "iso3c")
+  }
   
   geo <- stringr::str_to_upper(geo)
   

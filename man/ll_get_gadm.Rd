@@ -4,12 +4,12 @@
 \alias{ll_get_gadm}
 \title{Get administrative boundaries}
 \usage{
-ll_get_gadm(geo, level = 3)
+ll_get_gadm(geo, level = 0)
 }
 \arguments{
-\item{geo}{Three letter country codes}
+\item{geo}{Three letter country codes. If a two letter country code is given, it will tentatively be converted to a three-letter country code. Check consistency.}
 
-\item{level}{Defaults to 3. Available labels, depending on data availability for the specific country, between 0 and 3.}
+\item{level}{Defaults to 0. Available labels, depending on data availability for the specific country, between 0 and 3.}
 
 \item{year}{Defaults to "".}
 }
