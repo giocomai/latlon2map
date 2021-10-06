@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Get High Resolution Population Density Maps + Demographic Estimates — ll_get_population_grid_hr • latlon2map</title>
+<title>Get administrative boundaries — ll_get_gadm • latlon2map</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,8 @@
 
 
 
-<meta property="og:title" content="Get High Resolution Population Density Maps + Demographic Estimates — ll_get_population_grid_hr" />
-<meta property="og:description" content="Source: https://data.humdata.org/organization/facebook
-Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/" />
+<meta property="og:title" content="Get administrative boundaries — ll_get_gadm" />
+<meta property="og:description" content="Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html" />
 
 
 
@@ -116,57 +115,31 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Get High Resolution Population Density Maps + Demographic Estimates</h1>
+    <h1>Get administrative boundaries</h1>
     
-    <div class="hidden name"><code>ll_get_population_grid_hr.Rd</code></div>
+    <div class="hidden name"><code>ll_get_gadm.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Source: https://data.humdata.org/organization/facebook
-Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/</p>
+    <p>Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_population_grid_hr</span><span class='op'>(</span>
-  <span class='va'>geo</span>,
-  match_sf <span class='op'>=</span> <span class='cn'>NULL</span>,
-  match_name <span class='op'>=</span> <span class='cn'>NULL</span>,
-  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>,
-  file_format <span class='op'>=</span> <span class='st'>"CSV"</span>,
-  dataset <span class='op'>=</span> <span class='st'>"population"</span>,
-  source_url <span class='op'>=</span> <span class='cn'>NULL</span>,
-  silent <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ll_get_gadm</span><span class='op'>(</span><span class='va'>geo</span>, level <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>geo</th>
-      <td><p>A twe letter country code, such as "IT" for Italy and "DE" for Germany</p></td>
+      <td><p>Three letter country codes</p></td>
     </tr>
     <tr>
-      <th>match_sf</th>
-      <td><p>An sf object to me matched with the population grid. If not given, full grid is returned.</p></td>
+      <th>level</th>
+      <td><p>Defaults to 3. Available labels, depending on data availability for the specific country, between 0 and 3.</p></td>
     </tr>
     <tr>
-      <th>match_name</th>
-      <td><p>A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.</p></td>
-    </tr>
-    <tr>
-      <th>file_format</th>
-      <td><p>Defaults to "CSV". Other available formats include "GeoTIFF", "JSON", "zip", "GDAL Virtual Format". Currently only CSV supported.</p></td>
-    </tr>
-    <tr>
-      <th>dataset</th>
-      <td><p>Defaults to "population". Beginning of the name of the dataset. For alternatives, see e.g. <code>population_grid_hr_metadata %&gt;% dplyr::filter(country_code=="IT") %&gt;% dplyr::distinct(name)</code>. Currently only tested with default value.</p></td>
-    </tr>
-    <tr>
-      <th>source_url</th>
-      <td><p>A direct link to the zipped version of the csv file in the original database, if automatic download with the country code does not work. For example, for Italy this would be "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"</p></td>
-    </tr>
-    <tr>
-      <th>silent</th>
-      <td></td>
+      <th>year</th>
+      <td><p>Defaults to "".</p></td>
     </tr>
     </table>
 
@@ -176,6 +149,9 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
 
 
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>ll_get_nuts</span><span class='op'>(</span>geo <span class='op'>=</span> <span class='st'>"BIH"</span>, level <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='error'>Error in ll_get_nuts(geo = "BIH", level = 0): could not find function "ll_get_nuts"</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
