@@ -132,7 +132,7 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
   match_name <span class='op'>=</span> <span class='cn'>NULL</span>,
   join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>,
   file_format <span class='op'>=</span> <span class='st'>"CSV"</span>,
-  dataset <span class='op'>=</span> <span class='st'>"population"</span>,
+  dataset <span class='op'>=</span> <span class='st'>"population|general"</span>,
   source_url <span class='op'>=</span> <span class='cn'>NULL</span>,
   silent <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
@@ -150,7 +150,7 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
     </tr>
     <tr>
       <th>match_name</th>
-      <td><p>A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.</p></td>
+      <td><p>A name to be used for local caching if a subset of the grid is used. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.</p></td>
     </tr>
     <tr>
       <th>file_format</th>
