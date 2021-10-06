@@ -125,7 +125,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>ll_get_nuts_eu</span><span class='op'>(</span>
-  name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nuts_id <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nuts_name <span class='op'>=</span> <span class='cn'>NULL</span>,
   level <span class='op'>=</span> <span class='fl'>3</span>,
   resolution <span class='op'>=</span> <span class='fl'>60</span>,
   year <span class='op'>=</span> <span class='fl'>2021</span>,
@@ -136,12 +137,20 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>nuts_id</th>
+      <td><p>NUTS id. Must correspond to the level given. e.g. "DE149" for the NUTS3 regionion of Sigmaringen in Germany.</p></td>
+    </tr>
+    <tr>
+      <th>nuts_name</th>
+      <td><p>Name of the NUTS region. Run <code>ll_get_nuts_eu()</code> to check valid values in <code>NUTS_NAME</code> column.</p></td>
+    </tr>
+    <tr>
       <th>level</th>
       <td><p>Defaults to 3, corresponding to nuts3. Available values are: 0, 1, 2, and 3.</p></td>
     </tr>
     <tr>
       <th>resolution</th>
-      <td><p>Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available)-</p></td>
+      <td><p>Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available).</p></td>
     </tr>
     <tr>
       <th>year</th>
@@ -154,26 +163,8 @@
     <p>NUTS in sf format</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ll_get_lau_eu.html'>ll_get_lau_eu</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; Simple feature collection with 98613 features and 9 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: -63.15372 ymin: -21.38881 xmax: 55.83573 ymax: 71.1853
-#&gt; Geodetic CRS:  WGS 84
-#&gt; <span style='color: #949494;'># A tibble: 98,613 × 10</span>
-#&gt;    GISCO_ID  CNTR_CODE LAU_ID LAU_NAME  POP_2020 POP_DENS_2 AREA_KM2  YEAR FID  
-#&gt;  <span style='color: #BCBCBC;'>*</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> CZ_579475 CZ        579475 Libňatov       363      62.2      5.83  <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 2</span> CZ_579483 CZ        579483 Libotov        178      41.8      4.26  <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 3</span> CZ_579491 CZ        579491 Vranov         181      37.4      4.84  <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 4</span> CZ_579505 CZ        579505 Malá Úpa       142       5.32    26.7   <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 5</span> AT_41004  AT        41004  Eggendor…     <span style='text-decoration: underline;'>1</span>041     116.       8.94  <span style='text-decoration: underline;'>2</span>020 AT_4…
-#&gt; <span style='color: #BCBCBC;'> 6</span> CZ_579513 CZ        579513 Malé Sva…     <span style='text-decoration: underline;'>1</span>509     222.       6.81  <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 7</span> CZ_579530 CZ        579530 Maršov u…      191      57.9      3.30  <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 8</span> CZ_579548 CZ        579548 Mladé Bu…     <span style='text-decoration: underline;'>2</span>308      86.4     26.7   <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'> 9</span> CZ_579556 CZ        579556 Mostek        <span style='text-decoration: underline;'>1</span>191      88.8     13.4   <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #BCBCBC;'>10</span> CZ_579564 CZ        579564 Nemojov        761      93.7      8.12  <span style='text-decoration: underline;'>2</span>020 CZ_5…
-#&gt; <span style='color: #949494;'># … with 98,603 more rows, and 1 more variable: geometry &lt;MULTIPOLYGON [°]&gt;</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>ll_get_nuts_eu</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></div><div class='output co'>#&gt; <span class='error'>Error in ll_get_nuts_eu(): object 'name' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
