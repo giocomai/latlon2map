@@ -5,7 +5,8 @@
 \title{Gets NUTS as sf object from Eurostat's website}
 \usage{
 ll_get_nuts_eu(
-  name = NULL,
+  nuts_id = NULL,
+  nuts_name = NULL,
   level = 3,
   resolution = 60,
   year = 2021,
@@ -13,9 +14,13 @@ ll_get_nuts_eu(
 )
 }
 \arguments{
+\item{nuts_id}{NUTS id. Must correspond to the level given. e.g. "DE149" for the NUTS3 regionion of Sigmaringen in Germany.}
+
+\item{nuts_name}{Name of the NUTS region. Run \code{ll_get_nuts_eu()} to check valid values in \code{NUTS_NAME} column.}
+
 \item{level}{Defaults to 3, corresponding to nuts3. Available values are: 0, 1, 2, and 3.}
 
-\item{resolution}{Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available)-}
+\item{resolution}{Defaults to "60", for 1:60 Million. Available values: are 20, 10, 3, 1 (1 is highest quality available).}
 
 \item{year}{Defaults to 2021 Available values: 2021, 2016, 2013, 2010, 2006, 2003}
 }
@@ -26,5 +31,5 @@ NUTS in sf format
 Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts16
 }
 \examples{
-ll_get_lau_eu()
+ll_get_nuts_eu()
 }
