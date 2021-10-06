@@ -7,6 +7,8 @@
 #' @param match_sf An sf object to me matched with the population grid. If not given, full grid is returned.
 #' @param match_name A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.
 #' @param source_url A direct link to the zipped version of the csv file in the original database, if automatic download with the country code does not work. For example, for Italy this would be "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"
+#' @param file_format Defaults to "CSV". Other available formats include "GeoTIFF", "JSON", "zip", "GDAL Virtual Format". Currently only CSV supported.
+#' @param dataset Defaults to "population". Beginning of the name of the dataset. For alternatives, see e.g. `population_grid_hr_metadata %>% dplyr::filter(country_code=="IT") %>% dplyr::distinct(name)`. Currently only tested with default value.
 #' @param join
 #' @param silent
 #'
@@ -18,6 +20,8 @@ ll_get_population_grid_hr <- function(geo,
                                       match_sf = NULL,
                                       match_name = NULL,
                                       join = sf::st_intersects,
+                                      file_format = "CSV",
+                                      dataset = "population", 
                                       source_url = NULL,
                                       silent = FALSE) {
   if (silent == FALSE) {
@@ -30,6 +34,13 @@ ll_get_population_grid_hr <- function(geo,
     geo <- stringr::str_to_upper(string = geo)
   }
 
+  
+   source_url <- population_grid_hr_metadata %>% 
+    dplyr::filter(.data$format == file_format, country_code==geo)  %>% 
+    dplyr::filter(stringr::str_starts(string = name, pattern = dataset)) %>%
+    dplyr::distinct() %>% 
+    dplyr::pull(download_url)
+  
   if (is.null(match_name) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = geo,
@@ -82,23 +93,6 @@ ll_get_population_grid_hr <- function(geo,
       name = paste0("population_grid", "-", geo),
       file_type = "zip"
     )
-    if (is.null(source_url) == FALSE) {
-      # do nothing
-    } else if (geo == "IT") {
-      source_url <- "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"
-    } else if (geo == "DE") {
-      source_url <- "https://data.humdata.org/dataset/7d08e2b0-b43b-43fd-a6a6-a308f222cdb2/resource/77a44470-f80a-44be-9bb2-3e904dbbe9b1/download/population_deu_2019-07-01.csv.zip"
-    } else if (geo == "UK") {
-      source_url <- "https://data.humdata.org/dataset/b9a7b4a3-75a7-4de1-b741-27d78e8d0564/resource/674a0049-1a75-4f9a-a07b-654bda75456e/download/population_gbr_2019-07-01.csv.zip"
-    } else if (geo == "PL") {
-      source_url <- "https://data.humdata.org/dataset/d3bb62ab-b94d-4042-8e76-821fe17ce562/resource/9dc916a5-969c-4561-8c5c-23c96f9fedb0/download/population_pol_2019-07-01.csv.zip"
-    } else if (geo == "ES") {
-      source_url <- "https://data.humdata.org/dataset/80d0519e-0eaf-4c16-a16c-a10ca837a463/resource/f75d0b98-c2ca-4882-85b7-ab2c91ee78f4/download/population_esp_2019-07-01.csv.zip"
-    } else {
-      usethis::ui_todo("URL for this country not available. Provide direct link to zipped csv file as `source_url` parameter.")
-      usethis::ui_todo("All datasets available from the following page: https://data.humdata.org/organization/facebook")
-      usethis::ui_stop(paste("source_url needed when geo is", sQuote(geo)))
-    }
 
     if (fs::file_exists(zip_file) == FALSE) {
       download.file(
@@ -138,9 +132,11 @@ ll_get_population_grid_hr <- function(geo,
         Lat = readr::col_double(),
         Lon = readr::col_double(),
         Population = readr::col_double()
-      ),
-      skip = 1
-    )
+      ), skip = 1
+    ) %>% 
+      dplyr::filter(is.na(.data$Lat)==FALSE, is.na(.data$Population)==FALSE)
+      #dplyr::filter(.data$Population>0)
+    
     if (is.null(match_sf) == FALSE) {
       bbox <- sf::st_bbox(match_sf)
       df <- df %>%
@@ -157,8 +153,8 @@ ll_get_population_grid_hr <- function(geo,
         sf::st_transform(crs = 4326)
 
       if (is.null(match_name) == FALSE) {
-        readr::write_rds(
-          x = sf,
+        saveRDS(
+          object = sf,
           file = rds_file_location
         )
       }
@@ -166,10 +162,11 @@ ll_get_population_grid_hr <- function(geo,
       return(sf)
     }
     sf <- df %>%
-      sf::st_as_sf(coords = c("Lon", "Lat"), crs = 4326)
+      sf::st_as_sf(coords = c("Lon", "Lat"),
+                   crs = 4326)
 
-    readr::write_rds(
-      x = sf,
+    saveRDS(
+      object = sf,
       file = rds_file
     )
   }

@@ -9,6 +9,8 @@ ll_get_population_grid_hr(
   match_sf = NULL,
   match_name = NULL,
   join = sf::st_intersects,
+  file_format = "CSV",
+  dataset = "population",
   source_url = NULL,
   silent = FALSE
 )
@@ -19,6 +21,10 @@ ll_get_population_grid_hr(
 \item{match_sf}{An sf object to me matched with the population grid. If not given, full grid is returned.}
 
 \item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
+
+\item{file_format}{Defaults to "CSV". Other available formats include "GeoTIFF", "JSON", "zip", "GDAL Virtual Format". Currently only CSV supported.}
+
+\item{dataset}{Defaults to "population". Beginning of the name of the dataset. For alternatives, see e.g. \code{population_grid_hr_metadata \%>\% dplyr::filter(country_code=="IT") \%>\% dplyr::distinct(name)}. Currently only tested with default value.}
 
 \item{source_url}{A direct link to the zipped version of the csv file in the original database, if automatic download with the country code does not work. For example, for Italy this would be "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"}
 
