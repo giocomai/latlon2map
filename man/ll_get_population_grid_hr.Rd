@@ -8,6 +8,7 @@ ll_get_population_grid_hr(
   geo,
   match_sf = NULL,
   match_name = NULL,
+  population_grid_sf = NULL,
   join = sf::st_intersects,
   file_format = "CSV",
   dataset = "population|general",

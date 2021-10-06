@@ -156,11 +156,10 @@ ll_get_population_grid <- function(year = 2018,
 
   if (is.null(match_sf) == FALSE) {
     sf <- sf::st_filter(
-      x = sf %>% sf::st_transform(crs = 3857),
-      y = match_sf %>% sf::st_transform(crs = 3857),
+      x = sf %>% sf::st_transform(crs = 4326),
+      y = match_sf %>% sf::st_transform(crs = 4326),
       .predicate = join
-    ) %>%
-      sf::st_transform(crs = 4326)
+    )
   }
 
   if (is.null(match_name) == FALSE) {

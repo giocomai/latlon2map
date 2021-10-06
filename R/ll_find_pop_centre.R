@@ -44,6 +44,9 @@ ll_find_pop_centre <- function(sf_location,
   } else if (is.element("POP_2020", colnames(sf_population_grid))) {
     sf_population_grid <- sf_population_grid %>%
       dplyr::rename(population = POP_2020)
+  } else if (is.element("Population", colnames(sf_population_grid))) {
+    sf_population_grid <- sf_population_grid %>%
+      dplyr::rename(population = Population)
   }
 
 

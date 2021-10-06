@@ -19,6 +19,7 @@
 ll_get_population_grid_hr <- function(geo,
                                       match_sf = NULL,
                                       match_name = NULL,
+                                      population_grid_sf = NULL,
                                       join = sf::st_intersects,
                                       file_format = "CSV",
                                       dataset = "population|general", 
@@ -29,11 +30,11 @@ ll_get_population_grid_hr <- function(geo,
     usethis::ui_info(x = "License: Creative Commons Attribution International")
     usethis::ui_info(x = "Source: https://data.humdata.org/organization/facebook")
   }
-
+  
   if (is.null(geo) == FALSE) {
     geo <- stringr::str_to_upper(string = geo)
   }
-
+  
   if (is.null(source_url)==TRUE) {
     source_url <- latlon2map::population_grid_hr_metadata %>% 
       dplyr::filter(.data$format == file_format, country_code==geo)  %>% 
@@ -48,15 +49,15 @@ ll_get_population_grid_hr <- function(geo,
       level = 0,
       resolution = "hr",
       year = 2020,
-      name = paste0(match_name, "-hr_population_grid", "-", "geo"),
+      name = paste0(match_name, "-hr_population_grid", "-", geo),
       file_type = "rds"
     )
-
+    
     if (fs::file_exists(rds_file_location)) {
       return(readr::read_rds(file = rds_file_location))
     }
   }
-
+  
   ll_create_folders(
     geo = geo,
     level = 0,
@@ -64,7 +65,7 @@ ll_get_population_grid_hr <- function(geo,
     year = 2020,
     file_type = c("zip", "csv", "rds")
   )
-
+  
   rds_file <- ll_find_file(
     geo = geo,
     level = 0,
@@ -73,8 +74,9 @@ ll_get_population_grid_hr <- function(geo,
     name = paste0("population_grid_hr", "-", geo),
     file_type = "rds"
   )
-
-  if (fs::file_exists(rds_file) & is.null(match_sf)) {
+  if (is.null(population_grid_sf) == FALSE) {
+    sf <- population_grid_sf
+  } else if (fs::file_exists(rds_file) & is.null(match_sf)) {
     sf <- readr::read_rds(file = rds_file)
   } else {
     csv_folder <- ll_find_file(
@@ -85,7 +87,7 @@ ll_get_population_grid_hr <- function(geo,
       name = paste0("population_grid", "-", geo),
       file_type = "csv"
     ) %>% fs::path_dir()
-
+    
     zip_file <- ll_find_file(
       geo = geo,
       level = 0,
@@ -94,20 +96,20 @@ ll_get_population_grid_hr <- function(geo,
       name = paste0("population_grid", "-", geo),
       file_type = "zip"
     )
-
+    
     if (fs::file_exists(zip_file) == FALSE) {
       download.file(
         url = source_url,
         destfile = zip_file
       )
     }
-
+    
     file_name <- stringr::str_split(source_url, "/") %>%
       unlist() %>%
       dplyr::last() %>%
       stringr::str_replace("_csv\\.zip$|\\.csv\\.zip$", ".csv") %>%
       stringr::str_to_lower()
-
+    
     if (fs::file_exists(fs::path(csv_folder, file_name)) == FALSE) {
       unzip(
         zipfile = zip_file,
@@ -127,50 +129,69 @@ ll_get_population_grid_hr <- function(geo,
       )
     }
     df <- readr::read_csv(
-      file = fs::path(csv_folder, file_name),
-      col_names = c("Lat", "Lon", "Population"),
-      col_types = readr::cols(
-        Lat = readr::col_double(),
-        Lon = readr::col_double(),
-        Population = readr::col_double()
-      ), skip = 1
-    ) %>% 
-      dplyr::filter(is.na(.data$Lat)==FALSE, is.na(.data$Population)==FALSE)
-      #dplyr::filter(.data$Population>0)
+      file = fs::path(csv_folder, file_name)) 
+    #dplyr::filter(.data$Population>0)
     
+    if (colnames(df)[1]=="longitude") {
+      colnames(df) <- c("Lon", "Lat", "Population")
+      
+    } else if (colnames(df)[1]=="latitude") {
+      colnames(df) <- c("Lat", "Lon", "Population")
+    }
+    df <- df %>% 
+      dplyr::select("Lat", "Lon", "Population") %>% 
+      dplyr::filter(is.na(.data$Lat)==FALSE, is.na(.data$Population)==FALSE)
     if (is.null(match_sf) == FALSE) {
       bbox <- sf::st_bbox(match_sf)
       df <- df %>%
         dplyr::filter(Lat >= bbox$ymin, Lat <= bbox$ymax, Lon >= bbox$xmin, Lat <= bbox$ymax)
-
+      
       sf <- df %>%
         sf::st_as_sf(coords = c("Lon", "Lat"), crs = 4326)
-
+      
       sf <- sf::st_filter(
         x = sf %>% sf::st_transform(crs = 3857),
         y = match_sf %>% sf::st_transform(crs = 3857),
         join = join
       ) %>%
         sf::st_transform(crs = 4326)
-
+      
       if (is.null(match_name) == FALSE) {
         saveRDS(
           object = sf,
           file = rds_file_location
         )
       }
-
+      
       return(sf)
     }
     sf <- df %>%
       sf::st_as_sf(coords = c("Lon", "Lat"),
                    crs = 4326)
-
+    
     saveRDS(
       object = sf,
       file = rds_file
     )
+    
+    return(sf)
   }
-
+  
+  if (is.null(match_sf) == FALSE) {
+    
+    sf <- sf::st_filter(
+      x = sf %>% sf::st_transform(crs = 4326),
+      y = match_sf %>% sf::st_transform(crs = 4326),
+      .predicate = join
+    )
+    
+    if (is.null(match_name) == FALSE) {
+      saveRDS(
+        object = sf,
+        file = rds_file_location
+      )
+    }
+  }
+  
   return(sf)
 }
