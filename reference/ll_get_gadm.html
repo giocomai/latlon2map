@@ -124,18 +124,18 @@
     <p>Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ll_get_gadm</span><span class='op'>(</span><span class='va'>geo</span>, level <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ll_get_gadm</span><span class='op'>(</span><span class='va'>geo</span>, level <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>geo</th>
-      <td><p>Three letter country codes</p></td>
+      <td><p>Three letter country codes. If a two letter country code is given, it will tentatively be converted to a three-letter country code. Check consistency.</p></td>
     </tr>
     <tr>
       <th>level</th>
-      <td><p>Defaults to 3. Available labels, depending on data availability for the specific country, between 0 and 3.</p></td>
+      <td><p>Defaults to 0. Available labels, depending on data availability for the specific country, between 0 and 3.</p></td>
     </tr>
     <tr>
       <th>year</th>
