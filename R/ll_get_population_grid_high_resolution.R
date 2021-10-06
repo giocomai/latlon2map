@@ -21,7 +21,7 @@ ll_get_population_grid_hr <- function(geo,
                                       match_name = NULL,
                                       join = sf::st_intersects,
                                       file_format = "CSV",
-                                      dataset = "population", 
+                                      dataset = "population|general", 
                                       source_url = NULL,
                                       silent = FALSE) {
   if (silent == FALSE) {
@@ -34,12 +34,13 @@ ll_get_population_grid_hr <- function(geo,
     geo <- stringr::str_to_upper(string = geo)
   }
 
-  
-   source_url <- population_grid_hr_metadata %>% 
-    dplyr::filter(.data$format == file_format, country_code==geo)  %>% 
-    dplyr::filter(stringr::str_starts(string = name, pattern = dataset)) %>%
-    dplyr::distinct() %>% 
-    dplyr::pull(download_url)
+  if (is.null(source_url)==FALSE) {
+    source_url <- latlon2map::population_grid_hr_metadata %>% 
+      dplyr::filter(.data$format == file_format, country_code==geo)  %>% 
+      dplyr::filter(stringr::str_detect(string = name, pattern = dataset)) %>%
+      dplyr::distinct() %>% 
+      dplyr::pull(download_url)
+  }
   
   if (is.null(match_name) == FALSE) {
     rds_file_location <- ll_find_file(
