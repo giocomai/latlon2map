@@ -10,7 +10,7 @@ ll_get_population_grid_hr(
   match_name = NULL,
   join = sf::st_intersects,
   file_format = "CSV",
-  dataset = "population",
+  dataset = "population|general",
   source_url = NULL,
   silent = FALSE
 )
@@ -20,7 +20,7 @@ ll_get_population_grid_hr(
 
 \item{match_sf}{An sf object to me matched with the population grid. If not given, full grid is returned.}
 
-\item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
+\item{match_name}{A name to be used for local caching if a subset of the grid is used. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
 
 \item{file_format}{Defaults to "CSV". Other available formats include "GeoTIFF", "JSON", "zip", "GDAL Virtual Format". Currently only CSV supported.}
 

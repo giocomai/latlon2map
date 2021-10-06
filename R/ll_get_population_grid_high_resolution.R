@@ -5,7 +5,7 @@
 #'
 #' @param geo A twe letter country code, such as "IT" for Italy and "DE" for Germany
 #' @param match_sf An sf object to me matched with the population grid. If not given, full grid is returned.
-#' @param match_name A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.
+#' @param match_name A name to be used for local caching if a subset of the grid is used. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.
 #' @param source_url A direct link to the zipped version of the csv file in the original database, if automatic download with the country code does not work. For example, for Italy this would be "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"
 #' @param file_format Defaults to "CSV". Other available formats include "GeoTIFF", "JSON", "zip", "GDAL Virtual Format". Currently only CSV supported.
 #' @param dataset Defaults to "population". Beginning of the name of the dataset. For alternatives, see e.g. `population_grid_hr_metadata %>% dplyr::filter(country_code=="IT") %>% dplyr::distinct(name)`. Currently only tested with default value.
@@ -34,7 +34,7 @@ ll_get_population_grid_hr <- function(geo,
     geo <- stringr::str_to_upper(string = geo)
   }
 
-  if (is.null(source_url)==FALSE) {
+  if (is.null(source_url)==TRUE) {
     source_url <- latlon2map::population_grid_hr_metadata %>% 
       dplyr::filter(.data$format == file_format, country_code==geo)  %>% 
       dplyr::filter(stringr::str_detect(string = name, pattern = dataset)) %>%
