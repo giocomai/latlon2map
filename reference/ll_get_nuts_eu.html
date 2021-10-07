@@ -164,7 +164,26 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>ll_get_nuts_eu</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></div><div class='output co'>#&gt; <span class='error'>Error in ll_get_nuts_eu(): object 'name' not found</span></div></pre>
+</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> © EuroGeographics for the administrative boundaries</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></div><div class='output co'>#&gt; Simple feature collection with 1514 features and 9 fields
+#&gt; Geometry type: MULTIPOLYGON
+#&gt; Dimension:     XY
+#&gt; Bounding box:  xmin: -61.841 ymin: -21.376 xmax: 55.85 ymax: 80.799
+#&gt; Geodetic CRS:  WGS 84
+#&gt; <span style='color: #949494;'># A tibble: 1,514 × 10</span>
+#&gt;    NUTS_ID LEVL_CODE CNTR_CODE NAME_LATN      NUTS_NAME     MOUNT_TYPE URBN_TYPE
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>              <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> DE149           3 DE        Sigmaringen    Sigmaringen            4         3
+#&gt; <span style='color: #BCBCBC;'> 2</span> DE211           3 DE        Ingolstadt, K… Ingolstadt, …          4         2
+#&gt; <span style='color: #BCBCBC;'> 3</span> DE212           3 DE        München, Krei… München, Kre…          4         1
+#&gt; <span style='color: #BCBCBC;'> 4</span> DE213           3 DE        Rosenheim, Kr… Rosenheim, K…          4         2
+#&gt; <span style='color: #BCBCBC;'> 5</span> DE214           3 DE        Altötting      Altötting              4         2
+#&gt; <span style='color: #BCBCBC;'> 6</span> DE215           3 DE        Berchtesgaden… Berchtesgade…          3         2
+#&gt; <span style='color: #BCBCBC;'> 7</span> DE216           3 DE        Bad Tölz-Wolf… Bad Tölz-Wol…          2         2
+#&gt; <span style='color: #BCBCBC;'> 8</span> DE217           3 DE        Dachau         Dachau                 4         2
+#&gt; <span style='color: #BCBCBC;'> 9</span> DE218           3 DE        Ebersberg      Ebersberg              4         2
+#&gt; <span style='color: #BCBCBC;'>10</span> DE219           3 DE        Eichstätt      Eichstätt              4         2
+#&gt; <span style='color: #949494;'># … with 1,504 more rows, and 3 more variables: COAST_TYPE &lt;int&gt;, FID &lt;chr&gt;,</span>
+#&gt; <span style='color: #949494;'>#   geometry &lt;MULTIPOLYGON [°]&gt;</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
