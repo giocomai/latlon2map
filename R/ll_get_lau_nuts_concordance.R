@@ -57,8 +57,6 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
     return(readr::read_rds(file = rds_file))
   }
 
-
-
   xlsx_file <- ll_find_file(
     geo = "eu",
     level = "lau_nuts",
@@ -117,8 +115,14 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
 
       # manual fix
       if (current_sheet_name == "EE") {
-        current_sheet$`LAU CODE`[nchar(current_sheet$`LAU CODE`) == 3] <- stringr::str_c("0", current_sheet$`LAU CODE`[nchar(current_sheet$`LAU CODE`) == 3])
+        current_sheet$`LAU CODE` <- stringr::str_pad(string = current_sheet$`LAU CODE`,
+                                                     width = 4, side = "left", pad = "0")
       }
+      if (current_sheet_name == "SI") {
+        current_sheet$`LAU CODE` <- stringr::str_pad(string = current_sheet$`LAU CODE`,
+                                                     width = 3, side = "left", pad = "0")
+      }
+      
 
       current_sheet %>%
         dplyr::filter(is.na(.data$`LAU CODE`) == FALSE) %>%

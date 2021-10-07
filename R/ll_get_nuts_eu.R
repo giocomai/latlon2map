@@ -65,13 +65,13 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
     if (fs::file_exists(rds_file_location)) {
       return(readr::read_rds(file = rds_file_location))
     }
-  } else if (is.null(name) == FALSE) {
+  } else if (is.null(nuts_name) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = "eu",
       level = level,
       resolution = resolution,
       year = year,
-      name = paste0(level, "-", stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_")),
+      name = paste0(level, "-", stringr::str_replace_all(string = nuts_name, pattern = "[[:punct:]]", replacement = "_")),
       file_type = "rds"
     )
 
@@ -133,7 +133,7 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
     
     saveRDS(object = sf,
             file = rds_file_location)
-  } else if (is.null(name) == FALSE) {
+  } else if (is.null(nuts_name) == FALSE) {
     sf <- sf %>%
       dplyr::filter(NUTS_NAME == nuts_name)
     
