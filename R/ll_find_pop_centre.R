@@ -132,6 +132,7 @@ ll_find_pop_centre <- function(sf_location,
     )
   }
 
+  
   sf_pop_centre <- dplyr::bind_cols(
     sf_location_grid %>%
       sf::st_drop_geometry() %>%
@@ -153,9 +154,32 @@ ll_find_pop_centre <- function(sf_location,
 
 
   # if the pop-weighted centre is out of the boundary,
-  # take the closest closest cell, crop it with the boundary,
+  # take the closest cell, crop it with the boundary,
   # and use the centroid of the remaining part
-  if (sf::st_intersects(
+  
+  if (sf::st_is_valid(sf_location %>% sf::st_transform(4326))==FALSE) {
+    # deal with invalid lau
+    if (sf::st_intersects(
+      x = sf_location %>% sf::st_transform(3857),
+      y = sf_pop_centre %>% sf::st_transform(3857),
+      sparse = FALSE
+    ) == FALSE) {
+      sf_cell <- sf_location_grid %>%
+        dplyr::slice(sf::st_nearest_feature(
+          x = sf_pop_centre  %>% sf::st_transform(3857),
+          y = sf_location_grid  %>% sf::st_transform(3857)
+        ))
+      
+      sf_cell_intersection <- sf::st_intersection(
+        sf_cell  %>% sf::st_transform(3857),
+        sf_location  %>% sf::st_transform(3857)
+      )
+      
+      sf_pop_centre <- sf::st_centroid(sf_cell_intersection) %>%
+        sf::st_transform(crs = 4326)
+    }
+    
+  } else if (sf::st_intersects(
     x = sf_location,
     y = sf_pop_centre,
     sparse = FALSE
@@ -165,12 +189,12 @@ ll_find_pop_centre <- function(sf_location,
         x = sf_pop_centre,
         y = sf_location_grid
       ))
-
+    
     sf_cell_intersection <- sf::st_intersection(
       sf_cell,
       sf_location
     )
-
+    
     sf_pop_centre <- sf::st_centroid(sf_cell_intersection) %>%
       sf::st_transform(crs = 4326)
   }
