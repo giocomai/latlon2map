@@ -156,27 +156,39 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='st'>"~/R/"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "~/R/"</div><div class='input'><span class='va'>name</span> <span class='op'>&lt;-</span> <span class='st'>"Pinzolo"</span>
-<span class='va'>sf_location</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_nuts_it.html'>ll_get_nuts_it</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='va'>name</span>, level <span class='op'>=</span> <span class='st'>"lau"</span>, resolution <span class='op'>=</span> <span class='st'>"high"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://www.istat.it/it/archivio/222527</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Istat (CC-BY)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: downloaded length 47664772 != reported length 70779155</span></div><div class='output co'>#&gt; <span class='warning'>Warning: URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012021.zip': Timeout of 60 seconds was reached</span></div><div class='output co'>#&gt; <span class='error'>Error in download.file(url = source_url, destfile = zip_file): download from 'http://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012021.zip' failed</span></div><div class='input'>
-<span class='va'>lau_grid_name_temp</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='st'>"_lau_high-st_intersects"</span><span class='op'>)</span>
-
-<span class='va'>sf_location_grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_population_grid.html'>ll_get_population_grid</a></span><span class='op'>(</span>
-  match_sf <span class='op'>=</span> <span class='va'>sf_location</span>,
-  match_name <span class='op'>=</span> <span class='va'>lau_grid_name_temp</span>,
-  match_country <span class='op'>=</span> <span class='st'>"IT"</span>,
-  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Data source population grid information: Eurostat, EFGS</span></div><div class='output co'>#&gt; <span class='message'><span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: downloaded length 45758866 != reported length 76915213</span></div><div class='output co'>#&gt; <span class='warning'>Warning: URL 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip': Timeout of 60 seconds was reached</span></div><div class='output co'>#&gt; <span class='error'>Error in download.file(url = source_url, destfile = zip_file): download from 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip' failed</span></div><div class='input'>
-
-<span class='va'>pop_centre</span> <span class='op'>&lt;-</span> <span class='fu'>ll_find_pop_centre</span><span class='op'>(</span>
-  sf_location <span class='op'>=</span> <span class='va'>sf_location</span>,
-  sf_population_grid <span class='op'>=</span> <span class='va'>sf_location_grid</span>,
-  power <span class='op'>=</span> <span class='fl'>2</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in is.data.frame(x): object 'sf_location_grid' not found</span></div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='ll_set_folder.html'>ll_set_folder</a></span><span class='op'>(</span><span class='st'>"~/R/"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "~/R/"</span>
+<span class='r-in'><span class='va'>name</span> <span class='op'>&lt;-</span> <span class='st'>"Pinzolo"</span></span>
+<span class='r-in'><span class='va'>sf_location</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_nuts_it.html'>ll_get_nuts_it</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='va'>name</span>, level <span class='op'>=</span> <span class='st'>"lau"</span>, resolution <span class='op'>=</span> <span class='st'>"high"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>ℹ</span> Source: https://www.istat.it/it/archivio/222527</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>ℹ</span> Istat (CC-BY)</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>downloaded length 63989686 != reported length 70779155</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012021.zip': Timeout of 60 seconds was reached</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in download.file(url = source_url, destfile = zip_file):</span> download from 'http://www.istat.it/storage/cartografia/confini_amministrativi/non_generalizzati/Limiti01012021.zip' failed</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>lau_grid_name_temp</span> <span class='op'>&lt;-</span> <span class='fu'>stringr</span><span class='fu'>::</span><span class='fu'><a href='https://stringr.tidyverse.org/reference/str_c.html'>str_c</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='st'>"_lau_high-st_intersects"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>sf_location_grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ll_get_population_grid.html'>ll_get_population_grid</a></span><span class='op'>(</span></span>
+<span class='r-in'>  match_sf <span class='op'>=</span> <span class='va'>sf_location</span>,</span>
+<span class='r-in'>  match_name <span class='op'>=</span> <span class='va'>lau_grid_name_temp</span>,</span>
+<span class='r-in'>  match_country <span class='op'>=</span> <span class='st'>"IT"</span>,</span>
+<span class='r-in'>  join <span class='op'>=</span> <span class='fu'>sf</span><span class='fu'>::</span><span class='va'><a href='https://r-spatial.github.io/sf/reference/geos_binary_pred.html'>st_intersects</a></span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>ℹ</span> Data source population grid information: Eurostat, EFGS</span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> <span style='color: #BBBB00;'>ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>downloaded length 59136394 != reported length 76915213</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>URL 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip': Timeout of 60 seconds was reached</span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in download.file(url = source_url, destfile = zip_file):</span> download from 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip' failed</span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>pop_centre</span> <span class='op'>&lt;-</span> <span class='fu'>ll_find_pop_centre</span><span class='op'>(</span></span>
+<span class='r-in'>  sf_location <span class='op'>=</span> <span class='va'>sf_location</span>,</span>
+<span class='r-in'>  sf_population_grid <span class='op'>=</span> <span class='va'>sf_location_grid</span>,</span>
+<span class='r-in'>  power <span class='op'>=</span> <span class='fl'>2</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-err co'><span class='r-pr'>#&gt;</span> <span class='error'>Error in is.data.frame(x):</span> object 'sf_location_grid' not found</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
