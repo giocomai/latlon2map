@@ -92,17 +92,73 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
     .x = country_sheets,
     .f = function(current_sheet_name) {
       pb$tick()
-      current_sheet <- readxl::read_xlsx(
-        path = xlsx_file,
-        sheet = current_sheet_name,
-        col_names = TRUE,
-        col_types = "text",
-        range = readxl::cell_cols("A:D")
-      )
+      message(current_sheet_name)
+      if (lau_year == 2020 & country_sheets=="IT") {
+        if (nuts_year==2016) {
+          current_sheet_name <- "IT NUTS 2016"
+        } else if (nuts_year == 2021) {
+          current_sheet_name <- "IT NUTS 2021"
+        }
+        current_sheet <- readxl::read_xlsx(
+          path = xlsx_file,
+          sheet = current_sheet_name,
+          col_names = TRUE,
+          col_types = "text",
+          range = readxl::cell_cols("A:D")
+        )
+        
+      } else if (lau_year == 2020 & current_sheet_name %in% readxl::excel_sheets(xlsx_file)) {
+        current_sheet <- readxl::read_xlsx(
+          path = xlsx_file,
+          sheet = current_sheet_name,
+          col_names = TRUE,
+          col_types = "text",
+          range = readxl::cell_cols("A:D")
+        )
+      } else if (lau_year == 2020 & nuts_year==2016) {
+        current_sheet_name <- tibble::tibble(sheet = readxl::excel_sheets(xlsx_file)) %>% 
+          dplyr::filter(stringr::str_starts(string = sheet, pattern = current_sheet_name)) %>% 
+          dplyr::pull(sheet)
+        
+        current_sheet <- readxl::read_xlsx(
+          path = xlsx_file,
+          sheet = current_sheet_name,
+          col_names = TRUE,
+          col_types = "text",
+          range = readxl::cell_cols("B:E")
+        ) %>% 
+          dplyr::rename(`NUTS 3 CODE` = `NUTS 3 CODE 2016`)
+      } else if (lau_year == 2020 & nuts_year==2021) {
+        current_sheet_name <- tibble::tibble(sheet = readxl::excel_sheets(xlsx_file)) %>% 
+          dplyr::filter(stringr::str_starts(string = sheet, pattern = current_sheet_name)) %>% 
+          dplyr::pull(sheet)
+        
+        current_sheet <- readxl::read_xlsx(
+          path = xlsx_file,
+          sheet = current_sheet_name,
+          col_names = TRUE,
+          col_types = "text",
+          range = readxl::cell_cols(c(1, 3:5))
+        ) %>% 
+          dplyr::rename(`NUTS 3 CODE` = `NUTS 3 CODE 2021`)
+        
+      } else {
+        current_sheet <- readxl::read_xlsx(
+          path = xlsx_file,
+          sheet = current_sheet_name,
+          col_names = TRUE,
+          col_types = "text",
+          range = readxl::cell_cols("A:D")
+        )
+      }
+
+      
+
 
       if (nrow(current_sheet) == 0) {
         return(NULL)
       }
+      
       if (is.element("NUTS 3 CODE 2013", colnames(current_sheet))) {
         current_sheet <- current_sheet %>%
           dplyr::rename(`NUTS 3 CODE` = `NUTS 3 CODE 2013`)

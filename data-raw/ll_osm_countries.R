@@ -9,7 +9,8 @@ continents <- c(
   "central-america",
   "europe",
   "north-america",
-  "south-america"
+  "south-america",
+  "russia"
 )
 
 ll_osm_countries <-
@@ -80,10 +81,18 @@ ll_osm_countries <-
         }
       )
 
-      dplyr::bind_rows(
-        small_countries_df,
-        big_countries_df
-      )
+      if (current_continent == "russia") {
+        tibble::tibble(continent = "russia", 
+                       country = "russia", 
+                       link = list(small_countries_df %>% 
+          tidyr::unnest(link) %>% 
+          dplyr::select(link)))
+      } else {
+        dplyr::bind_rows(
+          small_countries_df,
+          big_countries_df
+        ) 
+      }
     }
   )
 

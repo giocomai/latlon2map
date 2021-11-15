@@ -22,15 +22,30 @@ countries_with_more <- ll_osm_countries %>%
   dplyr::distinct(country) %>%
   dplyr::pull(country)
 
+
+
 temp_bbox_folder <- fs::path(latlon2map::ll_set_folder(), "temp_bbox")
 fs::dir_create(path = temp_bbox_folder)
 
 ll_osm_bboxes_pre <- purrr::map_dfr(
   .x = countries_with_more,
   .f = function(current_country) {
-    # current_country <- "us"
-    # ll_osm_download(countries = current_country)
-    # ll_osm_extract_roads(countries = current_country)
+    # current_country <- "spain"
+    
+    if (exists("ll_osm_bboxes")) {
+      previous_df <- ll_osm_bboxes %>% 
+        dplyr::filter(country==current_country)
+      
+      if (nrow(previous_df)>0) {
+        return(
+          previous_df %>% 
+            dplyr::select(-country_code)
+        )
+      }
+    }
+    
+    ll_osm_download(countries = current_country)
+    ll_osm_extract_roads(countries = current_country)
 
 
     current_country_regions <- ll_osm_countries %>%
@@ -61,7 +76,8 @@ ll_osm_bboxes_pre <- purrr::map_dfr(
           paste0(
             current_country,
             "-",
-            current_region_name, ".rds"
+            current_region_name,
+            ".rds"
           )
         )
 
@@ -99,15 +115,43 @@ cc <- tibble::tribble(
   "germany", "DE",
   "great-britain", "UK",
   "italy", "IT",
+  "netherlands", "NL",
   "poland", "PL",
+  "spain", "ES",
+  "russia", "RU",
   "canada", "CA",
   "us", "US",
   "brazil", "BR",
-  "guatemala", "GT"
+  "guatemala", "GT",
+  "india", "IN"
 )
 
+
+
 ll_osm_bboxes <- ll_osm_bboxes_pre %>%
-  dplyr::left_join(y = cc, by = "country") %>%
-  dplyr::select(country_code, country, region, bbox)
+  dplyr::mutate(country_code = countrycode::countrycode(sourcevar = country,
+                                                        origin = "country.name.en",
+                                                        destination = "eurostat")) %>% 
+  dplyr::select(country_code, country, region, bbox) %>% 
+  dplyr::arrange(country_code)
 
 usethis::use_data(ll_osm_bboxes, overwrite = TRUE)
+
+
+### this useful only to update as new countries appear here
+# 
+# before_update_df <- ll_osm_bboxes
+# 
+# cc_new <- cc %>% 
+#   dplyr::anti_join(y = ll_osm_bboxes, by = "country")
+# 
+# 
+# 
+# ll_osm_bboxes_new <- cc %>%
+#   dplyr::anti_join(y = before_update_df, by = "country") 
+# 
+# ll_osm_bboxes <- dplyr::bind_rows(x = before_update_df,
+#                                   y = ll_osm_bboxes_new) %>% 
+#   dplyr::arrange(country)
+# 
+# usethis::use_data(ll_osm_bboxes, overwrite = TRUE)
