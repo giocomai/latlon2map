@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9001</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -82,29 +78,29 @@
 
     
     
-<p>There are a number of small things that unneccesarily complicate using geographic data in Europe. The fact that even mapping data released by Eurostat <a href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units">are not distributed with a license that allows for their re-distribution</a>, makes it more difficult to liberally pre-process and distribute such data as is common for example in the United States where they are usually released in the public domain.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> But beyond the licensing, there are still a number of small operations to do - find the data, download, uncompress, import in a useful format - and they all take time, and are boring, and demotivating.</p>
+<p>There are a number of small things that unneccesarily complicate using geographic data in Europe. The fact that even mapping data released by Eurostat <a href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units" class="external-link">are not distributed with a license that allows for their re-distribution</a>, makes it more difficult to liberally pre-process and distribute such data as is common for example in the United States where they are usually released in the public domain.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> But beyond the licensing, there are still a number of small operations to do - find the data, download, uncompress, import in a useful format - and they all take time, and are boring, and demotivating.</p>
 <p>So instead of spending time trying to make a map that is nice and useful, users (I have in mind data journalists, but this may relate to other users as well) waste a lot of time getting the data into R. They also end up having multiple copies of similar datasets, and end up sharing code that is not reproducible. How does it happen?</p>
 <p>Let’s say I make a visualisation of electoral data. I use a geographic dataset on municipalities, and store it somewhere in my working folder. If I share the code, I often do not share also the geographic dataset due to size or licensing issues… I can then make a textual reference, or include a lot of boilerplate code that downloads the data if they are not locally available, uncompress, import, process them, etc. Even if I do all of the above, when the following week I will make another map for an article on climate change, I will end up redownloading the dataset, etc., ending up with multiple copies of the same geographic dataset. If I keep my folders synced, this also implies a lot of unnecessary files stored in the cloud, slowing the sync of the few lines of code that I’d actually like to be synced.</p>
 <p>The package <code>latlon2map</code> deals with all of the above, easing the pain of the R user doing geocomputation. The package addresses the needs of data journalists and data enthusiasts, will be of particular use to non-experienced R programmers, but will likely be useful to users with all levels of experience. Please bear in mind that the package is functional, but is at an early stage of development, and is targeted mainly at Europe-based users.</p>
-<div id="getting-the-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-the-data" class="anchor"></a>Getting the data</h2>
+<div class="section level2">
+<h2 id="getting-the-data">Getting the data<a class="anchor" aria-label="anchor" href="#getting-the-data"></a>
+</h2>
 <p>The core idea of <code>latlon2map</code> is to make the process of caching geographic datasets as frictionless but also as transparent as possible.</p>
 <p>The first thing to do is to set a folder where all data will be cached. This should normally by a folder that you do not sync, e.g. </p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org">"ggplot2"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org">"dplyr"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://r-spatial.github.io/sf/">"sf"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-spatial.github.io/sf/" class="external-link">"sf"</a></span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"latlon2map"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"latlon2map"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span>path <span class="op">=</span> <span class="st">"~/R"</span><span class="op">)</span>
 <span class="co">#&gt; [1] "~/R"</span></code></pre></div>
 <p>All functions to get maps start with <code>ll_get_</code> to facilitate auto-completion, and all of them output <code>sf</code> objects with crs 4326. As such, they can be directly used in graphs, without even the need to store them as separate objects.</p>
 <p>If I want a map with local administrative units in the UK, for example, I can run the following code.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_lau_eu.html">ll_get_lau_eu</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"UK"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_lau_eu.html">ll_get_lau_eu</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"UK"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; ℹ © EuroGeographics for the administrative boundaries</span></code></pre></div>
 <div class="figure">
 <img src="figure/uk_lau-1.png" alt=""><p class="caption">plot of chunk uk_lau</p>
@@ -112,9 +108,9 @@
 <p>The first time that this is run it will download data from Eurostat’s website, unzip it, import as an <code>sf</code> object, and store it locally for quick retrieval. This means that if you run the same piece of code a second time, it will print the map almost instantly.</p>
 <p>Here is for example the code for having NUTS2 regions in Italy.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"IT"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"IT"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; ℹ © EuroGeographics for the administrative boundaries</span>
 <span class="co">#&gt; ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></code></pre></div>
 <div class="figure">
@@ -122,9 +118,9 @@
 </div>
 <p>Or with higher resolution:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span>, resolution <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"IT"</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span>, resolution <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"IT"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; ℹ © EuroGeographics for the administrative boundaries</span>
 <span class="co">#&gt; ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries</span></code></pre></div>
 <div class="figure">
@@ -134,8 +130,8 @@
 <p>The package may include data from other statistical services; currently, it integrates geographic data published by Istat in Italy to have higher detail.</p>
 <p>This for example shows the boundary of the city of Bologna, in Italy. The data for the specific geographic unit are also cached separately, so a second run of this code will give the result almost immediately (to clarify: if will not open the full dataset and filter for Bologna, but will open a pre-cached file with only the data for Bologna to increase speed and reduce memory requirements).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_nuts_it.html">ll_get_nuts_it</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Bologna"</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span><span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="../reference/ll_get_nuts_it.html">ll_get_nuts_it</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Bologna"</span>,
                                 level <span class="op">=</span> <span class="st">"lau"</span>,
                                 resolution <span class="op">=</span> <span class="st">"high"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; ℹ Source: https://www.istat.it/it/archivio/222527</span>
@@ -147,31 +143,31 @@
 <p>Information on copyright is displayed on the console at each call of the function unless <code>silent = TRUE</code> is enabled.</p>
 <p>The original shapefiles and the accompanying documentation remains stored under the folder <code>ll_data</code>.</p>
 </div>
-<div id="getting-the-right-proportions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#getting-the-right-proportions" class="anchor"></a>Getting the right proportions</h2>
+<div class="section level2">
+<h2 id="getting-the-right-proportions">Getting the right proportions<a class="anchor" aria-label="anchor" href="#getting-the-right-proportions"></a>
+</h2>
 <p>Another small nuisance is related to including in the same post maps or areas with different proportions.</p>
 <p>For example, Portugal and the Netherlands have different shapes, but I’d like to have all maps in my my post with the same height/width ratio. This is slightly complicated by the fact that scales are in degrees, so it take some effort to get get them right. The function <code>ll_bbox</code> takes care of this, so that instead of some maps that are very wide, and some that are very tall, e.g. </p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"paleolimbot/ggspatial"</span>, upgrade <span class="op">=</span> <span class="st">"never"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://paleolimbot.github.io/ggspatial/">"ggspatial"</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"paleolimbot/ggspatial"</span>, upgrade <span class="op">=</span> <span class="st">"never"</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://paleolimbot.github.io/ggspatial/" class="external-link">"ggspatial"</a></span><span class="op">)</span>
 
-<span class="va">sf_reference</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span>, resolution <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"SE"</span><span class="op">)</span>
+<span class="va">sf_reference</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_nuts_eu.html">ll_get_nuts_eu</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">2</span>, resolution <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">CNTR_CODE</span> <span class="op">==</span> <span class="st">"SE"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>,
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html" class="external-link">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>,
                         zoomin <span class="op">=</span> <span class="fl">0</span>,
-                        cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_reference</span>, colour <span class="op">=</span> <span class="st">"darkred"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
+                        cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_reference</span>, colour <span class="op">=</span> <span class="st">"darkred"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></code></pre></div>
 <div class="figure">
 <img src="figure/sweden_bw_thin-1.png" alt=""><p class="caption">plot of chunk sweden_bw_thin</p>
 </div>
 <p>…we can have this all of them with the same proportion.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_bbox.html">ll_bbox</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="va">sf_reference</span>,ratio <span class="op">=</span> <span class="st">"4:3"</span><span class="op">)</span><span class="op">)</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_reference</span>, colour <span class="op">=</span> <span class="st">"darkred"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html" class="external-link">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_bbox.html">ll_bbox</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="va">sf_reference</span>,ratio <span class="op">=</span> <span class="st">"4:3"</span><span class="op">)</span><span class="op">)</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_reference</span>, colour <span class="op">=</span> <span class="st">"darkred"</span>, fill <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
 <span class="co">#&gt; Zoom: 5</span>
 <span class="co">#&gt; Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj): Discarded</span>
 <span class="co">#&gt; ellps WGS 84 in CRS definition: +proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1</span>
@@ -187,9 +183,9 @@
 <img src="figure/sweden_be_4_3-1.png" alt=""><p class="caption">plot of chunk sweden_be_4_3</p>
 </div>
 </div>
-<div id="get-the-population-grid" class="section level2">
-<h2 class="hasAnchor">
-<a href="#get-the-population-grid" class="anchor"></a>Get the population grid</h2>
+<div class="section level2">
+<h2 id="get-the-population-grid">Get the population grid<a class="anchor" aria-label="anchor" href="#get-the-population-grid"></a>
+</h2>
 <p>There are more complex geographic data than simple boundary lines. Eurostat for example published a population grid, pointing at how many people lives in each square km of the continent. Such data can be useful for a number of analyses, but they tend to come in big files. Again, <code>lonlat2map</code> caches the result, including pre-processed data if a consistent name is provided.</p>
 <p>[the following code chunks are not evaluated for facilitating auto-deploy of the website with vignette]</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -197,29 +193,29 @@
 
 <span class="va">sf_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_lau_eu.html">ll_get_lau_eu</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">name</span><span class="op">)</span>
   
-<span class="va">desired_bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_bbox.html">ll_bbox</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="va">sf_location</span>, ratio <span class="op">=</span> <span class="st">"16:9"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">desired_bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_bbox.html">ll_bbox</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="va">sf_location</span>, ratio <span class="op">=</span> <span class="st">"16:9"</span><span class="op">)</span><span class="op">)</span>
   
-<span class="va">lau_grid_name</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"_lau_high-st_intersects"</span><span class="op">)</span>
+<span class="va">lau_grid_name</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"_lau_high-st_intersects"</span><span class="op">)</span>
     
 <span class="va">sf_location_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_population_grid.html">ll_get_population_grid</a></span><span class="op">(</span>match_sf <span class="op">=</span> <span class="va">sf_location</span>,
                                            match_name <span class="op">=</span> <span class="va">lau_grid_name</span>,
                                            match_country <span class="op">=</span> <span class="st">"AT"</span>,
-                                           join <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span>,
-                                           silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>`Nr. of residents` <span class="op">=</span> <span class="va">TOT_P</span><span class="op">)</span>
+                                           join <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects</a></span>,
+                                           silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>`Nr. of residents` <span class="op">=</span> <span class="va">TOT_P</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">desired_bbox</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location_grid</span>,
-            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">`Nr. of residents`</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location</span>,
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html" class="external-link">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">desired_bbox</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location_grid</span>,
+            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">`Nr. of residents`</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location</span>,
             colour <span class="op">=</span> <span class="st">"darkred"</span>,
             size <span class="op">=</span> <span class="fl">2</span>,
             fill <span class="op">=</span> <span class="cn">NA</span>,
             alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sf_location</span><span class="op">$</span><span class="va">LAU_LABEL</span><span class="op">)</span>, 
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">sf_location</span><span class="op">$</span><span class="va">LAU_LABEL</span><span class="op">)</span>, 
        subtitle <span class="op">=</span> <span class="st">"Administrative boundaries and population grid"</span>,
        caption <span class="op">=</span> <span class="st">"Source: © EuroGeographics for the administrative boundaries
        Data source population grid information: Eurostat, EFGS
@@ -229,28 +225,28 @@
 <img src="figure/viewnna_pop_grid-1.png" alt=""><p class="caption">plot of chunk viewnna_pop_grid</p>
 </div>
 </div>
-<div id="population-weighted-centre" class="section level2">
-<h2 class="hasAnchor">
-<a href="#population-weighted-centre" class="anchor"></a>Population-weighted centre</h2>
+<div class="section level2">
+<h2 id="population-weighted-centre">Population-weighted centre<a class="anchor" aria-label="anchor" href="#population-weighted-centre"></a>
+</h2>
 <p><code>lonlat2map</code> includes some convenience functions to deal with normally tedious processes, e.g. finding the population-weighted center of an area.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">name</span> <span class="op">=</span> <span class="st">"Palmanova"</span>
 <span class="va">sf_location</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_nuts_it.html">ll_get_nuts_it</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">name</span>, level <span class="op">=</span> <span class="st">"lau"</span>, resolution <span class="op">=</span> <span class="st">"high"</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="va">centroid</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html">st_centroid</a></span><span class="op">(</span><span class="va">sf_location</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-                              <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">3857</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span>
+<span class="va">centroid</span> <span class="op">&lt;-</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/geos_unary.html" class="external-link">st_centroid</a></span><span class="op">(</span><span class="va">sf_location</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+                              <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">3857</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span>crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span>
 <span class="co">#&gt; Warning in st_centroid.sf(sf_location %&gt;% sf::st_transform(crs = 3857)): st_centroid assumes attributes</span>
 <span class="co">#&gt; are constant over geometries of x</span>
 
-<span class="va">desired_bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_bbox.html">ll_bbox</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="va">sf_location</span>, ratio <span class="op">=</span> <span class="st">"4:3"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">desired_bbox</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sfc.html" class="external-link">st_as_sfc</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_bbox.html">ll_bbox</a></span><span class="op">(</span>sf <span class="op">=</span> <span class="va">sf_location</span>, ratio <span class="op">=</span> <span class="st">"4:3"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">lau_grid_name_temp</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"_lau_high-st_intersects"</span><span class="op">)</span>
+<span class="va">lau_grid_name_temp</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"_lau_high-st_intersects"</span><span class="op">)</span>
 
 <span class="va">sf_location_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_population_grid.html">ll_get_population_grid</a></span><span class="op">(</span>match_sf <span class="op">=</span> <span class="va">sf_location</span>,
                                            match_name <span class="op">=</span> <span class="va">lau_grid_name_temp</span>,
                                            match_country <span class="op">=</span> <span class="st">"IT"</span>,
-                                           join <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span>,
+                                           join <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects</a></span>,
                                            silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">pop_centroid</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_find_pop_centre.html">ll_find_pop_centre</a></span><span class="op">(</span>sf_location <span class="op">=</span> <span class="va">sf_location</span>,
@@ -258,30 +254,30 @@
                                    power <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt; Warning in st_centroid.sf(.): st_centroid assumes attributes are constant over geometries of x</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">desired_bbox</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location_grid</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>`Nr. of residents` <span class="op">=</span> <span class="va">TOT_P</span><span class="op">)</span>,
-            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">`Nr. of residents`</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location</span>,
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html" class="external-link">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">desired_bbox</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location_grid</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>`Nr. of residents` <span class="op">=</span> <span class="va">TOT_P</span><span class="op">)</span>,
+            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">`Nr. of residents`</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location</span>,
             colour <span class="op">=</span> <span class="st">"darkred"</span>,
             size <span class="op">=</span> <span class="fl">2</span>,
             fill <span class="op">=</span> <span class="cn">NA</span>,
             alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroid</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroid</span>,
           colour <span class="op">=</span> <span class="st">"darkred"</span>,
           fill <span class="op">=</span> <span class="st">"coral"</span>,
           size <span class="op">=</span> <span class="fl">5</span>,
           shape <span class="op">=</span> <span class="fl">21</span>,
           alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_centroid</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_centroid</span>,
           colour <span class="op">=</span> <span class="st">"blue4"</span>,
           fill <span class="op">=</span> <span class="st">"cornflowerblue"</span>,
           size <span class="op">=</span> <span class="fl">5</span>,
           shape <span class="op">=</span> <span class="fl">21</span>,
           alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sf_location</span><span class="op">$</span><span class="va">COMUNE</span><span class="op">)</span>, 
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">sf_location</span><span class="op">$</span><span class="va">COMUNE</span><span class="op">)</span>, 
        subtitle <span class="op">=</span> <span class="st">"Administrative boundaries and population grid
 Centroid in red, population-weighted centre in blue"</span>,
        caption <span class="op">=</span> <span class="st">"Source: © EuroGeographics for the administrative boundaries
@@ -302,44 +298,44 @@ Centroid in red, population-weighted centre in blue"</span>,
 <div class="figure">
 <img src="figure/pop_weighted_centre_palmanova-1.png" alt=""><p class="caption">plot of chunk pop_weighted_centre_palmanova</p>
 </div>
-<p>The function is flexible, and can be used with more granular population data such as those <a href="https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/">distributed by Facebook</a>, which can be loaded with the function <code><a href="../reference/ll_get_population_grid_hr.html">ll_get_population_grid_hr()</a></code>.</p>
+<p>The function is flexible, and can be used with more granular population data such as those <a href="https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/" class="external-link">distributed by Facebook</a>, which can be loaded with the function <code><a href="../reference/ll_get_population_grid_hr.html">ll_get_population_grid_hr()</a></code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">lau_grid_name_temp</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"_lau_hr-st_intersects"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">lau_grid_name_temp</span> <span class="op">&lt;-</span> <span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"_lau_hr-st_intersects"</span><span class="op">)</span>
 
 <span class="va">sf_location_grid_hr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_get_population_grid_hr.html">ll_get_population_grid_hr</a></span><span class="op">(</span>geo <span class="op">=</span> <span class="st">"IT"</span>, 
                           match_sf <span class="op">=</span> <span class="va">sf_location</span>,
                           match_name <span class="op">=</span> <span class="va">lau_grid_name_temp</span>,
-                          join <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html">st_intersects</a></span>,
+                          join <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="va"><a href="https://r-spatial.github.io/sf/reference/geos_binary_pred.html" class="external-link">st_intersects</a></span>,
                           silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="va">pop_centroid_hr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ll_find_pop_centre.html">ll_find_pop_centre</a></span><span class="op">(</span>sf_location <span class="op">=</span> <span class="va">sf_location</span>,
                                        sf_population_grid <span class="op">=</span> <span class="va">sf_location_grid_hr</span>,
                                        power <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="http://fs.r-lib.org/reference/path.html">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">desired_bbox</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location_grid_hr</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>`Nr. of residents` <span class="op">=</span> <span class="va">Population</span><span class="op">)</span>,
-            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">`Nr. of residents`</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_colour_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location</span>,
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://paleolimbot.github.io/ggspatial/reference/annotation_map_tile.html" class="external-link">annotation_map_tile</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"stamenbw"</span>, zoomin <span class="op">=</span> <span class="fl">0</span>, cachedir <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu"><a href="../reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">desired_bbox</span>, fill <span class="op">=</span> <span class="cn">NA</span>, color <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location_grid_hr</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>`Nr. of residents` <span class="op">=</span> <span class="va">Population</span><span class="op">)</span>,
+            mapping <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">`Nr. of residents`</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html" class="external-link">scale_colour_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sf_location</span>,
             colour <span class="op">=</span> <span class="st">"darkred"</span>,
             size <span class="op">=</span> <span class="fl">2</span>,
             fill <span class="op">=</span> <span class="cn">NA</span>,
             alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroid</span>,
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">centroid</span>,
           colour <span class="op">=</span> <span class="st">"darkred"</span>,
           fill <span class="op">=</span> <span class="st">"coral"</span>,
           size <span class="op">=</span> <span class="fl">5</span>,
           shape <span class="op">=</span> <span class="fl">21</span>,
           alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_centroid_hr</span>,
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">pop_centroid_hr</span>,
           colour <span class="op">=</span> <span class="st">"blue4"</span>,
           fill <span class="op">=</span> <span class="st">"cornflowerblue"</span>,
           size <span class="op">=</span> <span class="fl">5</span>,
           shape <span class="op">=</span> <span class="fl">21</span>,
           alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">sf_location</span><span class="op">$</span><span class="va">COMUNE</span><span class="op">)</span>, 
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">sf_location</span><span class="op">$</span><span class="va">COMUNE</span><span class="op">)</span>, 
        subtitle <span class="op">=</span> <span class="st">"Administrative boundaries and population grid
 Centroid in red, population-weighted centre in blue"</span>,
        caption <span class="op">=</span> <span class="st">"Source: © EuroGeographics for the administrative boundaries
@@ -350,10 +346,10 @@ Centroid in red, population-weighted centre in blue"</span>,
 <img src="figure/pop_weighted_centre_palmanova_hr-1.png" alt=""><p class="caption">plot of chunk pop_weighted_centre_palmanova_hr</p>
 </div>
 </div>
-<div id="more-to-come" class="section level2">
-<h2 class="hasAnchor">
-<a href="#more-to-come" class="anchor"></a>More to come</h2>
-<p>This package was started while writing <a href="https://codebase.giorgiocomai.eu/2020/03/25/population-weighted-centre/">a blog post</a>, and not everything may work smoothly at this stage. Feel free to get in touch with the author or <a href="https://github.com/giocomai/latlon2map">file an issue on GitHub</a>.</p>
+<div class="section level2">
+<h2 id="more-to-come">More to come<a class="anchor" aria-label="anchor" href="#more-to-come"></a>
+</h2>
+<p>This package was started while writing <a href="https://codebase.giorgiocomai.eu/2020/03/25/population-weighted-centre/" class="external-link">a blog post</a>, and not everything may work smoothly at this stage. Feel free to get in touch with the author or <a href="https://github.com/giocomai/latlon2map" class="external-link">file an issue on GitHub</a>.</p>
 <p>Future versions of <code>lonlat2map</code> will have integrated support for more data sources, as well as additional functions to facilitate common use cases.</p>
 </div>
 <div class="footnotes">
@@ -375,11 +371,13 @@ Centroid in red, population-weighted centre in blue"</span>,
 
 
       <footer><div class="copyright">
-  <p>Developed by Giorgio Comai.</p>
+  <p></p>
+<p>Developed by Giorgio Comai.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -387,6 +385,8 @@ Centroid in red, population-weighted centre in blue"</span>,
 
   
 
+
+  
 
   </body>
 </html>
