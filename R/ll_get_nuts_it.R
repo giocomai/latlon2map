@@ -4,6 +4,7 @@
 #'
 #' @param level Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.
 #' @param year Defaults to 2021 (latest available).
+#' @param no_check_certificate Logical, defaults to FALSE. Enable only if certificate issues, and if you are aware of the security implications.
 #'
 #' @return
 #' @export
@@ -16,7 +17,8 @@ ll_get_nuts_it <- function(name = NULL,
                            level = 2,
                            year = 2021,
                            resolution = "low",
-                           silent = FALSE) {
+                           silent = FALSE, 
+                           no_check_certificate = FALSE) {
   if (silent == FALSE) {
     usethis::ui_info(x = "Source: https://www.istat.it/it/archivio/222527")
     usethis::ui_info(x = "Istat (CC-BY)")
@@ -84,7 +86,7 @@ ll_get_nuts_it <- function(name = NULL,
       missing = ""
     )
 
-    source_url <- paste0("http://www.istat.it/storage/cartografia/confini_amministrativi/", type, "/Limiti0101", year, g_name, ".zip")
+    source_url <- paste0("https://www.istat.it/storage/cartografia/confini_amministrativi/", type, "/Limiti0101", year, g_name, ".zip")
 
     zip_file <- ll_find_file(
       geo = "it",
@@ -97,7 +99,11 @@ ll_get_nuts_it <- function(name = NULL,
 
 
     if (fs::file_exists(zip_file) == FALSE) {
-      download.file(url = source_url, destfile = zip_file)
+      if (isTRUE(no_check_certificate)) {
+        download.file(url = source_url, destfile = zip_file, method = "wget", extra = "--no-check-certificate")
+      } else {
+        download.file(url = source_url, destfile = zip_file) 
+      }
     }
 
     unzip(zipfile = zip_file, exdir = shp_folder)
