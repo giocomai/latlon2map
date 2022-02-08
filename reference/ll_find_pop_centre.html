@@ -99,7 +99,9 @@
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Data source population grid information: Eurostat, EFGS</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in ll_get_population_grid(match_sf = sf_location, match_name = lau_grid_name_temp,     match_country = "IT", join = sf::st_intersects):</span> object 'sf_location' not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>downloaded length 62437770 != reported length 76915213</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip': Timeout of 60 seconds was reached</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download.file(url = source_url, destfile = zip_file):</span> download from 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip' failed</span>
 <span class="r-in"></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">pop_centre</span> <span class="op">&lt;-</span> <span class="fu">ll_find_pop_centre</span><span class="op">(</span></span>
