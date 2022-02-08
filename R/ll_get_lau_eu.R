@@ -264,23 +264,32 @@ ll_osm_get_lau_streets <- function(gisco_id,
   
   current_lau_bbox <- sf::st_bbox(current_lau_boundary)
   
-  
-  
   if (is.null(streets_sf)==FALSE) {
     city_roads_pre <- streets_sf
   } else {
     # TODO country_full_name will not always match with OSM/Geofabrik
     
     if (is.element(gisco_cc, ll_osm_bboxes$country_code)) {
-      if (is.null(country)) {
-        country_full_name <- country
+      if (is.null(country)==FALSE) {
+        country_full_name <- country %>%
+          stringr::str_to_lower(country)
+        
+        bbox_check_df <- ll_osm_bboxes %>%
+          dplyr::filter(.data$country == country_full_name)
+        
+        if (nrow(bbox_check_df)>0) {
+          bboxes_available <- TRUE
+        } else {
+          bboxes_available <- FALSE
+        }
+        
       } else {
         country_full_name <- ll_osm_bboxes %>%
-          dplyr::filter(country_code == gisco_cc) %>%
-          dplyr::distinct(country) %>%
-          dplyr::pull(country) 
-      }
-      
+        dplyr::filter(country_code == gisco_cc) %>%
+        dplyr::distinct(country) %>%
+        dplyr::pull(country) 
+    }
+    
       bboxes_available <- TRUE
     } else {
       if (is.null(country)==FALSE) {
@@ -320,8 +329,6 @@ ll_osm_get_lau_streets <- function(gisco_id,
       city_roads_pre <- ll_osm_get_roads(country = country_full_name)
     }
   }
-  
-  
   
   if (unnamed_streets == TRUE) {
     city_roads <- city_roads_pre %>%
