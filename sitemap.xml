@@ -85,13 +85,13 @@
     <loc>/reference/ll_osm_extract_roads.html</loc>
   </url>
   <url>
+    <loc>/reference/ll_osm_get_lau_streets.html</loc>
+  </url>
+  <url>
     <loc>/reference/ll_osm_get_roads.html</loc>
   </url>
   <url>
     <loc>/reference/ll_osm_it_gpkg.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ll_osm_lau_streets.html</loc>
   </url>
   <url>
     <loc>/reference/ll_set_folder.html</loc>
