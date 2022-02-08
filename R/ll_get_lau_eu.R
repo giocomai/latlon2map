@@ -285,12 +285,13 @@ ll_osm_get_lau_streets <- function(gisco_id,
         
       } else {
         country_full_name <- ll_osm_bboxes %>%
-        dplyr::filter(country_code == gisco_cc) %>%
-        dplyr::distinct(country) %>%
-        dplyr::pull(country) 
+          dplyr::filter(country_code == gisco_cc) %>%
+          dplyr::distinct(country) %>%
+          dplyr::pull(country) 
+        
+        bboxes_available <- TRUE
     }
-    
-      bboxes_available <- TRUE
+
     } else {
       if (is.null(country)==FALSE) {
         country_full_name <- country
