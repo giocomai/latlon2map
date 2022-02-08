@@ -2,7 +2,7 @@
 #'
 #' N.B. Names do not always correspond to official name of countries and may include different geographic entities.
 #' For a full list of available "countries" as made available by Geofabrik, see the internal dataset `ll_osm_countries`.
-#' Be considered in downloading file.
+#' Be considered in downloading files.
 #'
 #' @param countries One or more country names. For details on available country names see the dataset included in this package: `ll_osm_countries`
 #' @param overwrite Logical, defaults to FALSE. If true, downloads new files even if already present.

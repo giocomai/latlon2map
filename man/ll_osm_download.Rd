@@ -19,7 +19,7 @@ Used only for its side effects (downloads osm data).
 \description{
 N.B. Names do not always correspond to official name of countries and may include different geographic entities.
 For a full list of available "countries" as made available by Geofabrik, see the internal dataset \code{ll_osm_countries}.
-Be considered in downloading file.
+Be considered in downloading files.
 }
 \examples{
 \dontrun{

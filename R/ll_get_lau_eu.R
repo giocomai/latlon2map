@@ -163,41 +163,47 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 }
 
 
-#' Get all streets available in OpenStreetMap located in given local administrative unit.
+#' Get all streets available in OpenStreetMap located in given local
+#' administrative unit.
 #'
-#' Relies on the output of `ll_get_lau_eu()` for the boundaries of local administrative units.
+#' Relies on the output of `ll_get_lau_eu()` for the boundaries of local
+#' administrative units.
 #'
 #' @param gisco_id Gisco identifier.
-#' @param unnamed_streets Defaults to TRUE. If FALSE, it drops all streets with missing "name" or missing "fclass".
-#' @param year Year of mapping, defaults to most recent (2020). Available starting with 2011.
+#' @param country Name of country as included in Geofabrik's datasets, does not
+#'   always match common country names or geography. For details on available
+#'   country names see the dataset included in this package: `ll_osm_countries`
+#' @param unnamed_streets Defaults to TRUE. If FALSE, it drops all streets with
+#'   missing "name" or missing "fclass".
+#' @param lau_boundary_sf Defaults to NULL. If given, used to speed up
+#'   processing. Must be an `sf` object such as the ones output by
+#' @param streets_sf Defaults to NULL. If given, used to speed up processing.
+#'   Must be an `sf` object such as the ones output by `ll_get_lau_eu()`.
+#' @param country_code_type Defaults to "eurostat". An alternative common value
+#'   is "iso2c". See `countrycode::codelist` for a list of available codes.
+#' @param year Year of LAU boundaries, defaults to most recent (2020), passed to
+#'   `ll_get_lau_eu()`. Available starting with 2011.
 #'
-#' @return
+#' @return An `sf` objects with all streets of a given LAU based on
+#'   OpenStreetMap
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' ll_osm_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
+#' ll_osm_get_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
+#'
+#' # or if country name does not match
+#'
+#' ll_osm_get_lau_streets(gisco_id = "EL_01020204", country = "greece")
 #' }
-ll_osm_lau_streets <- function(gisco_id,
-                               unnamed_streets = TRUE,
-                               year = 2020) {
-  gisco_cc <- stringr::str_extract(
-    string = gisco_id,
-    pattern = "[A-Z][A-Z]"
-  ) %>%
-    stringr::str_to_upper()
-
-  city_code <- stringr::str_extract(
-    string = gisco_id,
-    pattern = "[[:digit:]]+"
-  )
-
-  current_lau_boundary <- ll_get_lau_eu(
-    gisco_id = gisco_id,
-    year = year
-  )
-  current_lau_bbox <- sf::st_bbox(current_lau_boundary)
-
+ll_osm_get_lau_streets <- function(gisco_id,
+                                   country = NULL, 
+                                   unnamed_streets = TRUE,
+                                   lau_boundary_sf = NULL, 
+                                   streets_sf = NULL,
+                                   country_code_type = "eurostat",
+                                   year = 2020) {
+  
   if (unnamed_streets == TRUE) {
     ll_create_folders(
       geo = "eu",
@@ -229,53 +235,94 @@ ll_osm_lau_streets <- function(gisco_id,
       file_type = "rds"
     )
   }
-
-
+  
+  
   if (fs::file_exists(rds_file_location)) {
     return(readr::read_rds(file = rds_file_location))
   }
-  # TODO country_full_name will not always match with OSM/Geofabrik
-  if (is.element(gisco_cc, ll_osm_bboxes$country_code)) {
-    country_full_name <- ll_osm_bboxes %>%
-      dplyr::filter(country_code == gisco_cc) %>%
-      dplyr::distinct(country) %>%
-      dplyr::pull(country)
-
-    bboxes_available <- TRUE
+  
+  
+  gisco_cc <- stringr::str_extract(
+    string = gisco_id,
+    pattern = "[A-Z][A-Z]"
+  ) %>%
+    stringr::str_to_upper()
+  
+  city_code <- stringr::str_extract(
+    string = gisco_id,
+    pattern = "[[:digit:]]+"
+  )
+  
+  if (is.null(lau_boundary_sf)==FALSE) {
+    current_lau_boundary <- lau_boundary_sf
   } else {
-    country_full_name <- countrycode::codelist %>%
-      dplyr::filter(iso2c == gisco_cc) %>%
-      dplyr::pull(iso.name.en)
-    bboxes_available <- FALSE
+    current_lau_boundary <- ll_get_lau_eu(
+      gisco_id = gisco_id,
+      year = year
+    )  
   }
-
-  if (bboxes_available) {
-    current_country_bboxes <- ll_osm_bboxes %>%
-      dplyr::filter(country_code == gisco_cc)
-
-    regions_to_load <- current_country_bboxes %>%
-      dplyr::filter(purrr::map_lgl(
-        .x = current_country_bboxes$bbox,
-        .f = function(current_bbox) {
-          current_lau_bbox$xmin < current_bbox$xmax & current_bbox$xmin < current_lau_bbox$xmax & current_lau_bbox$ymin < current_bbox$ymax & current_bbox$ymin < current_lau_bbox$ymax
-        }
-      ))
-    ll_osm_extract_roads(countries = country_full_name)
-
-    street_folders <- fs::path(
-      latlon2map::ll_set_folder(),
-      "osm_roads_shp",
-      country_full_name,
-      regions_to_load$region
-    )
-    city_roads_pre <- purrr::map_dfr(
-      .x = street_folders,
-      .f = function(x) sf::st_read(dsn = x)
-    )
+  
+  current_lau_bbox <- sf::st_bbox(current_lau_boundary)
+  
+  
+  
+  if (is.null(streets_sf)==FALSE) {
+    city_roads_pre <- streets_sf
   } else {
-    city_roads_pre <- ll_osm_get_roads(country = country_full_name)
+    # TODO country_full_name will not always match with OSM/Geofabrik
+    
+    if (is.element(gisco_cc, ll_osm_bboxes$country_code)) {
+      if (is.null(country)) {
+        country_full_name <- country
+      } else {
+        country_full_name <- ll_osm_bboxes %>%
+          dplyr::filter(country_code == gisco_cc) %>%
+          dplyr::distinct(country) %>%
+          dplyr::pull(country) 
+      }
+      
+      bboxes_available <- TRUE
+    } else {
+      if (is.null(country)==FALSE) {
+        country_full_name <- country
+      } else {
+        country_full_name <- countrycode::countrycode(sourcevar = gisco_cc,
+                                                      origin = country_code_type,
+                                                      destination = "iso.name.en")
+      }
+      bboxes_available <- FALSE
+    }
+    
+    if (bboxes_available) {
+      current_country_bboxes <- ll_osm_bboxes %>%
+        dplyr::filter(country_code == gisco_cc)
+      
+      regions_to_load <- current_country_bboxes %>%
+        dplyr::filter(purrr::map_lgl(
+          .x = current_country_bboxes$bbox,
+          .f = function(current_bbox) {
+            current_lau_bbox$xmin < current_bbox$xmax & current_bbox$xmin < current_lau_bbox$xmax & current_lau_bbox$ymin < current_bbox$ymax & current_bbox$ymin < current_lau_bbox$ymax
+          }
+        ))
+      ll_osm_extract_roads(countries = country_full_name)
+      
+      street_folders <- fs::path(
+        latlon2map::ll_set_folder(),
+        "osm_roads_shp",
+        country_full_name,
+        regions_to_load$region
+      )
+      city_roads_pre <- purrr::map_dfr(
+        .x = street_folders,
+        .f = function(x) sf::st_read(dsn = x)
+      )
+    } else {
+      city_roads_pre <- ll_osm_get_roads(country = country_full_name)
+    }
   }
-
+  
+  
+  
   if (unnamed_streets == TRUE) {
     city_roads <- city_roads_pre %>%
       sf::st_intersection(current_lau_boundary)
@@ -287,11 +334,11 @@ ll_osm_lau_streets <- function(gisco_id,
       dplyr::summarise() %>%
       dplyr::ungroup()
   }
-
+  
   saveRDS(
     object = city_roads,
     file = rds_file_location
   )
-
+  
   city_roads
 }
