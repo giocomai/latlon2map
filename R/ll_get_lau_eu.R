@@ -299,6 +299,14 @@ ll_osm_get_lau_streets <- function(gisco_id,
         country_full_name <- countrycode::countrycode(sourcevar = gisco_cc,
                                                       origin = country_code_type,
                                                       destination = "iso.name.en")
+        
+        if (country_full_name=="Czechia") {
+          country_full_name <- "czech-republic"
+        } else if (stringr::str_detect(string = country_full_name, pattern = " ")) {
+          country_full_name <- stringr::str_replace_all(string = country_full_name,
+                                                        pattern = " ",
+                                                        replacement = "-")
+        }
       }
       bboxes_available <- FALSE
     }
