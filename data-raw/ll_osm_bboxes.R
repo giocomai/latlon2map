@@ -26,11 +26,13 @@ countries_with_more <- ll_osm_countries %>%
 
 temp_bbox_folder <- fs::path(latlon2map::ll_set_folder(), "temp_bbox")
 fs::dir_create(path = temp_bbox_folder)
+ll_osm_bboxes <- ll_osm_bboxes %>% 
+  filter(country!="germany")
 
 ll_osm_bboxes_pre <- purrr::map_dfr(
   .x = countries_with_more,
   .f = function(current_country) {
-    # current_country <- "spain"
+    # current_country <- "germany"
     
     if (exists("ll_osm_bboxes")) {
       previous_df <- ll_osm_bboxes %>% 
@@ -80,9 +82,6 @@ ll_osm_bboxes_pre <- purrr::map_dfr(
             ".rds"
           )
         )
-
-
-
 
         if (fs::file_exists(current_region_file)) {
           readr::read_rds(file = current_region_file)

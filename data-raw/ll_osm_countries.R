@@ -56,7 +56,7 @@ ll_osm_countries <-
       big_countries_df <- purrr::map_dfr(
         .x = big_countries_c$country,
         .f = function(current_big_country) {
-          current_big_country_links <- xml2::read_html(x = paste0(
+          current_big_country_links_pre <- xml2::read_html(x = paste0(
             "http://download.geofabrik.de/",
             current_continent,
             "/",
@@ -64,9 +64,49 @@ ll_osm_countries <-
             ".html"
           )) %>%
             rvest::html_nodes(xpath = paste0("//a")) %>%
-            xml2::xml_attr("href") %>%
+            xml2::xml_attr("href") 
+          
+          current_big_country_links <- current_big_country_links_pre %>% 
             stringr::str_subset(pattern = "-latest-free.shp.zip$")
+          
+          all_regions_html_links <- current_big_country_links_pre[stringr::str_starts(string = current_big_country_links_pre, current_big_country)&stringr::str_ends(string = current_big_country_links_pre, "html")]
+          
+          available_shp_regions_v <- stringr::str_remove(string = current_big_country_links, pattern = stringr::str_c(current_big_country, "/")) %>% 
+            stringr::str_remove(pattern = "-latest-free.shp.zip")
+          
+          all_regions_v <- stringr::str_remove(string = all_regions_html_links, pattern = stringr::str_c(current_big_country, "/")) %>% 
+            stringr::str_remove(pattern = ".html")
+          
+          big_regions_v <- all_regions_v[!(is.element(all_regions_v, available_shp_regions_v))]
 
+          if (length(big_regions_v)>0) {
+            
+            big_regions_links <- purrr::map_dfr(.x = big_regions_v,
+                           .f = function(current_region) {
+                             xml2::read_html(x = paste0(
+                               "http://download.geofabrik.de/",
+                               current_continent,
+                               "/",
+                               current_big_country,
+                               "/",
+                               current_region,
+                               ".html"
+                             )) %>%
+                               rvest::html_nodes(xpath = paste0("//a")) %>%
+                               xml2::xml_attr("href")  %>%
+                               tibble::enframe(name = NULL, value = "links") %>%
+                               dplyr::filter(stringr::str_ends(
+                                 string = links,
+                                 pattern = "-latest-free.shp.zip"
+                               ))
+            })
+            
+            current_big_country_links <- c(current_big_country_links,
+                                           stringr::str_c(current_big_country, "/", big_regions_links$links))
+
+          }
+
+          
           if (length(current_big_country_links) == 0) {
             return(NULL)
           } else {
@@ -91,11 +131,14 @@ ll_osm_countries <-
         dplyr::bind_rows(
           small_countries_df,
           big_countries_df
-        ) 
+        )
       }
     }
-  )
+  ) %>%
+  arrange(continent, country)
 
 
 
-usethis::use_data(ll_osm_countries, overwrite = TRUE)
+usethis::use_data(ll_osm_countries , overwrite = TRUE)
+
+
