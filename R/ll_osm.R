@@ -56,8 +56,6 @@ ll_osm_extract_roads <- function(countries,
           glob = "*.shp.zip"
         )
 
-
-
         purrr::walk(
           .x = local_files,
           .f = function(current_zip_file) {

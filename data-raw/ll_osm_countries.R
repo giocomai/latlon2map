@@ -137,7 +137,10 @@ ll_osm_countries <-
   ) %>%
   arrange(continent, country)
 
-
+# fix Canary Islands
+ll_osm_countries[ll_osm_countries$country=="spain", "link"][[1]] <- list(dplyr::bind_rows(ll_osm_countries[ll_osm_countries$country=="spain", "link"][[1]],
+          ll_osm_countries[ll_osm_countries$country=="canary-islands", "link"][[1]]) %>% 
+            dplyr::distinct(.data$link))
 
 usethis::use_data(ll_osm_countries , overwrite = TRUE)
 
