@@ -176,9 +176,9 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 #' @param unnamed_streets Defaults to TRUE. If FALSE, it drops all streets with
 #'   missing "name" or missing "fclass".
 #' @param lau_boundary_sf Defaults to NULL. If given, used to speed up
-#'   processing. Must be an `sf` object such as the ones output by
+#'   processing. Must be an `sf` object such as the ones output by by `ll_get_lau_eu()`.
 #' @param streets_sf Defaults to NULL. If given, used to speed up processing.
-#'   Must be an `sf` object such as the ones output by `ll_get_lau_eu()`.
+#'   Must be an `sf` object such as the ones output by `ll_osm_get_roads()`.
 #' @param country_code_type Defaults to "eurostat". An alternative common value
 #'   is "iso2c". See `countrycode::codelist` for a list of available codes.
 #' @param year Year of LAU boundaries, defaults to most recent (2020), passed to

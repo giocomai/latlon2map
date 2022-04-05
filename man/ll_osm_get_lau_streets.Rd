@@ -26,10 +26,10 @@ country names see the dataset included in this package: \code{ll_osm_countries}}
 missing "name" or missing "fclass".}
 
 \item{lau_boundary_sf}{Defaults to NULL. If given, used to speed up
-processing. Must be an \code{sf} object such as the ones output by}
+processing. Must be an \code{sf} object such as the ones output by by \code{ll_get_lau_eu()}.}
 
 \item{streets_sf}{Defaults to NULL. If given, used to speed up processing.
-Must be an \code{sf} object such as the ones output by \code{ll_get_lau_eu()}.}
+Must be an \code{sf} object such as the ones output by \code{ll_osm_get_roads()}.}
 
 \item{country_code_type}{Defaults to "eurostat". An alternative common value
 is "iso2c". See \code{countrycode::codelist} for a list of available codes.}
