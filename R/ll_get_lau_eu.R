@@ -29,7 +29,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     resolution = "1m",
     year = year
   )
-
+  
   rds_file <- ll_find_file(
     geo = "eu",
     level = "lau",
@@ -38,7 +38,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     name = "abl",
     file_type = "rds"
   )
-
+  
   if (is.null(gisco_id) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = "eu",
@@ -48,7 +48,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       name = gisco_id,
       file_type = "rds"
     )
-
+    
     if (fs::file_exists(rds_file_location)) {
       return(readr::read_rds(file = rds_file_location))
     }
@@ -68,12 +68,12 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       ),
       file_type = "rds"
     )
-
+    
     if (fs::file_exists(rds_file_location)) {
       return(readr::read_rds(file = rds_file_location))
     }
   }
-
+  
   if (is.null(lau_sf) == FALSE) {
     sf <- lau_sf
   } else if (fs::file_exists(rds_file)) {
@@ -96,7 +96,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       name = "abl",
       file_type = "zip"
     )
-
+    
     if (fs::file_exists(zip_file) == FALSE) {
       download.file(
         url = source_url,
@@ -112,18 +112,18 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       file_type = "zip"
     ) %>%
       fs::path_dir()
-
+    
     unzip(
       zipfile = zip_file,
       exdir = zip_folder
     )
-
+    
     unzip(
       zipfile = fs::path(zip_folder, paste0("LAU_RG_01M_", year, "_4326.shp.zip")),
       exdir = shp_folder
     )
-
-
+    
+    
     sf <- sf::read_sf(shp_folder) %>%
       dplyr::mutate(CNTR_CODE = stringr::str_extract(
         string = GISCO_ID,
@@ -135,7 +135,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       file = rds_file
     )
   }
-
+  
   if (is.null(gisco_id) == FALSE) {
     sf <- sf %>%
       dplyr::filter(GISCO_ID == gisco_id)
@@ -290,8 +290,8 @@ ll_osm_get_lau_streets <- function(gisco_id,
           dplyr::pull(country) 
         
         bboxes_available <- TRUE
-    }
-
+      }
+      
     } else {
       if (is.null(country)==FALSE) {
         country_full_name <- country
@@ -302,6 +302,8 @@ ll_osm_get_lau_streets <- function(gisco_id,
         
         if (country_full_name=="Czechia") {
           country_full_name <- "czech-republic"
+        } else if (country_full_name=="Ireland") {
+          country_full_name <- "ireland-and-northern-ireland"
         } else if (stringr::str_detect(string = country_full_name, pattern = " ")) {
           country_full_name <- stringr::str_replace_all(string = country_full_name,
                                                         pattern = " ",
