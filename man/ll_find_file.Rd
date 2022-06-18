@@ -11,9 +11,6 @@ ll_find_file(geo, level, resolution, year, name = "abl", file_type = "rds")
 
 \item{file_type}{}
 }
-\value{
-
-}
 \description{
 Find file names. Mostly used internally
 }

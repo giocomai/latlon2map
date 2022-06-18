@@ -19,9 +19,6 @@ ll_find_pop_centre(
 
 \item{adjusted}{If adjusted is set to TRUE, join is ignored. The population of cells along the boundary line are weighted by the share of the cell included within the border.}
 }
-\value{
-
-}
 \description{
 Find the population-weighted centre of a municipality
 }

@@ -142,6 +142,12 @@ ll_osm_countries[ll_osm_countries$country=="spain", "link"][[1]] <- list(dplyr::
           ll_osm_countries[ll_osm_countries$country=="canary-islands", "link"][[1]]) %>% 
             dplyr::distinct(.data$link))
 
+
 usethis::use_data(ll_osm_countries , overwrite = TRUE)
 
 
+temp <- sf::st_read("/home/g/Downloads/east-timor-latest.osm.pbf", layer = "lines")
+temp %>% 
+  filter(is.na(highway)==FALSE)
+
+temp2 <- sf::st_read("/home/g/Downloads/east-timor-latest-free.shp/gis_osm_roads_free_1.shp")

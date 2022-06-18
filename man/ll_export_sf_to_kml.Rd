@@ -56,9 +56,6 @@ ll_export_sf_to_kml(
 
 \item{fill_colour}{Defaults to NULL. Fill corresponds to "BRUSH" in OGR. If given, colour to be used for filling polygons.}
 }
-\value{
-
-}
 \description{
 Attention: this function requires libkml.
 }

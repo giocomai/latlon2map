@@ -31,9 +31,6 @@ ll_get_population_grid_hr(
 
 \item{silent}{}
 }
-\value{
-
-}
 \description{
 Source: https://data.humdata.org/organization/facebook
 Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/

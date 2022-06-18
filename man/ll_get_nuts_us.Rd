@@ -13,9 +13,6 @@ ll_get_nuts_us(level = "county", resolution = "500k", year = 2018)
 
 \item{year}{Defaults to 2018}
 }
-\value{
-
-}
 \description{
 Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
 }

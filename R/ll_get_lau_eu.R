@@ -360,3 +360,118 @@ ll_osm_get_lau_streets <- function(gisco_id,
   
   city_roads
 }
+
+
+
+
+#' Get all streets available in OpenStreetMap located in given NUTS.
+#'
+#' Relies on the output of `ll_get_nuts_eu()` for the boundaries of NUTS.
+#'
+#' @param nuts_id NUTS region identifier.
+#' @inheritParams ll_osm_get_lau_streets
+#'
+#' @return An `sf` objects with all streets of a given NUTS regions based on
+#'   OpenStreetMap
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' ll_osm_get_nuts_streets(nuts_id = "PT16D", country = "portugal")
+#' }
+ll_osm_get_nuts_streets <- function(nuts_id,
+                                    level = 3,
+                                    country = NULL, 
+                                    unnamed_streets = TRUE,
+                                    nuts_boundary_sf = NULL, 
+                                    streets_sf = NULL,
+                                    country_code_type = "eurostat",
+                                    year = 2021) {
+  
+  
+  if (unnamed_streets == TRUE) {
+    ll_create_folders(
+      geo = "eu",
+      level = stringr::str_c("nuts_", level, "_osm_streets"),
+      resolution = "1m",
+      year = year
+    )
+    rds_file_location <- ll_find_file(
+      geo = "eu",
+      level = stringr::str_c("nuts_", level, "_osm_streets"),
+      resolution = "1m",
+      year = year,
+      name = nuts_id,
+      file_type = "rds"
+    )
+  } else {
+    ll_create_folders(
+      geo = "eu",
+      level = stringr::str_c("nuts_", level, "_osm_streets_no_NA"),
+      resolution = "1m",
+      year = year
+    )
+    rds_file_location <- ll_find_file(
+      geo = "eu",
+      level = stringr::str_c("nuts_", level, "_osm_streets_no_NA"),
+      resolution = "1m",
+      year = year,
+      name = nuts_id,
+      file_type = "rds"
+    )
+  }
+  
+  
+  if (fs::file_exists(rds_file_location)) {
+    return(readr::read_rds(file = rds_file_location))
+  }
+  
+  
+  gisco_cc <- stringr::str_extract(
+    string = nuts_id,
+    pattern = "[A-Z][A-Z]"
+  ) %>%
+    stringr::str_to_upper()
+  
+  city_code <- stringr::str_extract(
+    string = nuts_id,
+    pattern = "[[:digit:]]+"
+  )
+  
+  if (is.null(nuts_boundary_sf)==FALSE) {
+    current_nuts_boundary <- nuts_boundary_sf
+  } else {
+    current_nuts_boundary <- ll_get_nuts_eu(
+      nuts_id = nuts_id,
+      level = level,
+      year = year
+    )  
+  }
+  
+  current_nuts_bbox <- sf::st_bbox(current_nuts_boundary)
+  
+  if (is.null(streets_sf)==FALSE) {
+    city_roads_pre <- streets_sf
+  } else {
+    city_roads_pre <- ll_osm_get_roads(country = country)
+  }
+  
+  if (unnamed_streets == TRUE) {
+    city_roads <- city_roads_pre %>%
+      sf::st_intersection(current_nuts_boundary)
+  } else {
+    city_roads <- city_roads_pre %>%
+      dplyr::filter(is.na(name) == FALSE, is.na(fclass) == FALSE) %>%
+      sf::st_intersection(current_nuts_boundary) %>%
+      dplyr::group_by(name) %>%
+      dplyr::summarise() %>%
+      dplyr::ungroup()
+  }
+  
+  saveRDS(
+    object = city_roads,
+    file = rds_file_location
+  )
+  
+  city_roads
+}

@@ -11,9 +11,6 @@ ll_get_world(resolution = "60", year = 2020, name = NULL)
 
 \item{year}{Defaults to 2020. Available values: 2020, 2016, 2013, 2010, 2006, 2001}
 }
-\value{
-
-}
 \description{
 Get countries as an sf object
 }

@@ -21,9 +21,6 @@ ll_create_folders(
 
 \item{file_type}{By defaults, it creates folder for zip, shp, and rds files.}
 }
-\value{
-
-}
 \description{
 Create folders to store geographic data
 }

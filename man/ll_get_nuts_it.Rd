@@ -20,9 +20,6 @@ ll_get_nuts_it(
 
 \item{no_check_certificate}{Logical, defaults to FALSE. Enable only if certificate issues, and if you are aware of the security implications.}
 }
-\value{
-
-}
 \description{
 2019 / WGS84 UTM32N
 }
