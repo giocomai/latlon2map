@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9003</span>
       </span>
     </div>
 
@@ -67,18 +67,29 @@
     <h2>Arguments</h2>
     <dl><dt>gisco_id</dt>
 <dd><p>Gisco identifier of the relevant administrative unit. If given, takes precedence over name.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both <code>name</code> and <code>gisco_id</code> are NULL, then it returns all municipalities.</p></dd>
+
+
 <dt>year</dt>
 <dd><p>Year of mapping, defaults to most recent (2020). Available starting with 2011.</p></dd>
+
+
 <dt>silent</dt>
 <dd><p>Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.</p></dd>
+
+
 <dt>lau_sf</dt>
 <dd><p>sf object, exactly such as the one that would be returned by <code>ll_get_lau_eu()</code>. Used to speed-up computation when bulk processing.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>European LAU in sf format</p>
+    
+
+<p>European LAU in sf format</p>
     </div>
 
     <div id="ref-examples">
@@ -121,7 +132,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

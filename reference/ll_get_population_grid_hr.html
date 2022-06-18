@@ -18,7 +18,7 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9003</span>
       </span>
     </div>
 
@@ -73,23 +73,32 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
     <h2>Arguments</h2>
     <dl><dt>geo</dt>
 <dd><p>A twe letter country code, such as "IT" for Italy and "DE" for Germany</p></dd>
+
+
 <dt>match_sf</dt>
 <dd><p>An sf object to me matched with the population grid. If not given, full grid is returned.</p></dd>
+
+
 <dt>match_name</dt>
 <dd><p>A name to be used for local caching if a subset of the grid is used. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.</p></dd>
+
+
 <dt>file_format</dt>
 <dd><p>Defaults to "CSV". Other available formats include "GeoTIFF", "JSON", "zip", "GDAL Virtual Format". Currently only CSV supported.</p></dd>
+
+
 <dt>dataset</dt>
 <dd><p>Defaults to "population". Beginning of the name of the dataset. For alternatives, see e.g. <code>population_grid_hr_metadata %&gt;% dplyr::filter(country_code=="IT") %&gt;% dplyr::distinct(name)</code>. Currently only tested with default value.</p></dd>
+
+
 <dt>source_url</dt>
 <dd><p>A direct link to the zipped version of the csv file in the original database, if automatic download with the country code does not work. For example, for Italy this would be "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"</p></dd>
+
+
 <dt>silent</dt>
 <dd></dd>
+
 </dl></div>
-    <div id="value">
-    <h2>Value</h2>
-    
-    </div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -103,7 +112,7 @@ Details on methodology: https://dataforgood.fb.com/docs/methodology-high-resolut
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

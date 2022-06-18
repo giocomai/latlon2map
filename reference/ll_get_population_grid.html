@@ -18,7 +18,7 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9003</span>
       </span>
     </div>
 
@@ -71,20 +71,33 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
     <h2>Arguments</h2>
     <dl><dt>year</dt>
 <dd><p>Defaults to 2018. Currently, the EU population grid is available only for the year 2006, 2011, and 2018.</p></dd>
+
+
 <dt>match_sf</dt>
 <dd><p>An sf object to be matched with the population grid. If not given, full grid is returned.</p></dd>
+
+
 <dt>match_name</dt>
 <dd><p>A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.</p></dd>
+
+
 <dt>match_country</dt>
 <dd><p>Defaults to NULL. If given, used to speed up processing.</p></dd>
+
+
 <dt>join</dt>
 <dd><p>The function to use for filtering. Defaults to sf::st_intersects. Alternative includes the likes of sf::st_within, sf::st_touches, etc.</p></dd>
+
+
 <dt>population_grid_sf</dt>
 <dd><p>Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An sf object with the population grid.</p>
+    
+
+<p>An sf object with the population grid.</p>
     </div>
 
   </div>
@@ -99,7 +112,7 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

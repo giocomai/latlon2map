@@ -20,7 +20,7 @@ administrative units."><!-- mathjax --><script src="https://cdnjs.cloudflare.com
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9003</span>
       </span>
     </div>
 
@@ -74,29 +74,44 @@ administrative units.</p>
     <h2>Arguments</h2>
     <dl><dt>gisco_id</dt>
 <dd><p>Gisco identifier.</p></dd>
+
+
 <dt>country</dt>
 <dd><p>Name of country as included in Geofabrik's datasets, does not
 always match common country names or geography. For details on available
 country names see the dataset included in this package: <code>ll_osm_countries</code></p></dd>
+
+
 <dt>unnamed_streets</dt>
 <dd><p>Defaults to TRUE. If FALSE, it drops all streets with
 missing "name" or missing "fclass".</p></dd>
+
+
 <dt>lau_boundary_sf</dt>
 <dd><p>Defaults to NULL. If given, used to speed up
 processing. Must be an <code>sf</code> object such as the ones output by by <code><a href="ll_get_lau_eu.html">ll_get_lau_eu()</a></code>.</p></dd>
+
+
 <dt>streets_sf</dt>
 <dd><p>Defaults to NULL. If given, used to speed up processing.
 Must be an <code>sf</code> object such as the ones output by <code><a href="ll_osm_get_roads.html">ll_osm_get_roads()</a></code>.</p></dd>
+
+
 <dt>country_code_type</dt>
 <dd><p>Defaults to "eurostat". An alternative common value
 is "iso2c". See <code><a href="https://vincentarelbundock.github.io/countrycode/reference/codelist.html" class="external-link">countrycode::codelist</a></code> for a list of available codes.</p></dd>
+
+
 <dt>year</dt>
 <dd><p>Year of LAU boundaries, defaults to most recent (2020), passed to
 <code><a href="ll_get_lau_eu.html">ll_get_lau_eu()</a></code>. Available starting with 2011.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An <code>sf</code> objects with all streets of a given LAU based on
+    
+
+<p>An <code>sf</code> objects with all streets of a given LAU based on
 OpenStreetMap</p>
     </div>
 
@@ -123,7 +138,7 @@ OpenStreetMap</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
