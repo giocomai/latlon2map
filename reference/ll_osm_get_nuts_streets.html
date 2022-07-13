@@ -54,16 +54,17 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ll_osm_get_nuts_streets</span><span class="op">(</span>
-  <span class="va">nuts_id</span>,
-  level <span class="op">=</span> <span class="fl">3</span>,
-  country <span class="op">=</span> <span class="cn">NULL</span>,
-  unnamed_streets <span class="op">=</span> <span class="cn">TRUE</span>,
-  nuts_boundary_sf <span class="op">=</span> <span class="cn">NULL</span>,
-  streets_sf <span class="op">=</span> <span class="cn">NULL</span>,
-  country_code_type <span class="op">=</span> <span class="st">"eurostat"</span>,
-  year <span class="op">=</span> <span class="fl">2021</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ll_osm_get_nuts_streets</span><span class="op">(</span></span>
+<span>  <span class="va">nuts_id</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  country <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  unnamed_streets <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  nuts_boundary_sf <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  streets_sf <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  country_code_type <span class="op">=</span> <span class="st">"eurostat"</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2021</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -108,9 +109,9 @@ OpenStreetMap</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">ll_osm_get_nuts_streets</span><span class="op">(</span>nuts_id <span class="op">=</span> <span class="st">"PT16D"</span>, country <span class="op">=</span> <span class="st">"portugal"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">ll_osm_get_nuts_streets</span><span class="op">(</span>nuts_id <span class="op">=</span> <span class="st">"PT16D"</span>, country <span class="op">=</span> <span class="st">"portugal"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -125,7 +126,7 @@ OpenStreetMap</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

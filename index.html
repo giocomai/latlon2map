@@ -79,19 +79,19 @@
 </h2>
 <p>You can install <code>latlon2map</code> from GitHub with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"giocomai/latlon2map"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"giocomai/latlon2map"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="use">Use<a class="anchor" aria-label="anchor" href="#use"></a>
 </h2>
 <p>All <code>latlon2map</code> function starts with <code>ll_</code> to facilitate auto-completion. By default, data are stored in a folder called <code>ll_data</code> inside the working directory. However, I suggest caching data in a separate folder for system-wide caching: you will not need to re-download again geographic files for different projects, and you will not unncessarily sync multiple copies of those files for each project that needs them. You need to call e.g. <code>ll_set_folder("~/R/")</code> once per session. Given that you may well download big files that take longer than the 60 seconds to download, you are advised to set a reasonably high timeout for downloads at the beginning of each session.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"latlon2map"</span><span class="op">)</span>
-<span class="fu"><a href="reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_expand.html" class="external-link">path_home_r</a></span><span class="op">(</span><span class="op">)</span>,
-                              <span class="st">"R"</span>,
-                              <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; /home/g/R/ll_data</span>
-<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">6000</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"latlon2map"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_expand.html" class="external-link">path_home_r</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                              <span class="st">"R"</span>,</span>
+<span>                              <span class="st">"ll_data"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; /home/g/R/ll_data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>timeout <span class="op">=</span> <span class="fl">6000</span><span class="op">)</span></span></code></pre></div>
 <p>There are currently a number of functions facilitating downloads of geographic datasets, mostly from Eurostat’s website. They all return <code>sf</code> objects, all of them transformed to crs 4326, all of them keeping all of the columns present in the original dataset. Future versions will likely add standard-named columns to facilitate matching data between different datasets.</p>
 <p>For reference all of the original data are kept in the <code>ll_data/shp/</code> folder, so it is possible to check metadata about each dataset. Information on copyright is printed to the console each time a given data source is used.</p>
 <p>Functions calls such as <code>ll_get_world(resolution = 60)</code> can safely be used where you would usually place your <code>sf</code> object/data frame. They will download items when they are not locally available, and will simply load pre-processed data on the following calls.</p>
@@ -102,7 +102,7 @@
 </h2>
 <p>The package includes a shiny app that facilitates matching latitude/longitude data frames wtih geographic units.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/ll_app.html">ll_app</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ll_app.html">ll_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -149,7 +149,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
