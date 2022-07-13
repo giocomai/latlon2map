@@ -381,6 +381,7 @@ ll_osm_get_lau_streets <- function(gisco_id,
 #' }
 ll_osm_get_nuts_streets <- function(nuts_id,
                                     level = 3,
+                                    resolution = 1,
                                     country = NULL, 
                                     unnamed_streets = TRUE,
                                     nuts_boundary_sf = NULL, 
@@ -393,13 +394,13 @@ ll_osm_get_nuts_streets <- function(nuts_id,
     ll_create_folders(
       geo = "eu",
       level = stringr::str_c("nuts_", level, "_osm_streets"),
-      resolution = "1m",
+      resolution = resolution,
       year = year
     )
     rds_file_location <- ll_find_file(
       geo = "eu",
       level = stringr::str_c("nuts_", level, "_osm_streets"),
-      resolution = "1m",
+      resolution = resolution,
       year = year,
       name = nuts_id,
       file_type = "rds"
@@ -408,13 +409,13 @@ ll_osm_get_nuts_streets <- function(nuts_id,
     ll_create_folders(
       geo = "eu",
       level = stringr::str_c("nuts_", level, "_osm_streets_no_NA"),
-      resolution = "1m",
+      resolution = resolution,
       year = year
     )
     rds_file_location <- ll_find_file(
       geo = "eu",
       level = stringr::str_c("nuts_", level, "_osm_streets_no_NA"),
-      resolution = "1m",
+      resolution = resolution,
       year = year,
       name = nuts_id,
       file_type = "rds"
@@ -444,6 +445,7 @@ ll_osm_get_nuts_streets <- function(nuts_id,
     current_nuts_boundary <- ll_get_nuts_eu(
       nuts_id = nuts_id,
       level = level,
+      resolution = resolution,
       year = year
     )  
   }

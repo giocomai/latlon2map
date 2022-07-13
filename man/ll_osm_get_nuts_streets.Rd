@@ -7,6 +7,7 @@
 ll_osm_get_nuts_streets(
   nuts_id,
   level = 3,
+  resolution = 1,
   country = NULL,
   unnamed_streets = TRUE,
   nuts_boundary_sf = NULL,
