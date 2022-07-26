@@ -50,7 +50,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     )
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   } else if (is.null(name) == FALSE) {
     rds_file_location <- ll_find_file(
@@ -70,14 +70,14 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     )
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   }
   
   if (is.null(lau_sf) == FALSE) {
     sf <- lau_sf
   } else if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     shp_folder <- ll_find_file(
       geo = "eu",
@@ -238,7 +238,7 @@ ll_osm_get_lau_streets <- function(gisco_id,
   
   
   if (fs::file_exists(rds_file_location)) {
-    return(readr::read_rds(file = rds_file_location))
+    return(readRDS(file = rds_file_location))
   }
   
   
@@ -424,7 +424,7 @@ ll_osm_get_nuts_streets <- function(nuts_id,
   
   
   if (fs::file_exists(rds_file_location)) {
-    return(readr::read_rds(file = rds_file_location))
+    return(readRDS(file = rds_file_location))
   }
   
   
