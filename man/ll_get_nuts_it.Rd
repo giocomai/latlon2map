@@ -7,7 +7,7 @@
 ll_get_nuts_it(
   name = NULL,
   level = 2,
-  year = 2021,
+  year = 2022,
   resolution = "low",
   silent = FALSE,
   no_check_certificate = FALSE
@@ -16,7 +16,7 @@ ll_get_nuts_it(
 \arguments{
 \item{level}{Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.}
 
-\item{year}{Defaults to 2021 (latest available).}
+\item{year}{Defaults to 2022 (latest available).}
 
 \item{no_check_certificate}{Logical, defaults to FALSE. Enable only if certificate issues, and if you are aware of the security implications.}
 }
