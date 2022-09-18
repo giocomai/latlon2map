@@ -18,13 +18,15 @@ ll_get_nuts_it(
 
 \item{year}{Defaults to 2022 (latest available).}
 
+\item{resolution}{Defaults to "low". Valid values are either "low" or "high".}
+
 \item{no_check_certificate}{Logical, defaults to FALSE. Enable only if certificate issues, and if you are aware of the security implications.}
 }
 \description{
 2019 / WGS84 UTM32N
 }
 \examples{
-ll_set_folder("~/R/")
+ll_set_folder(fs::path(fs::path_home_r(), "R"))
 ll_get_nuts_it()
-ll_get_nuts_it(name = "Rimini")
+ll_get_nuts_it(name = "Rimini", level = 3)
 }

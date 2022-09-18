@@ -39,9 +39,7 @@ All `latlon2map` function starts with `ll_` to facilitate auto-completion. By de
 
 ```{r}
 library("latlon2map")
-ll_set_folder(fs::path(fs::path_home_r(),
-                              "R",
-                              "ll_data"))
+ll_set_folder(fs::path(fs::path_home_r(), "R"))
 options(timeout = 6000)
 ```
 

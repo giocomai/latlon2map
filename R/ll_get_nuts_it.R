@@ -4,15 +4,16 @@
 #'
 #' @param level Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.
 #' @param year Defaults to 2022 (latest available).
+#' @param resolution Defaults to "low". Valid values are either "low" or "high".
 #' @param no_check_certificate Logical, defaults to FALSE. Enable only if certificate issues, and if you are aware of the security implications.
 #'
 #' @return
 #' @export
 #'
 #' @examples
-#' ll_set_folder("~/R/")
+#' ll_set_folder(fs::path(fs::path_home_r(), "R"))
 #' ll_get_nuts_it()
-#' ll_get_nuts_it(name = "Rimini")
+#' ll_get_nuts_it(name = "Rimini", level = 3)
 ll_get_nuts_it <- function(name = NULL,
                            level = 2,
                            year = 2022,
