@@ -13,7 +13,7 @@
 #' ll_get_gadm(geo = "UKR", level = 2)
 ll_get_gadm <- function(geo,
                         level = 0, 
-                        version = "4.0") {
+                        version = "4.1") {
   usethis::ui_info("Source: https://gadm.org/")
   usethis::ui_info("The data are freely available for academic use and other non-commercial use. Redistribution, or commercial use, is not allowed without prior permission. Using the data to create maps for academic publishing is allowed.")
   

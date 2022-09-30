@@ -4,7 +4,7 @@
 \alias{ll_get_gadm}
 \title{Get administrative boundaries}
 \usage{
-ll_get_gadm(geo, level = 0, version = "4.0")
+ll_get_gadm(geo, level = 0, version = "4.1")
 }
 \arguments{
 \item{geo}{Three letter country codes. If a two letter country code is given, it will tentatively be converted to a three-letter country code. Check consistency.}
