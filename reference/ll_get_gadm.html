@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">latlon2map</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.0.0.9004</span>
       </span>
     </div>
 
@@ -54,7 +54,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ll_get_gadm</span><span class="op">(</span><span class="va">geo</span>, level <span class="op">=</span> <span class="fl">0</span>, version <span class="op">=</span> <span class="st">"4.0"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ll_get_gadm</span><span class="op">(</span><span class="va">geo</span>, level <span class="op">=</span> <span class="fl">0</span>, version <span class="op">=</span> <span class="st">"4.1"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -83,27 +83,27 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">ll_get_gadm</span><span class="op">(</span>geo <span class="op">=</span> <span class="st">"UKR"</span>, level <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Source: https://gadm.org/</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> The data are freely available for academic use and other non-commercial use. Redistribution, or commercial use, is not allowed without prior permission. Using the data to create maps for academic publishing is allowed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 629 features and 12 fields</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simple feature collection with 629 features and 13 fields</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geometry type: MULTIPOLYGON</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Dimension:     XY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Bounding box:  xmin: 22.14045 ymin: 44.38597 xmax: 40.21807 ymax: 52.37503</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Geodetic CRS:  WGS 84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 629 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    ID_0  COUNTRY NAME_1   NL_NAME_1 ID_2   NAME_2 VARNA…¹ NL_NA…² TYPE_2 ENGTY…³</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> UKR   Ukraine ?        ?         ?      ?      ?       <span style="color: #BB0000;">NA</span>      ?      <span style="color: #BB0000;">NA</span>     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Cherk… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Mis'k… City o…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Cherk… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Chorn… Chorno… <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Chyhy… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Drabi… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Horod… Gorody… <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Kamia… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Kaniv… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Misto  City   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> UKR   Ukraine Cherkasy Черкаська UKR.1… Kaniv… <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      Raion  Distri…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 619 more rows, 3 more variables: CC_2 &lt;chr&gt;, HASC_2 &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   geometry &lt;MULTIPOLYGON [°]&gt;, and abbreviated variable names ¹​VARNAME_2,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ²​NL_NAME_2, ³​ENGTYPE_2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 629 × 14</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    GID_2     GID_0 COUNTRY GID_1   NAME_1  NL_NA…¹ NAME_2 VARNA…² NL_NA…³ TYPE_2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> ?         UKR   Ukraine ?       ?       ?       ?      ?       NA      ?     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> UKR.1.1_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Cherk… NA      NA      Mis'k…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> UKR.1.2_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Cherk… NA      NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> UKR.1.3_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Chorn… Chorno… NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> UKR.1.4_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Chyhy… NA      NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> UKR.1.5_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Drabi… NA      NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> UKR.1.6_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Horod… Gorody… NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> UKR.1.7_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Kamia… NA      NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> UKR.1.8_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Kaniv… NA      NA      Misto </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> UKR.1.9_1 UKR   Ukraine UKR.1_1 Cherka… Черкас… Kaniv… NA      NA      Raion </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 619 more rows, 4 more variables: ENGTYPE_2 &lt;chr&gt;, CC_2 &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   HASC_2 &lt;chr&gt;, geometry &lt;MULTIPOLYGON [°]&gt;, and abbreviated variable names</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   ¹​NL_NAME_1, ²​VARNAME_2, ³​NL_NAME_2</span></span>
 </code></pre></div>
     </div>
   </div>
