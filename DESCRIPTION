@@ -1,6 +1,6 @@
 Package: latlon2map
 Title: Facilitates matching lat/lon data with administrative units and other geographic shapes
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: 
     person(given = "Giorgio",
            family = "Comai",

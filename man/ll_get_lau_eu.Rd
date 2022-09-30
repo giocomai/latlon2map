@@ -9,7 +9,8 @@ ll_get_lau_eu(
   name = NULL,
   year = 2020,
   silent = FALSE,
-  lau_sf = NULL
+  lau_sf = NULL,
+  fallback = TRUE
 )
 }
 \arguments{

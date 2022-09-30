@@ -19,7 +19,8 @@ ll_get_lau_eu <- function(gisco_id = NULL,
                           name = NULL,
                           year = 2020,
                           silent = FALSE,
-                          lau_sf = NULL) {
+                          lau_sf = NULL,
+                          fallback = TRUE) {
   if (silent == FALSE) {
     usethis::ui_info(x = "© EuroGeographics for the administrative boundaries")
   }
@@ -71,6 +72,42 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     
     if (fs::file_exists(rds_file_location)) {
       return(readRDS(file = rds_file_location))
+    }
+  }
+  
+  if (fallback == TRUE&(gisco_id %in% ll_codes$id)) {
+    code_row_df <- ll_codes %>% 
+      dplyr::filter(gisco_id == .data$id)
+    
+    if  (code_row_df$source=="ll_get_lau_eu()") {
+      # do nothing and move one
+    } else if (code_row_df$source=="ll_get_nuts_eu(level = 3)") {
+      usethis::ui_warn("Falling back on `ll_get_nuts_eu()`. Refer to original function for more options.")
+      return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3))
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 1)")  {
+      lau_sf <- ll_get_gadm(geo = 'UKR', level = 1) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_1))
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 2)")  {
+      lau_sf <- ll_get_gadm(geo = 'UKR', level = 2) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_2))
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 2)")  {
+      lau_sf <- ll_get_gadm(geo = 'BIH', level = 2) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_2))
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 3)")  {
+      lau_sf <- ll_get_gadm(geo = 'BIH', level = 3) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_3))
+    } else if (code_row_df$source=="ll_get_adm_ocha(geo = 'MD', level = 1)")  {
+      lau_sf <- ll_get_adm_ocha(geo = 'MD', level = 1) %>% 
+        dplyr::mutate(GISCO_ID = ADM1_PCODE)
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'RS', level = 1)")  {
+      lau_sf <- ll_get_gadm(geo = 'RS', level = 1) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("RS_", GID_3))
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 1)")  {
+      lau_sf <- ll_get_gadm(geo = 'XKO', level = 1) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_1))
+    } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 2)")  {
+      lau_sf <- ll_get_gadm(geo = 'XKO', level = 2) %>% 
+        dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_2))
     }
   }
   
@@ -183,6 +220,10 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 #'   is "iso2c". See `countrycode::codelist` for a list of available codes.
 #' @param year Year of LAU boundaries, defaults to most recent (2020), passed to
 #'   `ll_get_lau_eu()`. Available starting with 2011.
+#' @param fallback Logical, defaults to TRUE. If a `gisco_id` does not match an
+#'   entity in `ll_get_lau_eu()`, try alternatives for the boundaries based on
+#'   the country code, including `ll_get_nuts_eu()`, `ll_get_gadm()`, and
+#'   `ll_get_adm_ocha()`.
 #'
 #' @return An `sf` objects with all streets of a given LAU based on
 #'   OpenStreetMap
@@ -202,7 +243,8 @@ ll_osm_get_lau_streets <- function(gisco_id,
                                    lau_boundary_sf = NULL, 
                                    streets_sf = NULL,
                                    country_code_type = "eurostat",
-                                   year = 2020) {
+                                   year = 2020,
+                                   fallback = TRUE) {
   
   if (unnamed_streets == TRUE) {
     ll_create_folders(
@@ -260,6 +302,10 @@ ll_osm_get_lau_streets <- function(gisco_id,
       gisco_id = gisco_id,
       year = year
     )  
+    if (nrow(current_lau_boundary)==0) {
+      
+      
+    }
   }
   
   current_lau_bbox <- sf::st_bbox(current_lau_boundary)

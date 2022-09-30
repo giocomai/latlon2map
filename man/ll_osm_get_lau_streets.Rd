@@ -12,7 +12,8 @@ ll_osm_get_lau_streets(
   lau_boundary_sf = NULL,
   streets_sf = NULL,
   country_code_type = "eurostat",
-  year = 2020
+  year = 2020,
+  fallback = TRUE
 )
 }
 \arguments{
@@ -36,6 +37,11 @@ is "iso2c". See \code{countrycode::codelist} for a list of available codes.}
 
 \item{year}{Year of LAU boundaries, defaults to most recent (2020), passed to
 \code{ll_get_lau_eu()}. Available starting with 2011.}
+
+\item{fallback}{Logical, defaults to TRUE. If a \code{gisco_id} does not match an
+entity in \code{ll_get_lau_eu()}, try alternatives for the boundaries based on
+the country code, including \code{ll_get_nuts_eu()}, \code{ll_get_gadm()}, and
+\code{ll_get_adm_ocha()}.}
 }
 \value{
 An \code{sf} objects with all streets of a given LAU based on
