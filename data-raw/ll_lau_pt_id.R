@@ -7,18 +7,27 @@ freg_sf <- ll_get_lau_pt()
 
 conc_df <- tw_query(query = list(
   c(p = "P31", q = "Q13217644")
-))
+), language = "pt")
 
+## Lagoa municipality in Acores apparently not included
+conc_df <- conc_df %>% 
+  dplyr::filter(id != "Q564759")
+
+# freg_sf %>% 
+#   dplyr::filter(Concelho=="LAGOA")
+
+# freg_sf %>%
+#   sf::st_drop_geometry() %>% View()
 
 ll_lau_pt_id_pre <- freg_sf %>% 
   sf::st_drop_geometry() %>% 
-  dplyr::distinct(Concelho) %>% 
+  dplyr::distinct(Concelho,Distrito) %>% 
   dplyr::left_join(y = conc_df %>% 
                      dplyr::mutate(Concelho = stringr::str_to_upper(label)) %>% 
                      dplyr::select(id, Concelho),
-                   by = "Concelho") 
+                   by = "Concelho")
 
-ll_lau_pt_id_pre$id[ll_lau_pt_id_pre$Concelho=="LISBOA"] <- "Q597"
+#ll_lau_pt_id_pre$id[ll_lau_pt_id_pre$Concelho=="LISBOA"] <- "Q597"
 ll_lau_pt_id_pre$id[ll_lau_pt_id_pre$Concelho=="CASTANHEIRA DE PÊRA"] <- "Q1013140"
 
 ll_lau_pt_id_pre %>% 

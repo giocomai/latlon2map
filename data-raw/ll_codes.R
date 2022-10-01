@@ -81,6 +81,14 @@ me1_df <- ll_get_gadm(geo = "MNE", level = 1) %>%
                    name = NAME_1,
                    source = "ll_get_gadm(geo = 'ME', level = 1)")
 
+#tidywikidatar::tw_get_label(id = ll_lau_pt_id$qid, language = "pt")
+
+pt_df <- ll_lau_pt_id %>% 
+  dplyr::transmute(country_code = "PT",
+                   id, 
+                   name = Concelho,
+                   source = "ll_get_lau_pt(level = 'concelho')")
+
 ll_codes <- dplyr::bind_rows(lau_df,
                              nuts3_df,
                              ua1_df,
@@ -90,7 +98,8 @@ ll_codes <- dplyr::bind_rows(lau_df,
                              ba2_df,
                              ba3_df,
                              xk2_df,
-                             xk1_df) %>% 
+                             xk1_df,
+                             pt_df) %>% 
   dplyr::arrange(country_code, id, name)
 
 

@@ -16,7 +16,7 @@
 ll_get_lau_pt <- function(id = NULL, 
                           name = NULL,
                           year = 2017,
-                          level = "freguesia",
+                          level = "concelho",
                           silent = FALSE) {
   if (silent == FALSE) {
     usethis::ui_info(x = "Source: https://dados.gov.pt/pt/datasets/freguesias-de-portugal/")
@@ -29,7 +29,22 @@ ll_get_lau_pt <- function(id = NULL,
       level = level,
       resolution = "standard",
       year = year,
-      fs::path_sanitize(name = paste0(level, "-", stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_"))),
+      fs::path_sanitize(paste0(level, "-", stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_"))),
+      file_type = "rds"
+    )
+    
+    if (fs::file_exists(rds_file_location)) {
+      return(readr::read_rds(file = rds_file_location))
+    }
+  }
+  
+  if (is.null(id) == FALSE) {
+    rds_file_location <- ll_find_file(
+      geo = "pt",
+      level = level,
+      resolution = "standard",
+      year = year,
+      fs::path_sanitize(paste0(level, "-", stringr::str_replace_all(string = id, pattern = "[[:punct:]]", replacement = "_"))),
       file_type = "rds"
     )
     
@@ -114,6 +129,25 @@ ll_get_lau_pt <- function(id = NULL,
       sf <- sf %>%
         dplyr::filter(Des_Simpli == name)
     }
+    
+    saveRDS(
+      object = sf,
+      file = rds_file_location
+    )
+  }
+  
+  if (is.null(id) == FALSE) {
+    if (level == "concelho") {
+      current_id <- id
+      current_concelho <- ll_lau_pt_id %>% 
+        dplyr::filter(id == current_id) %>% 
+        dplyr::pull(Concelho)
+      sf <- sf %>%
+        dplyr::filter(Concelho == current_concelho) %>% 
+        dplyr::group_by(Concelho) %>% 
+        dplyr::summarise() %>% 
+        dplyr::ungroup()
+    } 
     
     saveRDS(
       object = sf,

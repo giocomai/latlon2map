@@ -8,7 +8,7 @@ ll_get_lau_pt(
   id = NULL,
   name = NULL,
   year = 2017,
-  level = "freguesia",
+  level = "concelho",
   silent = FALSE
 )
 }

@@ -75,41 +75,49 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     }
   }
   
-  if (fallback == TRUE&(gisco_id %in% ll_codes$id)) {
-    code_row_df <- ll_codes %>% 
-      dplyr::filter(gisco_id == .data$id)
-    
-    if  (code_row_df$source=="ll_get_lau_eu()") {
-      # do nothing and move one
-    } else if (code_row_df$source=="ll_get_nuts_eu(level = 3)") {
-      usethis::ui_warn("Falling back on `ll_get_nuts_eu()`. Refer to original function for more options.")
-      return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3))
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 1)")  {
-      lau_sf <- ll_get_gadm(geo = 'UKR', level = 1) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_1))
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 2)")  {
-      lau_sf <- ll_get_gadm(geo = 'UKR', level = 2) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_2))
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 2)")  {
-      lau_sf <- ll_get_gadm(geo = 'BIH', level = 2) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_2))
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 3)")  {
-      lau_sf <- ll_get_gadm(geo = 'BIH', level = 3) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_3))
-    } else if (code_row_df$source=="ll_get_adm_ocha(geo = 'MD', level = 1)")  {
-      lau_sf <- ll_get_adm_ocha(geo = 'MD', level = 1) %>% 
-        dplyr::mutate(GISCO_ID = ADM1_PCODE)
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'RS', level = 1)")  {
-      lau_sf <- ll_get_gadm(geo = 'RS', level = 1) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("RS_", GID_3))
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 1)")  {
-      lau_sf <- ll_get_gadm(geo = 'XKO', level = 1) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_1))
-    } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 2)")  {
-      lau_sf <- ll_get_gadm(geo = 'XKO', level = 2) %>% 
-        dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_2))
+  if (is.null(gisco_id)==FALSE) {
+    if (fallback == TRUE&(gisco_id %in% ll_codes$id)) {
+      code_row_df <- ll_codes %>% 
+        dplyr::filter(gisco_id == .data$id)
+      
+      if  (code_row_df$source=="ll_get_lau_eu()") {
+        # do nothing and move one
+      } else if (code_row_df$source=="ll_get_nuts_eu(level = 3)") {
+        usethis::ui_warn("Falling back on `ll_get_nuts_eu()`. Refer to original function for more options.")
+        return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3))
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 1)")  {
+        lau_sf <- ll_get_gadm(geo = 'UKR', level = 1) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_1))
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 2)")  {
+        lau_sf <- ll_get_gadm(geo = 'UKR', level = 2) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_2))
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 2)")  {
+        lau_sf <- ll_get_gadm(geo = 'BIH', level = 2) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_2))
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 3)")  {
+        lau_sf <- ll_get_gadm(geo = 'BIH', level = 3) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_3))
+      } else if (code_row_df$source=="ll_get_adm_ocha(geo = 'MD', level = 1)")  {
+        lau_sf <- ll_get_adm_ocha(geo = 'MD', level = 1) %>% 
+          dplyr::mutate(GISCO_ID = ADM1_PCODE)
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'RS', level = 1)")  {
+        lau_sf <- ll_get_gadm(geo = 'RS', level = 1) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("RS_", GID_3))
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 1)")  {
+        lau_sf <- ll_get_gadm(geo = 'XKO', level = 1) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_1))
+      } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 2)")  {
+        lau_sf <- ll_get_gadm(geo = 'XKO', level = 2) %>% 
+          dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_2))
+      } else if (code_row_df$source=="ll_get_lau_pt(level = 'concelho')")  {
+        lau_sf <- ll_get_lau_pt(id = gisco_id, level = 'concelho') %>% 
+          dplyr::mutate(GISCO_ID = gisco_id) %>% 
+          dplyr::select(GISCO_ID, dplyr::everything())
+        return(lau_sf)
+      } 
     }
-  }
+  } 
+  
   
   if (is.null(lau_sf) == FALSE) {
     sf <- lau_sf
