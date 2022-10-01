@@ -35,7 +35,13 @@ ll_lau_pt_id_pre %>%
 
 ll_lau_pt_id <- ll_lau_pt_id_pre %>% 
   dplyr::rename(qid = id) %>% 
-  dplyr::mutate(id = stringr::str_c("PT_", qid))
+  dplyr::mutate(id = stringr::str_c("PT_", qid)) %>% 
+  dplyr::mutate(population = tw_get_p1(id = qid, p = "P1082", language = "pt")) %>%
+  dplyr::mutate(population = stringr::str_remove(string = population, pattern = stringr::fixed("+")) %>% as.numeric()) %>%
+  dplyr::mutate(name = tw_get_label(id = qid, language = "pt")) %>% 
+  dplyr::arrange(dplyr::desc(population))
+
+ll_lau_pt_id 
 
 # freg_sf %>% 
 #   dplyr::filter(Concelho == "ALBUFEIRA") %>% 

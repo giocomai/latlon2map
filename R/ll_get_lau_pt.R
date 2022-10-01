@@ -24,6 +24,7 @@ ll_get_lau_pt <- function(id = NULL,
   }
   
   if (is.null(name) == FALSE) {
+    name <- stringr::str_to_upper(name)
     rds_file_location <- ll_find_file(
       geo = "pt",
       level = level,
