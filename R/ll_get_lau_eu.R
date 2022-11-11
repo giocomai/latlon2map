@@ -76,8 +76,8 @@ ll_get_lau_eu <- function(gisco_id = NULL,
   }
   
   if (is.null(gisco_id)==FALSE) {
-    if (fallback == TRUE&(gisco_id %in% ll_codes$id)) {
-      code_row_df <- ll_codes %>% 
+    if (fallback == TRUE&(gisco_id %in% latlon2map::ll_codes$id)) {
+      code_row_df <- latlon2map::ll_codes %>% 
         dplyr::filter(gisco_id == .data$id)
       
       if  (code_row_df$source=="ll_get_lau_eu()") {
