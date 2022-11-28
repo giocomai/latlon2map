@@ -84,7 +84,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
         # do nothing and move one
       } else if (code_row_df$source=="ll_get_nuts_eu(level = 3)") {
         usethis::ui_warn("Falling back on `ll_get_nuts_eu()`. Refer to original function for more options.")
-        return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3))
+        return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3, resolution = 1))
       } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 1)")  {
         lau_sf <- ll_get_gadm(geo = 'UKR', level = 1) %>% 
           dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_1))
