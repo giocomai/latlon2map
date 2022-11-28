@@ -1,7 +1,10 @@
-pandoc: 2.7.3
+pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   removing_the_boring: removing_the_boring.html
-last_built: 2022-10-01T09:19Z
+last_built: 2022-11-28T21:54Z
+urls:
+  reference: https://giocomai.github.io/latlon2map/reference
+  article: https://giocomai.github.io/latlon2map/articles
 
