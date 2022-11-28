@@ -38,3 +38,4 @@ VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 Depends: 
     R (>= 2.10)
+URL: https://giocomai.github.io/latlon2map/
