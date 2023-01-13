@@ -19,14 +19,14 @@ ll_osm_extract_roads <- function(countries,
     latlon2map::ll_set_folder(),
     "osm_roads_shp"
   )
-
+  
   fs::dir_create(path = base_folder, recurse = TRUE)
-
+  
   fs::dir_create(path = fs::path(
     latlon2map::ll_set_folder(),
     "osm_roads_shp"
   ))
-
+  
   purrr::walk(
     .x = tolower(countries),
     .f = function(current_country) {
@@ -37,7 +37,7 @@ ll_osm_extract_roads <- function(countries,
       )
       if (fs::file_exists(current_country_zip_folder) == FALSE) {
         if (download_if_missing == TRUE) {
-          usethis::ui_info(glue::glue("'{current_country}' is not available locally. It will now be downloaded."))
+          cli::cli_inform("'{current_country}' is not available locally. It will now be downloaded.")
           ll_osm_download(countries = current_country)
           ll_osm_extract_roads(
             countries = current_country,
@@ -45,8 +45,8 @@ ll_osm_extract_roads <- function(countries,
             overwrite = FALSE
           )
         } else {
-          usethis::ui_info(glue::glue("'{current_country}' is not available locally. You can download it with 'll_osm_download('{current_country}')'."))
-          usethis::ui_stop(glue::glue("{current_country} not available."))
+          cli::cli_inform("'{current_country}' is not available locally. You can download it with 'll_osm_download('{current_country}')'.")
+          cli::cli_inform("{current_country} not available.")
         }
       } else {
         local_files <- fs::dir_ls(
@@ -55,7 +55,7 @@ ll_osm_extract_roads <- function(countries,
           type = "file",
           glob = "*.shp.zip"
         )
-
+        
         purrr::walk(
           .x = local_files,
           .f = function(current_zip_file) {
@@ -64,9 +64,10 @@ ll_osm_extract_roads <- function(countries,
               list = TRUE
             ) %>%
               tibble::as_tibble() %>%
-              dplyr::filter(stringr::str_detect(string = Name, pattern = "roads")) %>%
+              dplyr::filter(stringr::str_detect(string = Name,
+                                                pattern = "roads")) %>%
               dplyr::pull(Name)
-
+            
             current_street_shp_folder <-
               fs::path(
                 latlon2map::ll_set_folder(),
@@ -76,14 +77,21 @@ ll_osm_extract_roads <- function(countries,
                   fs::path_file() %>%
                   stringr::str_remove(pattern = "-latest-free.shp.zip")
               )
-
+            
             if (fs::file_exists(path = current_street_shp_folder) == FALSE | overwrite == TRUE) {
               unzip(
                 zipfile = current_zip_file,
                 files = files_to_extract,
                 exdir = current_street_shp_folder
               )
+              date_extracted <- fs::file_info(path = current_zip_file) %>%
+                dplyr::pull(birth_time) %>%
+                as.Date()
+              
+              saveRDS(object = date_extracted,
+                      file = fs::path(current_street_shp_folder, "date_extracted.rds"))
             }
+            cli::cli_inform(c("i" = "Files have been extracted to {.path {current_street_shp_folder}}"))
           }
         )
       }
@@ -110,26 +118,50 @@ ll_osm_get_roads <- function(country,
     usethis::ui_info(x = "© OpenStreetMap contributors")
   }
   country <- stringr::str_to_lower(country)
-
+  
   country_street_shp_folder <-
     fs::path(
       latlon2map::ll_set_folder(),
       "osm_roads_shp",
       country
     )
-
+  
   if (fs::file_exists(country_street_shp_folder) == FALSE) {
     ll_osm_extract_roads(countries = country)
   }
-
+  
   street_folders <- fs::dir_ls(
     path = country_street_shp_folder,
     type = "directory",
     recurse = FALSE
   )
-
-  purrr::map_dfr(
-    .x = street_folders,
-    .f = function(x) sf::st_read(dsn = x)
-  )
+  
+  if (length(street_folders)==1) {
+    x <- street_folders[[1]]
+    current_sf <- sf::st_read(dsn = x)
+    
+    if (fs::file_exists(path = fs::path(x, "date_extracted.rds"))) {
+      date_extracted_v <- readRDS(file = fs::path(x, "date_extracted.rds"))
+      attr(current_sf, "date_extracted") <- date_extracted_v
+    }
+    return(current_sf)
+    
+  } else {
+    all_sf <-  purrr::map_dfr(
+      .x = street_folders,
+      .f = function(x) {
+        current_sf <- sf::st_read(dsn = x)
+        
+        if (fs::file_exists(path = fs::path(x, "date_extracted.rds"))) {
+          date_extracted_v <- readRDS(file = fs::path(x, "date_extracted.rds"))
+          attr(current_sf, "date_extracted") <- date_extracted_v
+        }
+        return(current_sf)
+      }
+    )
+    if (fs::file_exists(path = fs::path(street_folders[[1]], "date_extracted.rds"))) {
+      date_extracted_v <- readRDS(file = fs::path(street_folders[[1]], "date_extracted.rds"))
+      attr(all_sf, "date_extracted") <- date_extracted_v
+    }
+  }
 }

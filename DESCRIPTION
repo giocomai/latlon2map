@@ -1,6 +1,6 @@
 Package: latlon2map
 Title: Facilitates matching lat/lon data with administrative units and other geographic shapes
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Authors@R: 
     person(given = "Giorgio",
            family = "Comai",
@@ -26,10 +26,11 @@ Imports:
     htmlwidgets,
     xml2,
     purrr,
-    countrycode
+    countrycode,
+    cli
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests: 
     leaflet,
     knitr,

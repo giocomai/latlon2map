@@ -407,6 +407,9 @@ ll_osm_get_lau_streets <- function(gisco_id,
       dplyr::ungroup()
   }
   
+  if (attributes(city_roads_pre)[["date_extracted"]]) {
+    attr(city_roads, "date_extracted") <- attr(city_roads_pre, "date_extracted")
+  }
   saveRDS(
     object = city_roads,
     file = rds_file_location
