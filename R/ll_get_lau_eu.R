@@ -248,6 +248,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 ll_osm_get_lau_streets <- function(gisco_id,
                                    country = NULL, 
                                    unnamed_streets = TRUE,
+                                   # merge_streets_with_same_name = FALSE, #' @param merge_streets_with_same_name Defaults to FALSE. Always falls back to FALSE if `unnamed_streets` is set to TRUE. IF TRUE, streets with the same name are combined in a single multistring. Conceptually, this should be warranted by the fact all streets are within the same municipality.
                                    lau_boundary_sf = NULL, 
                                    streets_sf = NULL,
                                    country_code_type = "eurostat",
@@ -356,6 +357,8 @@ ll_osm_get_lau_streets <- function(gisco_id,
         
         if (country_full_name=="Czechia") {
           country_full_name <- "czech-republic"
+        } else if (country_full_name=="Moldova (the Republic of)") {
+          country_full_name <- "moldova"
         } else if (country_full_name=="Ireland") {
           country_full_name <- "ireland-and-northern-ireland"
         } else if (stringr::str_detect(string = country_full_name, pattern = " ")) {
