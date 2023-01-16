@@ -36,7 +36,7 @@ ll_get_nuts_it <- function(name = NULL,
     )
 
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   }
 
@@ -51,7 +51,7 @@ ll_get_nuts_it <- function(name = NULL,
   )
 
   if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     ll_create_folders(
       geo = "it",
@@ -138,7 +138,7 @@ ll_get_nuts_it <- function(name = NULL,
     sf <- sf %>%
       sf::st_transform(crs = 4326)
 
-    readr::write_rds(x = sf, file = rds_file)
+    saveRDS(object = sf, file = rds_file)
   }
 
   if (is.null(name) == FALSE) {
@@ -156,8 +156,8 @@ ll_get_nuts_it <- function(name = NULL,
         dplyr::filter(DEN_PROV == name)
     }
 
-    readr::write_rds(
-      x = sf,
+    saveRDS( 
+      object = sf,
       file = rds_file_location
     )
   }

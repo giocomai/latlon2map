@@ -54,7 +54,7 @@ ll_get_population_grid_hr <- function(geo,
     )
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   }
   
@@ -77,7 +77,7 @@ ll_get_population_grid_hr <- function(geo,
   if (is.null(population_grid_sf) == FALSE) {
     sf <- population_grid_sf
   } else if (fs::file_exists(rds_file) & is.null(match_sf)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     csv_folder <- ll_find_file(
       geo = geo,

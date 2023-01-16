@@ -54,7 +54,7 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
 
 
   if (fs::file_exists(rds_file)) {
-    return(readr::read_rds(file = rds_file))
+    return(readRDS(file = rds_file))
   }
 
   xlsx_file <- ll_find_file(

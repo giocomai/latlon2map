@@ -63,7 +63,7 @@ ll_get_adm_ocha <- function(geo,
   }
   
   if (fs::file_exists(rds_file_location)) {
-    return(readr::read_rds(file = rds_file_location))
+    return(readRDS(file = rds_file_location))
   }
   
   
@@ -77,7 +77,7 @@ ll_get_adm_ocha <- function(geo,
   
   
   if (fs::file_exists(rds_file_location)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
     return(sf)
   }
   

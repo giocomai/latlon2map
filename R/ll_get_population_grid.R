@@ -41,7 +41,7 @@ ll_get_population_grid <- function(year = 2018,
     )
 
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   }
 
@@ -64,7 +64,7 @@ ll_get_population_grid <- function(year = 2018,
   if (is.null(population_grid_sf) == FALSE) {
     sf <- population_grid_sf
   } else if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     shp_folder <- ll_find_file(
       geo = "eu",

@@ -63,7 +63,7 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
     )
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   } else if (is.null(nuts_name) == FALSE) {
     rds_file_location <- ll_find_file(
@@ -76,12 +76,12 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
     )
 
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   }
 
   if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     shp_folder <- ll_find_file(
       geo = "eu",

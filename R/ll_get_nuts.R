@@ -50,7 +50,7 @@ ll_get_gadm <- function(geo,
 
   
   if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     shp_folder <- ll_find_file(
       geo = geo,

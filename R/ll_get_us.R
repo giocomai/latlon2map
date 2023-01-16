@@ -32,7 +32,7 @@ ll_get_nuts_us <- function(level = "county",
   )
 
   if (fs::file_exists(rds_file)) {
-    return(readr::read_rds(file = rds_file))
+    return(readRDS(file = rds_file))
   }
 
   shp_folder <- ll_find_file(
@@ -65,8 +65,8 @@ ll_get_nuts_us <- function(level = "county",
     exdir = shp_folder
   )
   sf <- sf::read_sf(shp_folder)
-  readr::write_rds(
-    x = sf,
+  saveRDS(
+    object = sf,
     file = rds_file
   )
   return(sf)

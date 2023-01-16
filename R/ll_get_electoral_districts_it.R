@@ -84,7 +84,7 @@ ll_get_electoral_districts_it <- function(name = NULL,
     )
     
     if (fs::file_exists(rds_file_location)) {
-      return(readr::read_rds(file = rds_file_location))
+      return(readRDS(file = rds_file_location))
     }
   }
   
@@ -99,7 +99,7 @@ ll_get_electoral_districts_it <- function(name = NULL,
   )
   
   if (fs::file_exists(rds_file)) {
-    sf <- readr::read_rds(file = rds_file)
+    sf <- readRDS(file = rds_file)
   } else {
     ll_create_folders(
       geo = "it_elections",

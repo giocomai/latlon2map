@@ -84,7 +84,7 @@ ll_osm_bboxes_pre <- purrr::map_dfr(
         )
 
         if (fs::file_exists(current_region_file)) {
-          readr::read_rds(file = current_region_file)
+          readRDS(file = current_region_file)
         } else {
           current_region_sf <- sf::st_read(current_region)
 
@@ -93,7 +93,7 @@ ll_osm_bboxes_pre <- purrr::map_dfr(
             region = current_region_name,
             bbox = list(sf::st_bbox(current_region_sf))
           )
-          readr::write_rds(x = current_bbox, file = current_region_file)
+          saveRDS(object = current_bbox, file = current_region_file)
           current_bbox
         }
       }
