@@ -393,6 +393,24 @@ ll_osm_get_lau_streets <- function(gisco_id,
         .x = street_folders,
         .f = function(x) sf::st_read(dsn = x)
       )
+      
+      date_extracted_files <- fs::dir_ls(path = street_folders,
+                                         recurse = TRUE,type = "file",
+                                         glob = "*date_extracted.rds")
+      
+      if (length(date_extracted_files)>0) {
+        earliest_date_v <- purrr::map(.x = date_extracted_files,
+                                .f = function(x) {
+          readRDS(file = x)
+        }) %>% 
+          purrr::list_simplify() %>% 
+          tibble::tibble(date = .) %>% 
+          dplyr::arrange(date) %>% 
+          dplyr::slice(1) %>% 
+          dplyr::pull(date)
+        
+        attr(city_roads_pre, "date_extracted") <- earliest_date_v
+      }
     } else {
       city_roads_pre <- ll_osm_get_roads(country = country_full_name)
     }
@@ -413,6 +431,7 @@ ll_osm_get_lau_streets <- function(gisco_id,
   if (attributes(city_roads_pre)[["date_extracted"]]) {
     attr(city_roads, "date_extracted") <- attr(city_roads_pre, "date_extracted")
   }
+  
   saveRDS(
     object = city_roads,
     file = rds_file_location
