@@ -3,7 +3,7 @@
 #' 2019 / WGS84 UTM32N
 #'
 #' @param level Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.
-#' @param year Defaults to 2022 (latest available).
+#' @param year Defaults to 2023 (latest available).
 #' @param resolution Defaults to "low". Valid values are either "low" or "high".
 #' @param no_check_certificate Logical, defaults to FALSE. Enable only if certificate issues, and if you are aware of the security implications.
 #'
@@ -16,7 +16,7 @@
 #' ll_get_nuts_it(name = "Rimini", level = 3)
 ll_get_nuts_it <- function(name = NULL,
                            level = 2,
-                           year = 2022,
+                           year = 2023,
                            resolution = "low",
                            silent = FALSE, 
                            no_check_certificate = FALSE) {
@@ -87,8 +87,13 @@ ll_get_nuts_it <- function(name = NULL,
       missing = ""
     )
 
-    source_url <- paste0("https://www.istat.it/storage/cartografia/confini_amministrativi/", type, "/Limiti0101", year, g_name, ".zip")
-
+    if (as.character(year)=="2023") {
+      source_url <- paste0("https://www.istat.it/storage/cartografia/confini_amministrativi/", type,  "/", year, "/Limiti0101", year, g_name, ".zip")
+    } else {
+      source_url <- paste0("https://www.istat.it/storage/cartografia/confini_amministrativi/", type, "/Limiti0101", year, g_name, ".zip")
+      
+    }
+    
     zip_file <- ll_find_file(
       geo = "it",
       level = "all_levels",

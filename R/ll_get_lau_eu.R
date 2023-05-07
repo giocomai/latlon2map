@@ -4,7 +4,7 @@
 #'
 #' @param name Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both `name` and `gisco_id` are NULL, then it returns all municipalities.
 #' @param gisco_id Gisco identifier of the relevant administrative unit. If given, takes precedence over name.
-#' @param year Year of mapping, defaults to most recent (2020). Available starting with 2011.
+#' @param year Year of mapping, defaults to most recent (2021). Available starting with 2011.
 #' @param lau_sf sf object, exactly such as the one that would be returned by `ll_get_lau_eu()`. Used to speed-up computation when bulk processing.
 #' @param silent Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.
 #'
@@ -17,7 +17,7 @@
 #' ll_get_lau_eu()
 ll_get_lau_eu <- function(gisco_id = NULL,
                           name = NULL,
-                          year = 2020,
+                          year = 2021,
                           silent = FALSE,
                           lau_sf = NULL,
                           fallback = TRUE) {

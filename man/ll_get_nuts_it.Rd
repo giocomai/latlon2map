@@ -7,7 +7,7 @@
 ll_get_nuts_it(
   name = NULL,
   level = 2,
-  year = 2022,
+  year = 2023,
   resolution = "low",
   silent = FALSE,
   no_check_certificate = FALSE
@@ -16,7 +16,7 @@ ll_get_nuts_it(
 \arguments{
 \item{level}{Defaults to "2", i.e. regioni. Available: "3" (i.e. province), and "lau", local administrative units.}
 
-\item{year}{Defaults to 2022 (latest available).}
+\item{year}{Defaults to 2023 (latest available).}
 
 \item{resolution}{Defaults to "low". Valid values are either "low" or "high".}
 
