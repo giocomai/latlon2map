@@ -12,7 +12,7 @@ ll_osm_get_lau_streets(
   lau_boundary_sf = NULL,
   streets_sf = NULL,
   country_code_type = "eurostat",
-  year = 2020,
+  year = 2021,
   fallback = TRUE
 )
 }
@@ -35,7 +35,7 @@ Must be an \code{sf} object such as the ones output by \code{ll_osm_get_roads()}
 \item{country_code_type}{Defaults to "eurostat". An alternative common value
 is "iso2c". See \code{countrycode::codelist} for a list of available codes.}
 
-\item{year}{Year of LAU boundaries, defaults to most recent (2020), passed to
+\item{year}{Year of LAU boundaries, defaults to most recent (2021), passed to
 \code{ll_get_lau_eu()}. Available starting with 2011.}
 
 \item{fallback}{Logical, defaults to TRUE. If a \code{gisco_id} does not match an

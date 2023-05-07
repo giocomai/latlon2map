@@ -226,7 +226,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 #'   Must be an `sf` object such as the ones output by `ll_osm_get_roads()`.
 #' @param country_code_type Defaults to "eurostat". An alternative common value
 #'   is "iso2c". See `countrycode::codelist` for a list of available codes.
-#' @param year Year of LAU boundaries, defaults to most recent (2020), passed to
+#' @param year Year of LAU boundaries, defaults to most recent (2021), passed to
 #'   `ll_get_lau_eu()`. Available starting with 2011.
 #' @param fallback Logical, defaults to TRUE. If a `gisco_id` does not match an
 #'   entity in `ll_get_lau_eu()`, try alternatives for the boundaries based on
@@ -252,7 +252,7 @@ ll_osm_get_lau_streets <- function(gisco_id,
                                    lau_boundary_sf = NULL, 
                                    streets_sf = NULL,
                                    country_code_type = "eurostat",
-                                   year = 2020,
+                                   year = 2021,
                                    fallback = TRUE) {
   
   if (unnamed_streets == TRUE) {

@@ -32,7 +32,7 @@ Must be an \code{sf} object such as the ones output by \code{ll_osm_get_roads()}
 \item{country_code_type}{Defaults to "eurostat". An alternative common value
 is "iso2c". See \code{countrycode::codelist} for a list of available codes.}
 
-\item{year}{Year of LAU boundaries, defaults to most recent (2020), passed to
+\item{year}{Year of LAU boundaries, defaults to most recent (2021), passed to
 \code{ll_get_lau_eu()}. Available starting with 2011.}
 }
 \value{
