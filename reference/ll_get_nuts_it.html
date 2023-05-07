@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">latlon2map</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9007</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ll_get_nuts_it</span><span class="op">(</span></span>
 <span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  year <span class="op">=</span> <span class="fl">2022</span>,</span>
+<span>  year <span class="op">=</span> <span class="fl">2023</span>,</span>
 <span>  resolution <span class="op">=</span> <span class="st">"low"</span>,</span>
 <span>  silent <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  no_check_certificate <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -68,7 +68,7 @@
 
 
 <dt>year</dt>
-<dd><p>Defaults to 2022 (latest available).</p></dd>
+<dd><p>Defaults to 2023 (latest available).</p></dd>
 
 
 <dt>resolution</dt>
@@ -83,17 +83,11 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="ll_set_folder.html">ll_set_folder</a></span><span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path.html" class="external-link">path</a></span><span class="op">(</span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_expand.html" class="external-link">path_home_r</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"R"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB; font-weight: bold;">/home/runner/R</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> /home/runner/R</span>
 <span class="r-in"><span><span class="fu">ll_get_nuts_it</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Source: https://www.istat.it/it/archivio/222527</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Istat (CC-BY)</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/Limiti01012022_g.zip': status was 'SSL connect error'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download.file(url = source_url, destfile = zip_file):</span> cannot open URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/Limiti01012022_g.zip'</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘usethis’</span>
 <span class="r-in"><span><span class="fu">ll_get_nuts_it</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"Rimini"</span>, level <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Source: https://www.istat.it/it/archivio/222527</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">ℹ</span> Istat (CC-BY)</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/Limiti01012022_g.zip': status was 'SSL connect error'</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in download.file(url = source_url, destfile = zip_file):</span> cannot open URL 'https://www.istat.it/storage/cartografia/confini_amministrativi/generalizzati/Limiti01012022_g.zip'</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘usethis’</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
