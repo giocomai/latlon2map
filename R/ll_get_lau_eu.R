@@ -82,6 +82,9 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       
       if  (code_row_df$source=="ll_get_lau_eu()") {
         # do nothing and move one
+      } else if (code_row_df$source=="Bratislava") { 
+        # move on and deal with this later
+
       } else if (code_row_df$source=="ll_get_nuts_eu(level = 3)") {
         usethis::ui_warn("Falling back on `ll_get_nuts_eu()`. Refer to original function for more options.")
         return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3, resolution = 1))
@@ -182,14 +185,43 @@ ll_get_lau_eu <- function(gisco_id = NULL,
   }
   
   if (is.null(gisco_id) == FALSE) {
-    sf <- sf %>%
-      dplyr::filter(GISCO_ID == gisco_id)
+    if (gisco_id == "SK_Bratislava") {
+      sf <- sf %>% 
+        dplyr::filter(stringr::str_starts(string = LAU_NAME,
+                                          pattern = "Bratislava - ")) %>% 
+        dplyr::summarise(GISCO_ID = "SK_Bratislava",
+                         CNTR_CODE = "SK", 
+                         LAU_ID = "Bratislava", 
+                         LAU_NAME = "Bratislava",
+                         POP_2021 = sum(POP_2021),
+                         POP_DENS_2 = mean(POP_DENS_2),
+                         AREA_KM2 = sum(AREA_KM2),
+                         YEAR = 2021, 
+                         FID = "SK_Bratislava")
+    } else {
+      sf <- sf %>%
+        dplyr::filter(GISCO_ID == gisco_id)
+    }
+
     saveRDS(
       object = sf,
       file = rds_file_location
     )
   } else if (is.null(name) == FALSE) {
-    if (is.element("LAU_LABEL", colnames(sf)) == TRUE) {
+    if (name == "Bratislava") {
+      sf <- sf %>% 
+        dplyr::filter(stringr::str_starts(string = LAU_NAME,
+                                          pattern = "Bratislava - ")) %>% 
+        dplyr::summarise(GISCO_ID = "SK_Bratislava",
+                      CNTR_CODE = "SK", 
+                      LAU_ID = "Bratislava", 
+                      LAU_NAME = "Bratislava",
+                      POP_2021 = sum(POP_2021),
+                      POP_DENS_2 = mean(POP_DENS_2),
+                      AREA_KM2 = sum(AREA_KM2),
+                      YEAR = 2021, 
+                      FID = "SK_Bratislava")
+    } else if (is.element("LAU_LABEL", colnames(sf)) == TRUE) {
       sf <- sf %>%
         dplyr::filter(LAU_LABEL == name)
     } else {

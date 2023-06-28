@@ -89,6 +89,23 @@ pt_df <- ll_lau_pt_id %>%
                    name = Concelho,
                    source = "ll_get_lau_pt(level = 'concelho')")
 
+# Custom fix for Bratislava
+
+sk_df <- tibble::tibble(country_code = "SK",
+                        id = "SK_Bratislava", 
+                        name = "Bratislava",
+                        source = "Bratislava")
+
+
+
+# ll_get_lau_eu() %>% 
+#   dplyr::filter(stringr::str_starts(string = LAU_NAME,
+#                                     pattern = "Bratislava - ")) %>% 
+#  sf::st_union() %>% 
+#   ggplot2::ggplot() +
+#   ggplot2::geom_sf()
+
+
 ll_codes <- dplyr::bind_rows(lau_df,
                              nuts3_df,
                              ua1_df,
@@ -99,7 +116,8 @@ ll_codes <- dplyr::bind_rows(lau_df,
                              ba3_df,
                              xk2_df,
                              xk1_df,
-                             pt_df) %>% 
+                             pt_df,
+                             sk_df) %>% 
   dplyr::arrange(country_code, id, name)
 
 
