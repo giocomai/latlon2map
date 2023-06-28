@@ -188,16 +188,20 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     if (gisco_id == "SK_Bratislava") {
       sf <- sf %>% 
         dplyr::filter(stringr::str_starts(string = LAU_NAME,
-                                          pattern = "Bratislava - ")) %>% 
+                                          pattern = "Bratislava - "))
+      sf_temp <- sf %>% 
         dplyr::summarise(GISCO_ID = "SK_Bratislava",
                          CNTR_CODE = "SK", 
                          LAU_ID = "Bratislava", 
                          LAU_NAME = "Bratislava",
-                         POP_2021 = sum(POP_2021),
+                         #POP_2020 = sum(POP_2020),
                          POP_DENS_2 = mean(POP_DENS_2),
                          AREA_KM2 = sum(AREA_KM2),
-                         YEAR = 2021, 
+                         YEAR = year, 
                          FID = "SK_Bratislava")
+      sf_temp[stringr::str_c("POP_", year)] <- sum(sf[[stringr::str_c("POP_", year)]])
+      sf <- sf_temp %>% 
+        dplyr::select(c("GISCO_ID","CNTR_CODE", "LAU_ID", "LAU_NAME", stringr::str_c("POP_", year)), dplyr::everything())
     } else {
       sf <- sf %>%
         dplyr::filter(GISCO_ID == gisco_id)
@@ -211,16 +215,20 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     if (name == "Bratislava") {
       sf <- sf %>% 
         dplyr::filter(stringr::str_starts(string = LAU_NAME,
-                                          pattern = "Bratislava - ")) %>% 
+                                          pattern = "Bratislava - "))
+      sf_temp <- sf %>% 
         dplyr::summarise(GISCO_ID = "SK_Bratislava",
-                      CNTR_CODE = "SK", 
-                      LAU_ID = "Bratislava", 
-                      LAU_NAME = "Bratislava",
-                      POP_2021 = sum(POP_2021),
-                      POP_DENS_2 = mean(POP_DENS_2),
-                      AREA_KM2 = sum(AREA_KM2),
-                      YEAR = 2021, 
-                      FID = "SK_Bratislava")
+                         CNTR_CODE = "SK", 
+                         LAU_ID = "Bratislava", 
+                         LAU_NAME = "Bratislava",
+                         #POP_2020 = sum(POP_2020),
+                         POP_DENS_2 = mean(POP_DENS_2),
+                         AREA_KM2 = sum(AREA_KM2),
+                         YEAR = year, 
+                         FID = "SK_Bratislava")
+      sf_temp[stringr::str_c("POP_", year)] <- sum(sf[[stringr::str_c("POP_", year)]])
+      sf <- sf_temp %>% 
+        dplyr::select(c("GISCO_ID","CNTR_CODE", "LAU_ID", "LAU_NAME", stringr::str_c("POP_", year)), dplyr::everything())
     } else if (is.element("LAU_LABEL", colnames(sf)) == TRUE) {
       sf <- sf %>%
         dplyr::filter(LAU_LABEL == name)
