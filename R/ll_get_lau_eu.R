@@ -391,9 +391,14 @@ ll_osm_get_lau_streets <- function(gisco_id,
       if (is.null(country)==FALSE) {
         country_full_name <- country
       } else {
-        country_full_name <- countrycode::countrycode(sourcevar = gisco_cc,
-                                                      origin = country_code_type,
-                                                      destination = "iso.name.en")
+        if (gisco_cc == "XK") {
+          country_full_name <- "Kosovo"
+        } else {
+          country_full_name <- countrycode::countrycode(sourcevar = gisco_cc,
+                                                        origin = country_code_type,
+                                                        destination = "iso.name.en")
+        }
+      
         
         if (country_full_name=="Czechia") {
           country_full_name <- "czech-republic"
