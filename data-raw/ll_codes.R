@@ -62,7 +62,7 @@ ba2_df <- ll_get_gadm(geo = "BIH", level = 2) %>%
 xk2_df <- ll_get_gadm(geo = "XKO", level = 2) %>% 
   sf::st_drop_geometry() %>% 
   dplyr::transmute(country_code = "XK",
-                   id = GID_2, 
+                   id = stringr::str_c("XK_", GID_2), 
                    name = NAME_2,
                    source = "ll_get_gadm(geo = 'XKO', level = 2)")
 
@@ -70,7 +70,7 @@ xk2_df <- ll_get_gadm(geo = "XKO", level = 2) %>%
 xk1_df <- ll_get_gadm(geo = "XKO", level = 1) %>% 
   sf::st_drop_geometry() %>% 
   dplyr::transmute(country_code = "XK",
-                   id = GID_1, 
+                   id = stringr::str_c("XK_", GID_1), 
                    name = NAME_1,
                    source = "ll_get_gadm(geo = 'XKO', level = 1)")
 
