@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   removing_the_boring: removing_the_boring.html
-last_built: 2023-06-28T12:03Z
+last_built: 2023-08-03T13:10Z
 urls:
   reference: https://giocomai.github.io/latlon2map/reference
   article: https://giocomai.github.io/latlon2map/articles
