@@ -1,120 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/404.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/articles/removing_the_boring.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/index.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_app.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_bbox.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_create_folders.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_export_sf_to_kml.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_find_file.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_find_pop_centre.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_adm_ocha.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_electoral_districts_it.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_gadm.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_lau_eu.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_lau_nuts_concordance.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_lau_pt.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_nuts_eu.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_nuts_it.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_nuts_us.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_population_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_population_grid_hr.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_get_world.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_match.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_countries.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_download.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_download_it.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_extract_it.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_extract_roads.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_get_lau_streets.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_get_nuts_streets.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_get_roads.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_osm_it_gpkg.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/ll_set_folder.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://giocomai.github.io/latlon2map/reference/population_grid_hr_metadata.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://giocomai.github.io/latlon2map/404.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/LICENSE.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/articles/index.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/articles/removing_the_boring.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/authors.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/index.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/news/index.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/index.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_app.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_bbox.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_create_folders.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_export_sf_to_kml.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_find_file.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_find_pop_centre.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_adm_ocha.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_electoral_districts_it.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_gadm.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_lau_eu.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_lau_nuts_concordance.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_lau_pt.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_nuts_eu.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_nuts_it.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_nuts_us.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_population_grid.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_population_grid_hr.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_get_world.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_match.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_countries.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_download.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_download_it.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_extract_it.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_extract_roads.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_get_lau_streets.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_get_nuts_streets.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_get_roads.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_osm_it_gpkg.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/ll_set_folder.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/pipe.html</loc></url>
+<url><loc>https://giocomai.github.io/latlon2map/reference/population_grid_hr_metadata.html</loc></url>
 </urlset>
+
