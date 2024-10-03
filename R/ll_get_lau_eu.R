@@ -167,7 +167,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     )
     
     unzip(
-      zipfile = fs::path(zip_folder, paste0("LAU_RG_01M_", year, "_4326.shp.zip")),
+      zipfile = fs::path(zip_folder, paste0("LAU_RG_01M_", year, "_3035.shp.zip")),
       exdir = shp_folder
     )
     
