@@ -1,0 +1,57 @@
+# Get EU 1km population grid
+
+Source:
+https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat
+More details:
+https://ec.europa.eu/eurostat/statistics-explained/index.php/Population_grids
+
+## Usage
+
+``` r
+ll_get_population_grid(
+  year = 2018,
+  match_sf = NULL,
+  match_name = NULL,
+  match_country = NULL,
+  join = sf::st_intersects,
+  silent = FALSE,
+  population_grid_sf = NULL
+)
+```
+
+## Arguments
+
+- year:
+
+  Defaults to 2018. Currently, the EU population grid is available only
+  for the year 2006, 2011, and 2018.
+
+- match_sf:
+
+  An sf object to be matched with the population grid. If not given,
+  full grid is returned.
+
+- match_name:
+
+  A name to be used for local caching. It is the responsibility of the
+  user to keept it consistent. If not given, data are not cached
+  locally.
+
+- match_country:
+
+  Defaults to NULL. If given, used to speed up processing.
+
+- join:
+
+  The function to use for filtering. Defaults to sf::st_intersects.
+  Alternative includes the likes of sf::st_within, sf::st_touches, etc.
+
+- population_grid_sf:
+
+  Defaults to NULL. If given, it uses this one as population grid of
+  reference. Useful to bulk process items, as it removes the need for
+  re-loading the grid from local storage at each iteration.
+
+## Value
+
+An sf object with the population grid.

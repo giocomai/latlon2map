@@ -1,0 +1,59 @@
+# Get High Resolution Population Density Maps + Demographic Estimates
+
+Source: https://data.humdata.org/organization/facebook Details on
+methodology:
+https://dataforgood.fb.com/docs/methodology-high-resolution-population-density-maps-demographic-estimates/
+
+## Usage
+
+``` r
+ll_get_population_grid_hr(
+  geo,
+  match_sf = NULL,
+  match_name = NULL,
+  population_grid_sf = NULL,
+  join = sf::st_intersects,
+  file_format = "CSV",
+  dataset = "population|general",
+  source_url = NULL,
+  silent = FALSE
+)
+```
+
+## Arguments
+
+- geo:
+
+  A twe letter country code, such as "IT" for Italy and "DE" for Germany
+
+- match_sf:
+
+  An sf object to me matched with the population grid. If not given,
+  full grid is returned.
+
+- match_name:
+
+  A name to be used for local caching if a subset of the grid is used.
+  It is the responsibility of the user to keept it consistent. If not
+  given, data are not cached locally.
+
+- file_format:
+
+  Defaults to "CSV". Other available formats include "GeoTIFF", "JSON",
+  "zip", "GDAL Virtual Format". Currently only CSV supported.
+
+- dataset:
+
+  Defaults to "population". Beginning of the name of the dataset. For
+  alternatives, see e.g.
+  `population_grid_hr_metadata %>% dplyr::filter(country_code=="IT") %>% dplyr::distinct(name)`.
+  Currently only tested with default value.
+
+- source_url:
+
+  A direct link to the zipped version of the csv file in the original
+  database, if automatic download with the country code does not work.
+  For example, for Italy this would be
+  "https://data.humdata.org/dataset/0eb77b21-06be-42c8-9245-2edaff79952f/resource/1e96f272-7d86-4108-b4ca-5a951a8b11a0/download/population_ita_2019-07-01.csv.zip"
+
+- silent:

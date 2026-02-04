@@ -1,0 +1,156 @@
+# latlon2map
+
+The goal of `latlon2map` is to make it simple to process spatial data,
+and to match tabular data distributed in spreadsheets with
+longitude/latitude columns with various geographical units based on
+shapefile distributed by statistical offices such as Eurostat.
+
+The package includes a number of convenience functions that download and
+cache locally pre-processed files to reduce boilerplate code commonly
+found in data projects, hopefully speeding up the data pipeline and
+favouring reproducibility.
+
+By dafault, `latlon2map` stores all downloaded files in the current
+working directory. However, it makes is easy to keep them on a single
+folder, preventing the common issue of having multiple copies of the
+same geographic files for each data project on a computer. The code
+remains transferrable and reproducible, as missing files are simply
+downloaded on the fly if unavaiable locally.
+
+## Installation
+
+You can install `latlon2map` from GitHub with:
+
+``` r
+remotes::install_github("giocomai/latlon2map")
+```
+
+## Use
+
+All `latlon2map` function starts with `ll_` to facilitate
+auto-completion. By default, data are stored in a folder called
+`ll_data` inside the working directory. However, I suggest caching data
+in a separate folder for system-wide caching: you will not need to
+re-download again geographic files for different projects, and you will
+not unncessarily sync multiple copies of those files for each project
+that needs them. You need to call e.g. `ll_set_folder("~/R/")` once per
+session. Given that you may well download big files that take longer
+than the 60 seconds to download, you are advised to set a reasonably
+high timeout for downloads at the beginning of each session.
+
+``` r
+library("latlon2map")
+ll_set_folder(fs::path(fs::path_home_r(),
+                              "R",
+                              "ll_data"))
+#> /home/g/R/ll_data
+options(timeout = 6000)
+```
+
+There are currently a number of functions facilitating downloads of
+geographic datasets, mostly from Eurostat’s website. They all return
+`sf` objects, all of them transformed to crs 4326, all of them keeping
+all of the columns present in the original dataset. Future versions will
+likely add standard-named columns to facilitate matching data between
+different datasets.
+
+For reference all of the original data are kept in the `ll_data/shp/`
+folder, so it is possible to check metadata about each dataset.
+Information on copyright is printed to the console each time a given
+data source is used.
+
+Functions calls such as `ll_get_world(resolution = 60)` can safely be
+used where you would usually place your `sf` object/data frame. They
+will download items when they are not locally available, and will simply
+load pre-processed data on the following calls.
+
+Check the package vignette for more details, examples, and use cases.
+
+## Shiny app
+
+The package includes a shiny app that facilitates matching
+latitude/longitude data frames wtih geographic units.
+
+``` r
+ll_app()
+```
+
+# Package index
+
+## All functions
+
+- [`ll_app()`](https://giocomai.github.io/latlon2map/reference/ll_app.md)
+  : Run the Shiny Application
+- [`ll_bbox()`](https://giocomai.github.io/latlon2map/reference/ll_bbox.md)
+  : Provide a bounding box with a consistent, user given ratio
+- [`ll_create_folders()`](https://giocomai.github.io/latlon2map/reference/ll_create_folders.md)
+  : Create folders to store geographic data
+- [`ll_export_sf_to_kml()`](https://giocomai.github.io/latlon2map/reference/ll_export_sf_to_kml.md)
+  : Export sf objects into kml file that can be used with Google Earth,
+  Google Maps, etc.
+- [`ll_find_file()`](https://giocomai.github.io/latlon2map/reference/ll_find_file.md)
+  : Find file names. Mostly used internally
+- [`ll_find_pop_centre()`](https://giocomai.github.io/latlon2map/reference/ll_find_pop_centre.md)
+  : Find the population-weighted centre of a municipality
+- [`ll_get_adm_ocha()`](https://giocomai.github.io/latlon2map/reference/ll_get_adm_ocha.md)
+  : Get administrative boundary lines from OCHA database
+- [`ll_get_electoral_districts_it()`](https://giocomai.github.io/latlon2map/reference/ll_get_electoral_districts_it.md)
+  : Get Italian electoral districts (CC-BY Istat)
+- [`ll_get_gadm()`](https://giocomai.github.io/latlon2map/reference/ll_get_gadm.md)
+  : Get administrative boundaries
+- [`ll_get_lau_eu()`](https://giocomai.github.io/latlon2map/reference/ll_get_lau_eu.md)
+  : Gets local administrative units from Eurostat's website
+- [`ll_get_lau_nuts_concordance()`](https://giocomai.github.io/latlon2map/reference/ll_get_lau_nuts_concordance.md)
+  : Gets correspondence tables between local administrative units and
+  nuts from Eurostat's website
+- [`ll_get_lau_pt()`](https://giocomai.github.io/latlon2map/reference/ll_get_lau_pt.md)
+  : Regions and provinces in Italy (high detail, CC-BY Istat)
+- [`ll_get_nuts_eu()`](https://giocomai.github.io/latlon2map/reference/ll_get_nuts_eu.md)
+  : Gets NUTS as sf object from Eurostat's website
+- [`ll_get_nuts_it()`](https://giocomai.github.io/latlon2map/reference/ll_get_nuts_it.md)
+  : Regions and provinces in Italy (high detail, CC-BY Istat)
+- [`ll_get_nuts_us()`](https://giocomai.github.io/latlon2map/reference/ll_get_nuts_us.md)
+  : Get US counties
+- [`ll_get_population_grid()`](https://giocomai.github.io/latlon2map/reference/ll_get_population_grid.md)
+  : Get EU 1km population grid
+- [`ll_get_population_grid_hr()`](https://giocomai.github.io/latlon2map/reference/ll_get_population_grid_hr.md)
+  : Get High Resolution Population Density Maps + Demographic Estimates
+- [`ll_get_world()`](https://giocomai.github.io/latlon2map/reference/ll_get_world.md)
+  : Get countries as an sf object
+- [`ll_match()`](https://giocomai.github.io/latlon2map/reference/ll_match.md)
+  : Matches a data frame with longitude and latitude to an sf object
+- [`ll_osm_countries`](https://giocomai.github.io/latlon2map/reference/ll_osm_countries.md)
+  : Countries and geographic entities for which shapefiles are made
+  availabile by Geofabrik
+- [`ll_osm_download()`](https://giocomai.github.io/latlon2map/reference/ll_osm_download.md)
+  : Download OSM data for whole countries from Geofabrik.
+- [`ll_osm_download_it()`](https://giocomai.github.io/latlon2map/reference/ll_osm_download_it.md)
+  : Download OSM data in geopackage format for regions, provinces, and
+  municipalities in Italy.
+- [`ll_osm_extract_it()`](https://giocomai.github.io/latlon2map/reference/ll_osm_extract_it.md)
+  : Extract OSM data for regions, provinces, and municipalities in
+  Italy.
+- [`ll_osm_extract_roads()`](https://giocomai.github.io/latlon2map/reference/ll_osm_extract_roads.md)
+  : Extract from zip shape files of roads from previously downloaded
+- [`ll_osm_get_lau_streets()`](https://giocomai.github.io/latlon2map/reference/ll_osm_get_lau_streets.md)
+  : Get all streets available in OpenStreetMap located in given local
+  administrative unit.
+- [`ll_osm_get_nuts_streets()`](https://giocomai.github.io/latlon2map/reference/ll_osm_get_nuts_streets.md)
+  : Get all streets available in OpenStreetMap located in given NUTS.
+- [`ll_osm_get_roads()`](https://giocomai.github.io/latlon2map/reference/ll_osm_get_roads.md)
+  : Extract shape files of roads from previously downloaded
+- [`ll_osm_it_gpkg`](https://giocomai.github.io/latlon2map/reference/ll_osm_it_gpkg.md)
+  : Geographic entities in Italy for which geopackage files are
+  availabile
+- [`ll_set_folder()`](https://giocomai.github.io/latlon2map/reference/ll_set_folder.md)
+  : Set folder for caching data
+- [`population_grid_hr_metadata`](https://giocomai.github.io/latlon2map/reference/population_grid_hr_metadata.md)
+  : A data frame with links to High Resolution Population Density Maps
+  distributed by Facebook on HDX
+
+# Articles
+
+### All vignettes
+
+- [Removing the boring parts from geocomputation with European
+  data](https://giocomai.github.io/latlon2map/articles/removing_the_boring.md):
