@@ -7,9 +7,12 @@
 ll_osm_get_roads(country, silent = FALSE)
 }
 \arguments{
-\item{country}{The name of one or more geographic entities from files typically previously downloaded with \code{ll_osm_download()}}
+\item{country}{The name of one or more geographic entities from files
+typically previously downloaded with \code{\link[=ll_osm_download]{ll_osm_download()}}.}
 
-\item{silent}{Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.}
+\item{silent}{Defaults to \code{FALSE}. If \code{TRUE}, hides copyright notice. Useful
+e.g. when using this in reports or in loops. The copyright notice must
+still be shown where the final output is used.}
 }
 \value{
 All roads in a country by OpenStreetMap.

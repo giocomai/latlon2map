@@ -1,12 +1,20 @@
 #' Gets local administrative units from Eurostat's website
 #'
-#' Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18
+#' Source: \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18}
 #'
-#' @param name Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both `name` and `gisco_id` are NULL, then it returns all municipalities.
-#' @param gisco_id Gisco identifier of the relevant administrative unit. If given, takes precedence over name.
-#' @param year Year of mapping, defaults to most recent (2021). Available starting with 2011.
-#' @param lau_sf sf object, exactly such as the one that would be returned by `ll_get_lau_eu()`. Used to speed-up computation when bulk processing.
-#' @param silent Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.
+#' @param name Name of the local administrative unit in the local language. Use
+#'   gisco_id whenever possible, as names of local administrative units are not
+#'   unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both `name` and
+#'   `gisco_id` are `NULL`, then it returns all municipalities.
+#' @param gisco_id Gisco identifier of the relevant administrative unit. If
+#'   given, takes precedence over name.
+#' @param year Year of mapping, defaults to most recent (2021). Available
+#'   starting with 2011.
+#' @param lau_sf sf object, exactly such as the one that would be returned by
+#'   [ll_get_lau_eu()]. Used to speed-up computation when bulk processing.
+#' @param silent Defaults to `FALSE`. If `TRUE`, hides copyright notice. Useful
+#'   e.g. when using this in reports or in loops. The copyright notice must
+#'   still be shown where the final output is used.
 #'
 #' @return European LAU in sf format
 #' @export
@@ -15,12 +23,14 @@
 #'
 #' ll_set_folder("~/R/")
 #' ll_get_lau_eu()
-ll_get_lau_eu <- function(gisco_id = NULL,
-                          name = NULL,
-                          year = 2021,
-                          silent = FALSE,
-                          lau_sf = NULL,
-                          fallback = TRUE) {
+ll_get_lau_eu <- function(
+  gisco_id = NULL,
+  name = NULL,
+  year = 2021,
+  silent = FALSE,
+  lau_sf = NULL,
+  fallback = TRUE
+) {
   if (silent == FALSE) {
     usethis::ui_info(x = "© EuroGeographics for the administrative boundaries")
   }
@@ -30,7 +40,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     resolution = "1m",
     year = year
   )
-  
+
   rds_file <- ll_find_file(
     geo = "eu",
     level = "lau",
@@ -39,7 +49,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     name = "abl",
     file_type = "rds"
   )
-  
+
   if (is.null(gisco_id) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = "eu",
@@ -49,7 +59,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       name = gisco_id,
       file_type = "rds"
     )
-    
+
     if (fs::file_exists(rds_file_location)) {
       return(readRDS(file = rds_file_location))
     }
@@ -69,59 +79,61 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       ),
       file_type = "rds"
     )
-    
+
     if (fs::file_exists(rds_file_location)) {
       return(readRDS(file = rds_file_location))
     }
   }
-  
-  if (is.null(gisco_id)==FALSE) {
-    if (fallback == TRUE&(gisco_id %in% latlon2map::ll_codes$id)) {
-      code_row_df <- latlon2map::ll_codes %>% 
-        dplyr::filter(gisco_id == .data$id)
-      
-      if  (code_row_df$source=="ll_get_lau_eu()") {
-        # do nothing and move one
-      } else if (code_row_df$source=="Bratislava") { 
-        # move on and deal with this later
 
-      } else if (code_row_df$source=="ll_get_nuts_eu(level = 3)") {
-        usethis::ui_warn("Falling back on `ll_get_nuts_eu()`. Refer to original function for more options.")
+  if (is.null(gisco_id) == FALSE) {
+    if (fallback == TRUE & (gisco_id %in% latlon2map::ll_codes$id)) {
+      code_row_df <- latlon2map::ll_codes %>%
+        dplyr::filter(gisco_id == .data$id)
+
+      if (code_row_df$source == "ll_get_lau_eu()") {
+        # do nothing and move one
+      } else if (code_row_df$source == "Bratislava") {
+        # move on and deal with this later
+      } else if (code_row_df$source == "ll_get_nuts_eu(level = 3)") {
+        usethis::ui_warn(
+          "Falling back on `ll_get_nuts_eu()`. Refer to original function for more options."
+        )
         return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3, resolution = 1))
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 1)")  {
-        lau_sf <- ll_get_gadm(geo = 'UKR', level = 1) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'UKR', level = 1)") {
+        lau_sf <- ll_get_gadm(geo = 'UKR', level = 1) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_1))
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'UKR', level = 2)")  {
-        lau_sf <- ll_get_gadm(geo = 'UKR', level = 2) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'UKR', level = 2)") {
+        lau_sf <- ll_get_gadm(geo = 'UKR', level = 2) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("UA_", GID_2))
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 2)")  {
-        lau_sf <- ll_get_gadm(geo = 'BIH', level = 2) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'BIH', level = 2)") {
+        lau_sf <- ll_get_gadm(geo = 'BIH', level = 2) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_2))
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'BIH', level = 3)")  {
-        lau_sf <- ll_get_gadm(geo = 'BIH', level = 3) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'BIH', level = 3)") {
+        lau_sf <- ll_get_gadm(geo = 'BIH', level = 3) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("BA_", GID_3))
-      } else if (code_row_df$source=="ll_get_adm_ocha(geo = 'MD', level = 1)")  {
-        lau_sf <- ll_get_adm_ocha(geo = 'MD', level = 1) %>% 
+      } else if (
+        code_row_df$source == "ll_get_adm_ocha(geo = 'MD', level = 1)"
+      ) {
+        lau_sf <- ll_get_adm_ocha(geo = 'MD', level = 1) %>%
           dplyr::mutate(GISCO_ID = ADM1_PCODE)
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'RS', level = 1)")  {
-        lau_sf <- ll_get_gadm(geo = 'RS', level = 1) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'RS', level = 1)") {
+        lau_sf <- ll_get_gadm(geo = 'RS', level = 1) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("RS_", GID_3))
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 1)")  {
-        lau_sf <- ll_get_gadm(geo = 'XKO', level = 1) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'XKO', level = 1)") {
+        lau_sf <- ll_get_gadm(geo = 'XKO', level = 1) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_1))
-      } else if (code_row_df$source=="ll_get_gadm(geo = 'XKO', level = 2)")  {
-        lau_sf <- ll_get_gadm(geo = 'XKO', level = 2) %>% 
+      } else if (code_row_df$source == "ll_get_gadm(geo = 'XKO', level = 2)") {
+        lau_sf <- ll_get_gadm(geo = 'XKO', level = 2) %>%
           dplyr::mutate(GISCO_ID = stringr::str_c("XK_", GID_2))
-      } else if (code_row_df$source=="ll_get_lau_pt(level = 'concelho')")  {
-        lau_sf <- ll_get_lau_pt(id = gisco_id, level = 'concelho') %>% 
-          dplyr::mutate(GISCO_ID = gisco_id) %>% 
+      } else if (code_row_df$source == "ll_get_lau_pt(level = 'concelho')") {
+        lau_sf <- ll_get_lau_pt(id = gisco_id, level = 'concelho') %>%
+          dplyr::mutate(GISCO_ID = gisco_id) %>%
           dplyr::select(GISCO_ID, dplyr::everything())
         return(lau_sf)
-      } 
+      }
     }
-  } 
-  
-  
+  }
+
   if (is.null(lau_sf) == FALSE) {
     sf <- lau_sf
   } else if (fs::file_exists(rds_file)) {
@@ -135,7 +147,11 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       name = "abl",
       file_type = "shp"
     )
-    source_url <- paste0("https://gisco-services.ec.europa.eu/distribution/v2/lau/download/ref-lau-", year, "-01m.shp.zip")
+    source_url <- paste0(
+      "https://gisco-services.ec.europa.eu/distribution/v2/lau/download/ref-lau-",
+      year,
+      "-01m.shp.zip"
+    )
     zip_file <- ll_find_file(
       geo = "eu",
       level = "lau",
@@ -144,7 +160,7 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       name = "abl",
       file_type = "zip"
     )
-    
+
     if (fs::file_exists(zip_file) == FALSE) {
       download.file(
         url = source_url,
@@ -160,48 +176,68 @@ ll_get_lau_eu <- function(gisco_id = NULL,
       file_type = "zip"
     ) %>%
       fs::path_dir()
-    
+
     unzip(
       zipfile = zip_file,
       exdir = zip_folder
     )
-    
+
     unzip(
-      zipfile = fs::path(zip_folder, paste0("LAU_RG_01M_", year, "_3035.shp.zip")),
+      zipfile = fs::path(
+        zip_folder,
+        paste0("LAU_RG_01M_", year, "_3035.shp.zip")
+      ),
       exdir = shp_folder
     )
-    
-    
+
     sf <- sf::read_sf(shp_folder) %>%
-      dplyr::mutate(CNTR_CODE = stringr::str_extract(
-        string = GISCO_ID,
-        pattern = "[[A-Z]][[A-Z]]"
-      )) %>%
+      dplyr::mutate(
+        CNTR_CODE = stringr::str_extract(
+          string = GISCO_ID,
+          pattern = "[[A-Z]][[A-Z]]"
+        )
+      ) %>%
       sf::st_transform(crs = 4326)
     saveRDS(
       object = sf,
       file = rds_file
     )
   }
-  
+
   if (is.null(gisco_id) == FALSE) {
     if (gisco_id == "SK_Bratislava") {
-      sf <- sf %>% 
-        dplyr::filter(stringr::str_starts(string = LAU_NAME,
-                                          pattern = "Bratislava - "))
-      sf_temp <- sf %>% 
-        dplyr::summarise(GISCO_ID = "SK_Bratislava",
-                         CNTR_CODE = "SK", 
-                         LAU_ID = "Bratislava", 
-                         LAU_NAME = "Bratislava",
-                         #POP_2020 = sum(POP_2020),
-                         POP_DENS_2 = mean(POP_DENS_2),
-                         AREA_KM2 = sum(AREA_KM2),
-                         YEAR = year, 
-                         FID = "SK_Bratislava")
-      sf_temp[stringr::str_c("POP_", year)] <- sum(sf[[stringr::str_c("POP_", year)]])
-      sf <- sf_temp %>% 
-        dplyr::select(c("GISCO_ID","CNTR_CODE", "LAU_ID", "LAU_NAME", stringr::str_c("POP_", year)), dplyr::everything())
+      sf <- sf %>%
+        dplyr::filter(stringr::str_starts(
+          string = LAU_NAME,
+          pattern = "Bratislava - "
+        ))
+      sf_temp <- sf %>%
+        dplyr::summarise(
+          GISCO_ID = "SK_Bratislava",
+          CNTR_CODE = "SK",
+          LAU_ID = "Bratislava",
+          LAU_NAME = "Bratislava",
+          #POP_2020 = sum(POP_2020),
+          POP_DENS_2 = mean(POP_DENS_2),
+          AREA_KM2 = sum(AREA_KM2),
+          YEAR = year,
+          FID = "SK_Bratislava"
+        )
+      sf_temp[stringr::str_c("POP_", year)] <- sum(sf[[stringr::str_c(
+        "POP_",
+        year
+      )]])
+      sf <- sf_temp %>%
+        dplyr::select(
+          c(
+            "GISCO_ID",
+            "CNTR_CODE",
+            "LAU_ID",
+            "LAU_NAME",
+            stringr::str_c("POP_", year)
+          ),
+          dplyr::everything()
+        )
     } else {
       sf <- sf %>%
         dplyr::filter(GISCO_ID == gisco_id)
@@ -213,22 +249,38 @@ ll_get_lau_eu <- function(gisco_id = NULL,
     )
   } else if (is.null(name) == FALSE) {
     if (name == "Bratislava") {
-      sf <- sf %>% 
-        dplyr::filter(stringr::str_starts(string = LAU_NAME,
-                                          pattern = "Bratislava - "))
-      sf_temp <- sf %>% 
-        dplyr::summarise(GISCO_ID = "SK_Bratislava",
-                         CNTR_CODE = "SK", 
-                         LAU_ID = "Bratislava", 
-                         LAU_NAME = "Bratislava",
-                         #POP_2020 = sum(POP_2020),
-                         POP_DENS_2 = mean(POP_DENS_2),
-                         AREA_KM2 = sum(AREA_KM2),
-                         YEAR = year, 
-                         FID = "SK_Bratislava")
-      sf_temp[stringr::str_c("POP_", year)] <- sum(sf[[stringr::str_c("POP_", year)]])
-      sf <- sf_temp %>% 
-        dplyr::select(c("GISCO_ID","CNTR_CODE", "LAU_ID", "LAU_NAME", stringr::str_c("POP_", year)), dplyr::everything())
+      sf <- sf %>%
+        dplyr::filter(stringr::str_starts(
+          string = LAU_NAME,
+          pattern = "Bratislava - "
+        ))
+      sf_temp <- sf %>%
+        dplyr::summarise(
+          GISCO_ID = "SK_Bratislava",
+          CNTR_CODE = "SK",
+          LAU_ID = "Bratislava",
+          LAU_NAME = "Bratislava",
+          #POP_2020 = sum(POP_2020),
+          POP_DENS_2 = mean(POP_DENS_2),
+          AREA_KM2 = sum(AREA_KM2),
+          YEAR = year,
+          FID = "SK_Bratislava"
+        )
+      sf_temp[stringr::str_c("POP_", year)] <- sum(sf[[stringr::str_c(
+        "POP_",
+        year
+      )]])
+      sf <- sf_temp %>%
+        dplyr::select(
+          c(
+            "GISCO_ID",
+            "CNTR_CODE",
+            "LAU_ID",
+            "LAU_NAME",
+            stringr::str_c("POP_", year)
+          ),
+          dplyr::everything()
+        )
     } else if (is.element("LAU_LABEL", colnames(sf)) == TRUE) {
       sf <- sf %>%
         dplyr::filter(LAU_LABEL == name)
@@ -237,7 +289,9 @@ ll_get_lau_eu <- function(gisco_id = NULL,
         dplyr::filter(LAU_NAME == name)
     }
     if (nrow(sf) > 1) {
-      usethis::ui_stop(x = "More than one local administrative unit with this name. Use gisco_id instead.")
+      usethis::ui_stop(
+        x = "More than one local administrative unit with this name. Use gisco_id instead."
+      )
     }
     saveRDS(
       object = sf,
@@ -285,16 +339,17 @@ ll_get_lau_eu <- function(gisco_id = NULL,
 #'
 #' ll_osm_get_lau_streets(gisco_id = "EL_01020204", country = "greece")
 #' }
-ll_osm_get_lau_streets <- function(gisco_id,
-                                   country = NULL, 
-                                   unnamed_streets = TRUE,
-                                   # merge_streets_with_same_name = FALSE, #' @param merge_streets_with_same_name Defaults to FALSE. Always falls back to FALSE if `unnamed_streets` is set to TRUE. IF TRUE, streets with the same name are combined in a single multistring. Conceptually, this should be warranted by the fact all streets are within the same municipality.
-                                   lau_boundary_sf = NULL, 
-                                   streets_sf = NULL,
-                                   country_code_type = "eurostat",
-                                   year = 2021,
-                                   fallback = TRUE) {
-  
+ll_osm_get_lau_streets <- function(
+  gisco_id,
+  country = NULL,
+  unnamed_streets = TRUE,
+  # merge_streets_with_same_name = FALSE, #' @param merge_streets_with_same_name Defaults to FALSE. Always falls back to FALSE if `unnamed_streets` is set to TRUE. IF TRUE, streets with the same name are combined in a single multistring. Conceptually, this should be warranted by the fact all streets are within the same municipality.
+  lau_boundary_sf = NULL,
+  streets_sf = NULL,
+  country_code_type = "eurostat",
+  year = 2021,
+  fallback = TRUE
+) {
   if (unnamed_streets == TRUE) {
     ll_create_folders(
       geo = "eu",
@@ -326,108 +381,109 @@ ll_osm_get_lau_streets <- function(gisco_id,
       file_type = "rds"
     )
   }
-  
-  
+
   if (fs::file_exists(rds_file_location)) {
     return(readRDS(file = rds_file_location))
   }
-  
-  
+
   gisco_cc <- stringr::str_extract(
     string = gisco_id,
     pattern = "[A-Z][A-Z]"
   ) %>%
     stringr::str_to_upper()
-  
+
   city_code <- stringr::str_extract(
     string = gisco_id,
     pattern = "[[:digit:]]+"
   )
-  
-  if (is.null(lau_boundary_sf)==FALSE) {
+
+  if (is.null(lau_boundary_sf) == FALSE) {
     current_lau_boundary <- lau_boundary_sf
   } else {
     current_lau_boundary <- ll_get_lau_eu(
       gisco_id = gisco_id,
       year = year
-    )  
-    if (nrow(current_lau_boundary)==0) {
-      
-      
-    }
+    )
+    if (nrow(current_lau_boundary) == 0) {}
   }
-  
+
   current_lau_bbox <- sf::st_bbox(current_lau_boundary)
-  
-  if (is.null(streets_sf)==FALSE) {
+
+  if (is.null(streets_sf) == FALSE) {
     city_roads_pre <- streets_sf
   } else {
     # TODO country_full_name will not always match with OSM/Geofabrik
-    
+
     if (is.element(gisco_cc, ll_osm_bboxes$country_code)) {
-      if (is.null(country)==FALSE) {
+      if (is.null(country) == FALSE) {
         country_full_name <- country %>%
           stringr::str_to_lower(country)
-        
+
         bbox_check_df <- ll_osm_bboxes %>%
           dplyr::filter(.data$country == country_full_name)
-        
-        if (nrow(bbox_check_df)>0) {
+
+        if (nrow(bbox_check_df) > 0) {
           bboxes_available <- TRUE
         } else {
           bboxes_available <- FALSE
         }
-        
       } else {
         country_full_name <- ll_osm_bboxes %>%
           dplyr::filter(country_code == gisco_cc) %>%
           dplyr::distinct(country) %>%
-          dplyr::pull(country) 
-        
+          dplyr::pull(country)
+
         bboxes_available <- TRUE
       }
-      
     } else {
-      if (is.null(country)==FALSE) {
+      if (is.null(country) == FALSE) {
         country_full_name <- country
       } else {
         if (gisco_cc == "XK") {
           country_full_name <- "Kosovo"
         } else {
-          country_full_name <- countrycode::countrycode(sourcevar = gisco_cc,
-                                                        origin = country_code_type,
-                                                        destination = "iso.name.en")
+          country_full_name <- countrycode::countrycode(
+            sourcevar = gisco_cc,
+            origin = country_code_type,
+            destination = "iso.name.en"
+          )
         }
-      
-        
-        if (country_full_name=="Czechia") {
+
+        if (country_full_name == "Czechia") {
           country_full_name <- "czech-republic"
-        } else if (country_full_name=="Moldova (the Republic of)") {
+        } else if (country_full_name == "Moldova (the Republic of)") {
           country_full_name <- "moldova"
-        } else if (country_full_name=="Ireland") {
+        } else if (country_full_name == "Ireland") {
           country_full_name <- "ireland-and-northern-ireland"
-        } else if (stringr::str_detect(string = country_full_name, pattern = " ")) {
-          country_full_name <- stringr::str_replace_all(string = country_full_name,
-                                                        pattern = " ",
-                                                        replacement = "-")
+        } else if (
+          stringr::str_detect(string = country_full_name, pattern = " ")
+        ) {
+          country_full_name <- stringr::str_replace_all(
+            string = country_full_name,
+            pattern = " ",
+            replacement = "-"
+          )
         }
       }
       bboxes_available <- FALSE
     }
-    
+
     if (bboxes_available) {
       current_country_bboxes <- ll_osm_bboxes %>%
         dplyr::filter(country_code == gisco_cc)
-      
+
       regions_to_load <- current_country_bboxes %>%
         dplyr::filter(purrr::map_lgl(
           .x = current_country_bboxes$bbox,
           .f = function(current_bbox) {
-            current_lau_bbox$xmin < current_bbox$xmax & current_bbox$xmin < current_lau_bbox$xmax & current_lau_bbox$ymin < current_bbox$ymax & current_bbox$ymin < current_lau_bbox$ymax
+            current_lau_bbox$xmin < current_bbox$xmax &
+              current_bbox$xmin < current_lau_bbox$xmax &
+              current_lau_bbox$ymin < current_bbox$ymax &
+              current_bbox$ymin < current_lau_bbox$ymax
           }
         ))
       ll_osm_extract_roads(countries = country_full_name)
-      
+
       street_folders <- fs::path(
         latlon2map::ll_set_folder(),
         "osm_roads_shp",
@@ -438,29 +494,34 @@ ll_osm_get_lau_streets <- function(gisco_id,
         .x = street_folders,
         .f = function(x) sf::st_read(dsn = x)
       )
-      
-      date_extracted_files <- fs::dir_ls(path = street_folders,
-                                         recurse = TRUE,type = "file",
-                                         glob = "*date_extracted.rds")
-      
-      if (length(date_extracted_files)>0) {
-        earliest_date_v <- purrr::map(.x = date_extracted_files,
-                                .f = function(x) {
-          readRDS(file = x)
-        }) %>% 
-          purrr::list_simplify() %>% 
-          tibble::tibble(date = .) %>% 
-          dplyr::arrange(date) %>% 
-          dplyr::slice(1) %>% 
+
+      date_extracted_files <- fs::dir_ls(
+        path = street_folders,
+        recurse = TRUE,
+        type = "file",
+        glob = "*date_extracted.rds"
+      )
+
+      if (length(date_extracted_files) > 0) {
+        earliest_date_v <- purrr::map(
+          .x = date_extracted_files,
+          .f = function(x) {
+            readRDS(file = x)
+          }
+        ) %>%
+          purrr::list_simplify() %>%
+          tibble::tibble(date = .) %>%
+          dplyr::arrange(date) %>%
+          dplyr::slice(1) %>%
           dplyr::pull(date)
-        
+
         attr(city_roads_pre, "date_extracted") <- earliest_date_v
       }
     } else {
       city_roads_pre <- ll_osm_get_roads(country = country_full_name)
     }
   }
-  
+
   if (unnamed_streets == TRUE) {
     city_roads <- city_roads_pre %>%
       sf::st_intersection(current_lau_boundary)
@@ -472,20 +533,18 @@ ll_osm_get_lau_streets <- function(gisco_id,
       dplyr::summarise() %>%
       dplyr::ungroup()
   }
-  
+
   if (attributes(city_roads_pre)[["date_extracted"]]) {
     attr(city_roads, "date_extracted") <- attr(city_roads_pre, "date_extracted")
   }
-  
+
   saveRDS(
     object = city_roads,
     file = rds_file_location
   )
-  
+
   city_roads
 }
-
-
 
 
 #' Get all streets available in OpenStreetMap located in given NUTS.
@@ -503,18 +562,18 @@ ll_osm_get_lau_streets <- function(gisco_id,
 #' \dontrun{
 #' ll_osm_get_nuts_streets(nuts_id = "PT16D", country = "portugal")
 #' }
-ll_osm_get_nuts_streets <- function(nuts_id,
-                                    level = 3,
-                                    resolution = 1,
-                                    country = NULL, 
-                                    unnamed_streets = TRUE,
-                                    nuts_boundary_sf = NULL, 
-                                    streets_sf = NULL,
-                                    country_code_type = "eurostat",
-                                    year = 2021) {
-  
-  
-  if (unnamed_streets == TRUE) {
+ll_osm_get_nuts_streets <- function(
+  nuts_id,
+  level = 3,
+  resolution = 1,
+  country = NULL,
+  unnamed_streets = TRUE,
+  nuts_boundary_sf = NULL,
+  streets_sf = NULL,
+  country_code_type = "eurostat",
+  year = 2021
+) {
+  if (unnamed_streets) {
     ll_create_folders(
       geo = "eu",
       level = stringr::str_c("nuts_", level, "_osm_streets"),
@@ -545,25 +604,23 @@ ll_osm_get_nuts_streets <- function(nuts_id,
       file_type = "rds"
     )
   }
-  
-  
+
   if (fs::file_exists(rds_file_location)) {
     return(readRDS(file = rds_file_location))
   }
-  
-  
+
   gisco_cc <- stringr::str_extract(
     string = nuts_id,
     pattern = "[A-Z][A-Z]"
   ) %>%
     stringr::str_to_upper()
-  
+
   city_code <- stringr::str_extract(
     string = nuts_id,
     pattern = "[[:digit:]]+"
   )
-  
-  if (is.null(nuts_boundary_sf)==FALSE) {
+
+  if (!is.null(nuts_boundary_sf)) {
     current_nuts_boundary <- nuts_boundary_sf
   } else {
     current_nuts_boundary <- ll_get_nuts_eu(
@@ -571,33 +628,33 @@ ll_osm_get_nuts_streets <- function(nuts_id,
       level = level,
       resolution = resolution,
       year = year
-    )  
+    )
   }
-  
+
   current_nuts_bbox <- sf::st_bbox(current_nuts_boundary)
-  
-  if (is.null(streets_sf)==FALSE) {
+
+  if (!is.null(streets_sf)) {
     city_roads_pre <- streets_sf
   } else {
     city_roads_pre <- ll_osm_get_roads(country = country)
   }
-  
-  if (unnamed_streets == TRUE) {
+
+  if (unnamed_streets) {
     city_roads <- city_roads_pre %>%
       sf::st_intersection(current_nuts_boundary)
   } else {
     city_roads <- city_roads_pre %>%
-      dplyr::filter(is.na(name) == FALSE, is.na(fclass) == FALSE) %>%
+      dplyr::filter(!is.na(name), !is.na(fclass)) %>%
       sf::st_intersection(current_nuts_boundary) %>%
       dplyr::group_by(name) %>%
       dplyr::summarise() %>%
       dplyr::ungroup()
   }
-  
+
   saveRDS(
     object = city_roads,
     file = rds_file_location
   )
-  
+
   city_roads
 }

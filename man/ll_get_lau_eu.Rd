@@ -14,21 +14,29 @@ ll_get_lau_eu(
 )
 }
 \arguments{
-\item{gisco_id}{Gisco identifier of the relevant administrative unit. If given, takes precedence over name.}
+\item{gisco_id}{Gisco identifier of the relevant administrative unit. If
+given, takes precedence over name.}
 
-\item{name}{Name of the local administrative unit in the local language. Use gisco_id whenever possible, as names of local administrative units are not unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both \code{name} and \code{gisco_id} are NULL, then it returns all municipalities.}
+\item{name}{Name of the local administrative unit in the local language. Use
+gisco_id whenever possible, as names of local administrative units are not
+unique, e.g. there are 11 "Neuenkirchen" in the dataset. If both \code{name} and
+\code{gisco_id} are \code{NULL}, then it returns all municipalities.}
 
-\item{year}{Year of mapping, defaults to most recent (2021). Available starting with 2011.}
+\item{year}{Year of mapping, defaults to most recent (2021). Available
+starting with 2011.}
 
-\item{silent}{Defaults to FALSE. If TRUE, hides copyright notice. Useful e.g. when using this in reports or in loops. The copyright notice must still be shown where the final output is used.}
+\item{silent}{Defaults to \code{FALSE}. If \code{TRUE}, hides copyright notice. Useful
+e.g. when using this in reports or in loops. The copyright notice must
+still be shown where the final output is used.}
 
-\item{lau_sf}{sf object, exactly such as the one that would be returned by \code{ll_get_lau_eu()}. Used to speed-up computation when bulk processing.}
+\item{lau_sf}{sf object, exactly such as the one that would be returned by
+\code{\link[=ll_get_lau_eu]{ll_get_lau_eu()}}. Used to speed-up computation when bulk processing.}
 }
 \value{
 European LAU in sf format
 }
 \description{
-Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18
+Source: \url{https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/lau#lau18}
 }
 \examples{
 
