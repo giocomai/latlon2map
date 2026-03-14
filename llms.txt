@@ -91,7 +91,8 @@ ll_app()
 - [`ll_find_file()`](https://giocomai.github.io/latlon2map/reference/ll_find_file.md)
   : Find file names. Mostly used internally
 - [`ll_find_pop_centre()`](https://giocomai.github.io/latlon2map/reference/ll_find_pop_centre.md)
-  : Find the population-weighted centre of a municipality
+  : Find the population-weighted centre of a municipality or other
+  geographic entity
 - [`ll_get_adm_ocha()`](https://giocomai.github.io/latlon2map/reference/ll_get_adm_ocha.md)
   : Get administrative boundary lines from OCHA database
 - [`ll_get_electoral_districts_it()`](https://giocomai.github.io/latlon2map/reference/ll_get_electoral_districts_it.md)
