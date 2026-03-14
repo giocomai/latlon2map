@@ -55,8 +55,15 @@
 #' ll_set_folder(fs::path(fs::path_home_r(), "R"))
 #' ll_get_electoral_districts_it()
 #' ll_get_electoral_districts_it(name = "Lombardia 2")
-#' ll_get_electoral_districts_it() %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Circoscrizioni Camera")
-#' ll_get_electoral_districts_it(level = "SENATO_CollegiUNINOMINALI_2020") %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Collegi uninominali - Senato")
+#' ll_get_electoral_districts_it() %>%
+#'  ggplot2::ggplot() +
+#'  ggplot2::geom_sf() +
+#'  ggplot2::labs(title = "Circoscrizioni Camera")
+#'
+#' ll_get_electoral_districts_it(level = "SENATO_CollegiUNINOMINALI_2020") %>%
+#'  ggplot2::ggplot() +
+#'  ggplot2::geom_sf() +
+#'  ggplot2::labs(title = "Collegi uninominali - Senato")
 ll_get_electoral_districts_it <- function(
   name = NULL,
   level = "Circoscrizioni_Camera",
