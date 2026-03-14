@@ -134,7 +134,7 @@ ll_osm_extract_roads <- function(
 
 ll_osm_get_roads <- function(country, silent = FALSE) {
   if (!silent) {
-    usethis::ui_info(x = "© OpenStreetMap contributors")
+    cli::cli_alert_info("© OpenStreetMap contributors")
   }
   country <- stringr::str_to_lower(country)
 

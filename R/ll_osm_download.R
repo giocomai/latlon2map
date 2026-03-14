@@ -14,15 +14,22 @@
 #' ll_osm_download(countries = c("chile", "colombia"))
 #' }
 #' @export
-ll_osm_download <- function(countries,
-                            overwrite = FALSE,
-                            wget = FALSE) {
-  countries_available_l <- is.element(stringr::str_to_lower(countries), ll_osm_countries$country)
+ll_osm_download <- function(countries, overwrite = FALSE, wget = FALSE) {
+  countries_available_l <- is.element(
+    stringr::str_to_lower(countries),
+    ll_osm_countries$country
+  )
   if (Reduce(x = countries_available_l, f = `&`) == FALSE) {
-    missing_countries <- glue::glue_collapse(x = countries[!countries_available_l], sep = ", ", last = ", and ")
-    usethis::ui_oops("The following countries are not available: {missing_countries}")
-    usethis::ui_info("See the internal dataset `ll_osm_countries` for a list of available countries and geographic entities")
-    usethis::ui_stop("Please input an accepted geographic entity name")
+    missing_countries <- glue::glue_collapse(
+      x = countries[!countries_available_l],
+      sep = ", ",
+      last = ", and "
+    )
+    ("The following countries are not available: {missing_countries}")
+    cli::cli_alert_info(
+      "See the internal dataset `ll_osm_countries` for a list of available countries and geographic entities"
+    )
+    cli::cli_abort("Please input an accepted geographic entity name")
   }
 
   downloads_df <- tibble::tibble(country = tolower(countries)) %>%
@@ -42,8 +49,10 @@ ll_osm_download <- function(countries,
       local_file <- fs::path(country_folder, fs::path_file(link))
       if (fs::file_exists(local_file) == FALSE | overwrite == TRUE) {
         fs::dir_create(country_folder)
-        usethis::ui_info(x = "If the download is not successful, please download manually - {usethis::ui_path(link)} - and store in this location: {usethis::ui_path(local_file)}")
-        if (wget == TRUE) {
+        cli::cli_alert_info(
+          "If the download is not successful, please download manually - {.url {link}} - and store in this location: {.path {local_file}}"
+        )
+        if (wget) {
           download.file(url = link, destfile = local_file, method = "wget")
         } else {
           download.file(url = link, destfile = local_file)
@@ -52,8 +61,6 @@ ll_osm_download <- function(countries,
     }
   )
 }
-
-
 
 
 #' Download OSM data in geopackage format for regions, provinces, and municipalities in Italy.
@@ -71,24 +78,33 @@ ll_osm_download <- function(countries,
 #' ll_osm_download_it(level = "comuni", name = "Trento")
 #' }
 #' @export
-ll_osm_download_it <- function(level = "comuni",
-                               name = NULL,
-                               code = NULL,
-                               overwrite = FALSE,
-                               wget = FALSE,
-                               quiet = FALSE) {
+ll_osm_download_it <- function(
+  level = "comuni",
+  name = NULL,
+  code = NULL,
+  overwrite = FALSE,
+  wget = FALSE,
+  quiet = FALSE
+) {
   if (is.null(name) == FALSE) {
-    available_l <- is.element(stringr::str_to_lower(name), stringr::str_to_lower(ll_osm_it_gpkg[[level]]$name))
+    available_l <- is.element(
+      stringr::str_to_lower(name),
+      stringr::str_to_lower(ll_osm_it_gpkg[[level]]$name)
+    )
     if (Reduce(x = available_l, f = `&`) == FALSE) {
       missing_names <- glue::glue_collapse(
         x = name[!available_l],
         sep = ", ",
         last = ", and "
       )
-      if (quiet == FALSE) {
-        usethis::ui_oops("The following places are not available: {missing_names}")
-        usethis::ui_info("See the internal dataset `ll_osm_it_gpkg` for a list of available places")
-        usethis::ui_stop("Please input an accepted geographic entity name")
+      if (!quiet) {
+        cli::cli_alert_info(
+          "The following places are not available: {missing_names}"
+        )
+        cli::cli_alert_info(
+          "See the internal dataset `ll_osm_it_gpkg` for a list of available places"
+        )
+        cli::cli_abort("Please input an accepted geographic entity name")
       }
     }
 
@@ -103,7 +119,10 @@ ll_osm_download_it <- function(level = "comuni",
       )
   } else if (is.null(code) == FALSE) {
     if (is.null(code) == FALSE) {
-      available_l <- is.element(as.numeric(code), as.numeric(ll_osm_it_gpkg[[level]]$code))
+      available_l <- is.element(
+        as.numeric(code),
+        as.numeric(ll_osm_it_gpkg[[level]]$code)
+      )
       if (Reduce(x = available_l, f = `&`) == FALSE) {
         missing_codes <- glue::glue_collapse(
           x = code[!available_l],
@@ -111,9 +130,13 @@ ll_osm_download_it <- function(level = "comuni",
           last = ", and "
         )
         if (quiet == FALSE) {
-          usethis::ui_oops("The following places are not available: {missing_codes}")
-          usethis::ui_info("See the internal dataset `ll_osm_it_gpkg` for a list of available places")
-          usethis::ui_stop("Please input an accepted geographic entity name")
+          cli::cli_alert_info(
+            "The following places are not available: {missing_codes}"
+          )
+          cli::cli_alert_info(
+            "See the internal dataset `ll_osm_it_gpkg` for a list of available places"
+          )
+          cli::cli_abort("Please input an accepted geographic entity name")
         }
       }
       downloads_df <- tibble::tibble(
@@ -126,8 +149,6 @@ ll_osm_download_it <- function(level = "comuni",
         )
     }
   }
-
-
 
   base_folder <- fs::path(
     latlon2map::ll_set_folder(),
@@ -142,8 +163,10 @@ ll_osm_download_it <- function(level = "comuni",
       local_file <- fs::path(base_folder, fs::path_file(link))
       if (fs::file_exists(local_file) == FALSE | overwrite == TRUE) {
         fs::dir_create(base_folder)
-        usethis::ui_info(x = "If the download is not successful, please download manually - {usethis::ui_path(link)} - and store in this location: {usethis::ui_path(local_file)}")
-        if (wget == TRUE) {
+        cli::cli_alert_info(
+          "If the download is not successful, please download manually - {.url {link}} - and store in this location: {.path {local_file}}"
+        )
+        if (wget) {
           download.file(
             url = link,
             destfile = local_file,
@@ -181,11 +204,13 @@ ll_osm_download_it <- function(level = "comuni",
 #' ll_osm_extract_it(level = "comuni", name = "Trento")
 #' }
 #'
-ll_osm_extract_it <- function(level = "comuni",
-                              name = NULL,
-                              code = NULL,
-                              layer = "lines",
-                              quiet = FALSE) {
+ll_osm_extract_it <- function(
+  level = "comuni",
+  name = NULL,
+  code = NULL,
+  layer = "lines",
+  quiet = FALSE
+) {
   ll_osm_download_it(
     level = level,
     name = name,
@@ -210,10 +235,12 @@ ll_osm_extract_it <- function(level = "comuni",
       value = "local_files"
     ) %>%
     dplyr::mutate(filename = fs::path_file(local_files)) %>%
-    dplyr::mutate(code = stringr::str_extract(
-      string = filename,
-      pattern = "[[:digit:]]+"
-    )) %>%
+    dplyr::mutate(
+      code = stringr::str_extract(
+        string = filename,
+        pattern = "[[:digit:]]+"
+      )
+    ) %>%
     dplyr::left_join(
       y = ll_osm_it_gpkg[[level]],
       by = "code"
@@ -222,7 +249,6 @@ ll_osm_extract_it <- function(level = "comuni",
       name = stringr::str_to_lower(name),
       code = as.numeric(code)
     )
-
 
   if (is.null(name) == FALSE) {
     selected_files <- tibble::tibble(name = stringr::str_to_lower(name)) %>%

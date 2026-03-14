@@ -31,8 +31,8 @@ ll_get_lau_eu <- function(
   lau_sf = NULL,
   fallback = TRUE
 ) {
-  if (silent == FALSE) {
-    usethis::ui_info(x = "© EuroGeographics for the administrative boundaries")
+  if (!silent) {
+    cli::cli_alert_info("© EuroGeographics for the administrative boundaries")
   }
   ll_create_folders(
     geo = "eu",
@@ -95,8 +95,8 @@ ll_get_lau_eu <- function(
       } else if (code_row_df$source == "Bratislava") {
         # move on and deal with this later
       } else if (code_row_df$source == "ll_get_nuts_eu(level = 3)") {
-        usethis::ui_warn(
-          "Falling back on `ll_get_nuts_eu()`. Refer to original function for more options."
+        cli::cli_alert_warning(
+          "Falling back on {.fun ll_get_nuts_eu}. Refer to original function for more options."
         )
         return(ll_get_nuts_eu(nuts_id = gisco_id, level = 3, resolution = 1))
       } else if (code_row_df$source == "ll_get_gadm(geo = 'UKR', level = 1)") {
@@ -289,8 +289,8 @@ ll_get_lau_eu <- function(
         dplyr::filter(LAU_NAME == name)
     }
     if (nrow(sf) > 1) {
-      usethis::ui_stop(
-        x = "More than one local administrative unit with this name. Use gisco_id instead."
+      cli::cli_abort(
+        "More than one local administrative unit with this name. Use gisco_id instead."
       )
     }
     saveRDS(

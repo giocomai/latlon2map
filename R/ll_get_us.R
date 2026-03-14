@@ -11,10 +11,10 @@
 #'
 #' @examples
 #' ll_get_nuts_us(level = "county", resolution = "500k", year = 2018)
-ll_get_nuts_us <- function(level = "county",
-                           resolution = "500k",
-                           year = 2018) {
-  usethis::ui_info("Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html")
+ll_get_nuts_us <- function(level = "county", resolution = "500k", year = 2018) {
+  cli::cli_alert_info(
+    "Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html"
+  )
   ll_create_folders(
     geo = "us",
     level = level,
@@ -52,7 +52,15 @@ ll_get_nuts_us <- function(level = "county",
     name = "abl",
     file_type = "zip"
   )
-  source_url <- paste0("https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_", year, "_us_", level, "_", resolution, ".zip")
+  source_url <- paste0(
+    "https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_",
+    year,
+    "_us_",
+    level,
+    "_",
+    resolution,
+    ".zip"
+  )
 
   if (fs::file_exists(zip_file) == FALSE) {
     download.file(

@@ -7,17 +7,17 @@
 #' @export
 #'
 #' @examples
-ll_get_world <- function(resolution = "60",
-                         year = 2020,
-                         name = NULL) {
+ll_get_world <- function(resolution = "60", year = 2020, name = NULL) {
   resolution <- stringr::str_pad(
     string = resolution,
     width = 2,
     side = "left",
     pad = 0
   )
-  usethis::ui_info("Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries")
-  usethis::ui_info("© EuroGeographics for the administrative boundaries")
+  cli::cli_alert_info(
+    "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries"
+  )
+  cli::cli_alert_info("© EuroGeographics for the administrative boundaries")
   ll_create_folders(
     geo = "world",
     level = "country",
@@ -46,7 +46,13 @@ ll_get_world <- function(resolution = "60",
     name = "abl",
     file_type = "shp"
   )
-  if (fs::file_exists(fs::path(shp_folder, paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp"))) == FALSE) {
+  if (
+    fs::file_exists(fs::path(
+      shp_folder,
+      paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp")
+    )) ==
+      FALSE
+  ) {
     zip_file <- ll_find_file(
       geo = "world",
       level = "country",
@@ -55,7 +61,13 @@ ll_get_world <- function(resolution = "60",
       name = "abl",
       file_type = "zip"
     )
-    source_url <- paste0("https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/download/ref-countries-", year, "-", resolution, "m.shp.zip")
+    source_url <- paste0(
+      "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/countries/download/ref-countries-",
+      year,
+      "-",
+      resolution,
+      "m.shp.zip"
+    )
 
     if (fs::file_exists(zip_file) == FALSE) {
       download.file(
@@ -68,11 +80,17 @@ ll_get_world <- function(resolution = "60",
       exdir = shp_folder
     )
     unzip(
-      zipfile = fs::path(shp_folder, paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp.zip")),
+      zipfile = fs::path(
+        shp_folder,
+        paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp.zip")
+      ),
       exdir = shp_folder
     )
   }
-  sf <- sf::read_sf(fs::path(shp_folder, paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp"))) %>%
+  sf <- sf::read_sf(fs::path(
+    shp_folder,
+    paste0("CNTR_RG_", resolution, "M_", year, "_4326.shp")
+  )) %>%
     sf::st_transform(crs = 4326)
   saveRDS(
     object = sf,

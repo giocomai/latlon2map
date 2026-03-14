@@ -12,20 +12,26 @@
 #'
 #' @examples
 #' ll_get_nuts_eu()
-ll_get_nuts_eu <- function(nuts_id = NULL,
-                           nuts_name = NULL,
-                           level = 3,
-                           resolution = 60,
-                           year = 2021,
-                           silent = FALSE) {
-  resolution <- stringr::str_pad(string = resolution,
-                                 width = 2,
-                                 side = "left",
-                                 pad = 0)
+ll_get_nuts_eu <- function(
+  nuts_id = NULL,
+  nuts_name = NULL,
+  level = 3,
+  resolution = 60,
+  year = 2021,
+  silent = FALSE
+) {
+  resolution <- stringr::str_pad(
+    string = resolution,
+    width = 2,
+    side = "left",
+    pad = 0
+  )
 
-  if (silent == FALSE) {
-    usethis::ui_info("© EuroGeographics for the administrative boundaries")
-    usethis::ui_info("Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries")
+  if (!silent) {
+    cli::cli_alert_info("© EuroGeographics for the administrative boundaries")
+    cli::cli_alert_info(
+      "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries"
+    )
   }
 
   ll_create_folders(
@@ -51,8 +57,7 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
     file_type = "rds"
   )
 
-  if (is.null(nuts_id)==FALSE) {
-    
+  if (is.null(nuts_id) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = "eu",
       level = level,
@@ -61,7 +66,7 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
       name = nuts_id,
       file_type = "rds"
     )
-    
+
     if (fs::file_exists(rds_file_location)) {
       return(readRDS(file = rds_file_location))
     }
@@ -71,7 +76,15 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
       level = level,
       resolution = resolution,
       year = year,
-      name = paste0(level, "-", stringr::str_replace_all(string = nuts_name, pattern = "[[:punct:]]", replacement = "_")),
+      name = paste0(
+        level,
+        "-",
+        stringr::str_replace_all(
+          string = nuts_name,
+          pattern = "[[:punct:]]",
+          replacement = "_"
+        )
+      ),
       file_type = "rds"
     )
 
@@ -92,7 +105,10 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
       file_type = "shp"
     )
 
-    shp_folder_level <- fs::path(shp_folder, paste0("NUTS_RG_", resolution, "M_", year, "_4326_LEVL_", level, ".shp"))
+    shp_folder_level <- fs::path(
+      shp_folder,
+      paste0("NUTS_RG_", resolution, "M_", year, "_4326_LEVL_", level, ".shp")
+    )
 
     if (fs::file_exists(shp_folder_level) == FALSE) {
       zip_file <- ll_find_file(
@@ -103,7 +119,13 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
         name = "abl",
         file_type = "zip"
       )
-      source_url <- paste0("https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/download/ref-nuts-", year, "-", resolution, "m.shp.zip")
+      source_url <- paste0(
+        "https://ec.europa.eu/eurostat/cache/GISCO/distribution/v2/nuts/download/ref-nuts-",
+        year,
+        "-",
+        resolution,
+        "m.shp.zip"
+      )
 
       if (fs::file_exists(zip_file) == FALSE) {
         download.file(
@@ -126,19 +148,17 @@ ll_get_nuts_eu <- function(nuts_id = NULL,
       file = rds_file
     )
   }
-  
-  if (is.null(nuts_id)==FALSE) {
+
+  if (is.null(nuts_id) == FALSE) {
     sf <- sf %>%
       dplyr::filter(NUTS_ID == nuts_id)
-    
-    saveRDS(object = sf,
-            file = rds_file_location)
+
+    saveRDS(object = sf, file = rds_file_location)
   } else if (is.null(nuts_name) == FALSE) {
     sf <- sf %>%
       dplyr::filter(NUTS_NAME == nuts_name)
-    
-    saveRDS(object = sf,
-            file = rds_file_location)
+
+    saveRDS(object = sf, file = rds_file_location)
   }
   return(sf)
 }

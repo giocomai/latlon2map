@@ -29,11 +29,15 @@
 #'     by = "gisco_id"
 #'   )
 #' }
-ll_get_lau_nuts_concordance <- function(lau_year = 2019,
-                                        nuts_year = 2016,
-                                        silent = FALSE) {
-  if (silent == FALSE) {
-    usethis::ui_info(x = "For details, see: https://ec.europa.eu/eurostat/web/nuts/local-administrative-units")
+ll_get_lau_nuts_concordance <- function(
+  lau_year = 2019,
+  nuts_year = 2016,
+  silent = FALSE
+) {
+  if (!silent) {
+    cli::cli_alert_info(
+      "For details, see: {.url https://ec.europa.eu/eurostat/web/nuts/local-administrative-units}"
+    )
   }
   ll_create_folders(
     geo = "eu",
@@ -52,7 +56,6 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
     file_type = "rds"
   )
 
-
   if (fs::file_exists(rds_file)) {
     return(readRDS(file = rds_file))
   }
@@ -69,11 +72,16 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
   nuts_year_filter <- nuts_year
 
   source_url <- ll_lau_nuts_concordance_links %>%
-    dplyr::filter(lau_year == lau_year_filter, nuts_year == nuts_year_filter) %>%
+    dplyr::filter(
+      lau_year == lau_year_filter,
+      nuts_year == nuts_year_filter
+    ) %>%
     dplyr::pull(link)
 
   if (length(source_url) != 1) {
-    usethis::ui_stop("See `ll_lau_nuts_concordance_links` for details on available combinations of lau_year and nuts_year or rely on defaults.")
+    cli::cli_abort(
+      "See `ll_lau_nuts_concordance_links` for details on available combinations of lau_year and nuts_year or rely on defaults."
+    )
   }
 
   if (fs::file_exists(xlsx_file) == FALSE) {
@@ -93,8 +101,8 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
     .f = function(current_sheet_name) {
       pb$tick()
       message(current_sheet_name)
-      if (lau_year == 2020 & country_sheets=="IT") {
-        if (nuts_year==2016) {
+      if (lau_year == 2020 & country_sheets == "IT") {
+        if (nuts_year == 2016) {
           current_sheet_name <- "IT NUTS 2016"
         } else if (nuts_year == 2021) {
           current_sheet_name <- "IT NUTS 2021"
@@ -106,8 +114,10 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
           col_types = "text",
           range = readxl::cell_cols("A:D")
         )
-        
-      } else if (lau_year == 2020 & current_sheet_name %in% readxl::excel_sheets(xlsx_file)) {
+      } else if (
+        lau_year == 2020 &
+          current_sheet_name %in% readxl::excel_sheets(xlsx_file)
+      ) {
         current_sheet <- readxl::read_xlsx(
           path = xlsx_file,
           sheet = current_sheet_name,
@@ -115,33 +125,42 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
           col_types = "text",
           range = readxl::cell_cols("A:D")
         )
-      } else if (lau_year == 2020 & nuts_year==2016) {
-        current_sheet_name <- tibble::tibble(sheet = readxl::excel_sheets(xlsx_file)) %>% 
-          dplyr::filter(stringr::str_starts(string = sheet, pattern = current_sheet_name)) %>% 
+      } else if (lau_year == 2020 & nuts_year == 2016) {
+        current_sheet_name <- tibble::tibble(
+          sheet = readxl::excel_sheets(xlsx_file)
+        ) %>%
+          dplyr::filter(stringr::str_starts(
+            string = sheet,
+            pattern = current_sheet_name
+          )) %>%
           dplyr::pull(sheet)
-        
+
         current_sheet <- readxl::read_xlsx(
           path = xlsx_file,
           sheet = current_sheet_name,
           col_names = TRUE,
           col_types = "text",
           range = readxl::cell_cols("B:E")
-        ) %>% 
+        ) %>%
           dplyr::rename(`NUTS 3 CODE` = `NUTS 3 CODE 2016`)
-      } else if (lau_year == 2020 & nuts_year==2021) {
-        current_sheet_name <- tibble::tibble(sheet = readxl::excel_sheets(xlsx_file)) %>% 
-          dplyr::filter(stringr::str_starts(string = sheet, pattern = current_sheet_name)) %>% 
+      } else if (lau_year == 2020 & nuts_year == 2021) {
+        current_sheet_name <- tibble::tibble(
+          sheet = readxl::excel_sheets(xlsx_file)
+        ) %>%
+          dplyr::filter(stringr::str_starts(
+            string = sheet,
+            pattern = current_sheet_name
+          )) %>%
           dplyr::pull(sheet)
-        
+
         current_sheet <- readxl::read_xlsx(
           path = xlsx_file,
           sheet = current_sheet_name,
           col_names = TRUE,
           col_types = "text",
           range = readxl::cell_cols(c(1, 3:5))
-        ) %>% 
+        ) %>%
           dplyr::rename(`NUTS 3 CODE` = `NUTS 3 CODE 2021`)
-        
       } else {
         current_sheet <- readxl::read_xlsx(
           path = xlsx_file,
@@ -152,13 +171,10 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
         )
       }
 
-      
-
-
       if (nrow(current_sheet) == 0) {
         return(NULL)
       }
-      
+
       if (is.element("NUTS 3 CODE 2013", colnames(current_sheet))) {
         current_sheet <- current_sheet %>%
           dplyr::rename(`NUTS 3 CODE` = `NUTS 3 CODE 2013`)
@@ -171,20 +187,30 @@ ll_get_lau_nuts_concordance <- function(lau_year = 2019,
 
       # manual fix
       if (current_sheet_name == "EE") {
-        current_sheet$`LAU CODE` <- stringr::str_pad(string = current_sheet$`LAU CODE`,
-                                                     width = 4, side = "left", pad = "0")
+        current_sheet$`LAU CODE` <- stringr::str_pad(
+          string = current_sheet$`LAU CODE`,
+          width = 4,
+          side = "left",
+          pad = "0"
+        )
       }
       if (current_sheet_name == "SI") {
-        current_sheet$`LAU CODE` <- stringr::str_pad(string = current_sheet$`LAU CODE`,
-                                                     width = 3, side = "left", pad = "0")
+        current_sheet$`LAU CODE` <- stringr::str_pad(
+          string = current_sheet$`LAU CODE`,
+          width = 3,
+          side = "left",
+          pad = "0"
+        )
       }
-      
 
       current_sheet %>%
         dplyr::filter(is.na(.data$`LAU CODE`) == FALSE) %>%
         dplyr::transmute(
           country = current_sheet_name,
-          nuts_2 = stringr::str_remove(string = `NUTS 3 CODE`, pattern = "[[:print:]]$"),
+          nuts_2 = stringr::str_remove(
+            string = `NUTS 3 CODE`,
+            pattern = "[[:print:]]$"
+          ),
           nuts_3 = `NUTS 3 CODE`,
           lau_id = as.character(`LAU CODE`),
           gisco_id = stringr::str_c(current_sheet_name, "_", `LAU CODE`),

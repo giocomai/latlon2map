@@ -14,16 +14,22 @@
 #' @export
 #'
 #' @examples
-ll_get_population_grid <- function(year = 2018,
-                                   match_sf = NULL,
-                                   match_name = NULL,
-                                   match_country = NULL,
-                                   join = sf::st_intersects,
-                                   silent = FALSE,
-                                   population_grid_sf = NULL) {
-  if (silent == FALSE) {
-    usethis::ui_info(x = "Data source population grid information: Eurostat, EFGS")
-    usethis::ui_info(x = "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat")
+ll_get_population_grid <- function(
+  year = 2018,
+  match_sf = NULL,
+  match_name = NULL,
+  match_country = NULL,
+  join = sf::st_intersects,
+  silent = FALSE,
+  population_grid_sf = NULL
+) {
+  if (!silent) {
+    cli::cli_alert_info(
+      "Data source population grid information: Eurostat, EFGS"
+    )
+    cli::cli_alert_info(
+      "Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat"
+    )
   }
 
   if (is.null(match_country) == FALSE) {
@@ -36,7 +42,12 @@ ll_get_population_grid <- function(year = 2018,
       level = "eu",
       resolution = "1km",
       year = year,
-      name = paste0(match_name, "-population_grid", "-", if (is.null(match_country)) "eu" else match_country),
+      name = paste0(
+        match_name,
+        "-population_grid",
+        "-",
+        if (is.null(match_country)) "eu" else match_country
+      ),
       file_type = "rds"
     )
 
@@ -57,7 +68,11 @@ ll_get_population_grid <- function(year = 2018,
     level = "eu",
     resolution = "1km",
     year = year,
-    name = paste0("population_grid", "-", if (is.null(match_country)) "eu" else match_country),
+    name = paste0(
+      "population_grid",
+      "-",
+      if (is.null(match_country)) "eu" else match_country
+    ),
     file_type = "rds"
   )
 
@@ -91,12 +106,8 @@ ll_get_population_grid <- function(year = 2018,
     } else if (year == 2006) {
       source_url <- "https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/GEOSTAT_Grid_POP_2006_1K.zip"
     } else {
-      (
-        usethis::ui_stop("Please provide a valid year.")
-      )
+      (cli::cli_abort("Please provide a valid year."))
     }
-
-
 
     if (fs::file_exists(zip_file) == FALSE) {
       download.file(
@@ -113,25 +124,44 @@ ll_get_population_grid <- function(year = 2018,
       sf <- sf::read_sf(fs::path(shp_folder), layer = "JRC_POPULATION_2018") %>%
         sf::st_transform(crs = 4326)
     } else if (year == 2011) {
-      sf <- sf::read_sf(fs::path(shp_folder, "Version 2_0_1", "GEOSTATReferenceGrid")) %>%
-        dplyr::right_join(readr::read_csv(fs::path(shp_folder, "Version 2_0_1", "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv")),
+      sf <- sf::read_sf(fs::path(
+        shp_folder,
+        "Version 2_0_1",
+        "GEOSTATReferenceGrid"
+      )) %>%
+        dplyr::right_join(
+          readr::read_csv(fs::path(
+            shp_folder,
+            "Version 2_0_1",
+            "GEOSTAT_grid_POP_1K_2011_V2_0_1.csv"
+          )),
           by = "GRD_ID"
         ) %>%
         sf::st_transform(crs = 4326)
     } else if (year == 2006) {
       sf <- sf::read_sf(fs::path(shp_folder)) %>%
         dplyr::rename(GRD_ID = .data$GRD_INSPIR) %>%
-        dplyr::right_join(readr::read_delim(
-          file = fs::path(shp_folder, "GEOSTAT_grid_EU_POP_2006_1K_V1_1_1.csv"),
-          delim = ";",
-          col_names = c("GRD_ID", "POP_TOT", "YEAR", "METHD_CL", "CNTR_CODE", "DATA_SRC"),
-          col_types = "c",
-        ),
-        by = "GRD_ID"
+        dplyr::right_join(
+          readr::read_delim(
+            file = fs::path(
+              shp_folder,
+              "GEOSTAT_grid_EU_POP_2006_1K_V1_1_1.csv"
+            ),
+            delim = ";",
+            col_names = c(
+              "GRD_ID",
+              "POP_TOT",
+              "YEAR",
+              "METHD_CL",
+              "CNTR_CODE",
+              "DATA_SRC"
+            ),
+            col_types = "c",
+          ),
+          by = "GRD_ID"
         ) %>%
         sf::st_transform(crs = 4326)
     }
-
 
     if (is.null(match_country) == FALSE) {
       if (year == 2018) {

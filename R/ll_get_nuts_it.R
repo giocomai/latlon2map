@@ -14,24 +14,34 @@
 #' ll_set_folder(fs::path(fs::path_home_r(), "R"))
 #' ll_get_nuts_it()
 #' ll_get_nuts_it(name = "Rimini", level = 3)
-ll_get_nuts_it <- function(name = NULL,
-                           level = 2,
-                           year = 2023,
-                           resolution = "low",
-                           silent = FALSE, 
-                           no_check_certificate = FALSE) {
-  if (silent == FALSE) {
-    usethis::ui_info(x = "Source: https://www.istat.it/it/archivio/222527")
-    usethis::ui_info(x = "Istat (CC-BY)")
+ll_get_nuts_it <- function(
+  name = NULL,
+  level = 2,
+  year = 2023,
+  resolution = "low",
+  silent = FALSE,
+  no_check_certificate = FALSE
+) {
+  if (!silent) {
+    cli::cli_alert_info("Source: https://www.istat.it/it/archivio/222527")
+    cli::cli_alert_info("Istat (CC-BY)")
   }
 
-  if (is.null(name) == FALSE) {
+  if (!is.null(name)) {
     rds_file_location <- ll_find_file(
       geo = "it",
       level = level,
       resolution = resolution,
       year = year,
-      name = paste0(level, "-", stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_")),
+      name = paste0(
+        level,
+        "-",
+        stringr::str_replace_all(
+          string = name,
+          pattern = "[[:punct:]]",
+          replacement = "_"
+        )
+      ),
       file_type = "rds"
     )
 
@@ -39,7 +49,6 @@ ll_get_nuts_it <- function(name = NULL,
       return(readRDS(file = rds_file_location))
     }
   }
-
 
   rds_file <- ll_find_file(
     geo = "it",
@@ -75,25 +84,42 @@ ll_get_nuts_it <- function(name = NULL,
       file_type = "shp"
     )
 
-    type <- dplyr::if_else(condition = resolution == "high",
+    type <- dplyr::if_else(
+      condition = resolution == "high",
       true = "non_generalizzati",
       false = "generalizzati",
       missing = "non_generalizzati"
     )
 
-    g_name <- dplyr::if_else(condition = resolution == "high",
+    g_name <- dplyr::if_else(
+      condition = resolution == "high",
       true = "",
       false = "_g",
       missing = ""
     )
 
-    if (as.character(year)=="2023") {
-      source_url <- paste0("https://www.istat.it/storage/cartografia/confini_amministrativi/", type,  "/", year, "/Limiti0101", year, g_name, ".zip")
+    if (as.character(year) == "2023") {
+      source_url <- paste0(
+        "https://www.istat.it/storage/cartografia/confini_amministrativi/",
+        type,
+        "/",
+        year,
+        "/Limiti0101",
+        year,
+        g_name,
+        ".zip"
+      )
     } else {
-      source_url <- paste0("https://www.istat.it/storage/cartografia/confini_amministrativi/", type, "/Limiti0101", year, g_name, ".zip")
-      
+      source_url <- paste0(
+        "https://www.istat.it/storage/cartografia/confini_amministrativi/",
+        type,
+        "/Limiti0101",
+        year,
+        g_name,
+        ".zip"
+      )
     }
-    
+
     zip_file <- ll_find_file(
       geo = "it",
       level = "all_levels",
@@ -103,17 +129,20 @@ ll_get_nuts_it <- function(name = NULL,
       file_type = "zip"
     )
 
-
     if (fs::file_exists(zip_file) == FALSE) {
       if (isTRUE(no_check_certificate)) {
-        download.file(url = source_url, destfile = zip_file, method = "wget", extra = "--no-check-certificate")
+        download.file(
+          url = source_url,
+          destfile = zip_file,
+          method = "wget",
+          extra = "--no-check-certificate"
+        )
       } else {
-        download.file(url = source_url, destfile = zip_file) 
+        download.file(url = source_url, destfile = zip_file)
       }
     }
 
     unzip(zipfile = zip_file, exdir = shp_folder)
-
 
     if (level == "lau") {
       sf <- sf::read_sf(fs::path(
@@ -161,7 +190,7 @@ ll_get_nuts_it <- function(name = NULL,
         dplyr::filter(DEN_PROV == name)
     }
 
-    saveRDS( 
+    saveRDS(
       object = sf,
       file = rds_file_location
     )

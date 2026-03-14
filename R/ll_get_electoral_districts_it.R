@@ -1,9 +1,9 @@
 #' Get Italian electoral districts (CC-BY Istat)
 #'
 #' 2022 / WGS 84 / UTM zone 32N
-#' 
+#'
 #' Column names metadata:
-#' 
+#'
 ##' \itemize{
 ##'  \item{COD_REG	Codice della regione/circoscrizione elettorale del Senato della Repubblica}
 ##'  \item{DEN_REG	Denominazione della regione amministrativa/circoscrizione elettorale Senato della Repubblica}
@@ -57,38 +57,47 @@
 #' ll_get_electoral_districts_it(name = "Lombardia 2")
 #' ll_get_electoral_districts_it() %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Circoscrizioni Camera")
 #' ll_get_electoral_districts_it(level = "SENATO_CollegiUNINOMINALI_2020") %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Collegi uninominali - Senato")
-ll_get_electoral_districts_it <- function(name = NULL,
-                           level = "Circoscrizioni_Camera",
-                           year = 2022,
-                           silent = FALSE, 
-                           no_check_certificate = FALSE) {
-  if (silent == FALSE) {
-    usethis::ui_info(x = "https://www.istat.it/it/archivio/273443")
-    usethis::ui_info(x = "Istat (CC-BY)")
+ll_get_electoral_districts_it <- function(
+  name = NULL,
+  level = "Circoscrizioni_Camera",
+  year = 2022,
+  silent = FALSE,
+  no_check_certificate = FALSE
+) {
+  if (!silent) {
+    cli::cli_inform(message = "https://www.istat.it/it/archivio/273443")
+    cli::cli_alert_info("Istat (CC-BY)")
   }
-  
+
   if (year == 2020) {
     year <- 2022
   }
-  
+
   resolution <- "standard"
-  
+
   if (is.null(name) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = "it_elections",
       level = level,
       resolution = resolution,
       year = year,
-      name = paste0(level, "-", stringr::str_replace_all(string = name, pattern = "[[:punct:]]", replacement = "_")),
+      name = paste0(
+        level,
+        "-",
+        stringr::str_replace_all(
+          string = name,
+          pattern = "[[:punct:]]",
+          replacement = "_"
+        )
+      ),
       file_type = "rds"
     )
-    
+
     if (fs::file_exists(rds_file_location)) {
       return(readRDS(file = rds_file_location))
     }
   }
-  
-  
+
   rds_file <- ll_find_file(
     geo = "it_elections",
     level = level,
@@ -97,7 +106,7 @@ ll_get_electoral_districts_it <- function(name = NULL,
     name = "electoral_districts",
     file_type = "rds"
   )
-  
+
   if (fs::file_exists(rds_file)) {
     sf <- readRDS(file = rds_file)
   } else {
@@ -113,7 +122,7 @@ ll_get_electoral_districts_it <- function(name = NULL,
       resolution = resolution,
       year = year
     )
-    
+
     shp_folder <- ll_find_file(
       geo = "it_elections",
       level = "all_levels",
@@ -122,10 +131,9 @@ ll_get_electoral_districts_it <- function(name = NULL,
       name = "electoral_districts",
       file_type = "shp"
     )
-    
-    
+
     source_url <- "https://www.istat.it/storage/Basi%20Geografiche%202022/Collegi_Elettorali_BasiGeografiche.zip"
-    
+
     zip_file <- ll_find_file(
       geo = "it_elections",
       level = "all_levels",
@@ -134,27 +142,31 @@ ll_get_electoral_districts_it <- function(name = NULL,
       name = "electoral_districts",
       file_type = "zip"
     )
-    
-    
+
     if (fs::file_exists(zip_file) == FALSE) {
       if (isTRUE(no_check_certificate)) {
-        download.file(url = source_url, destfile = zip_file, method = "wget", extra = "--no-check-certificate")
+        download.file(
+          url = source_url,
+          destfile = zip_file,
+          method = "wget",
+          extra = "--no-check-certificate"
+        )
       } else {
-        download.file(url = source_url, destfile = zip_file) 
+        download.file(url = source_url, destfile = zip_file)
       }
     }
-    
+
     unzip(zipfile = zip_file, exdir = shp_folder)
-    
+
     sf <- sf::read_sf(fs::path(
       shp_folder,
       "Collegi_Elettorali_BasiGeografiche",
       level
     ))
-    
+
     saveRDS(object = sf, file = rds_file)
   }
-  
+
   if (is.null(name) == FALSE) {
     if (level == "Circoscrizioni_Camera") {
       sf <- sf %>%
@@ -164,35 +176,34 @@ ll_get_electoral_districts_it <- function(name = NULL,
         dplyr::filter(DEN_REG == name)
     } else if (level == "CAMERA_CollegiPLURINOMINALI_2020") {
       sf <- sf %>%
-        dplyr::filter(is.na(CP20_DEN)==FALSE) %>% 
+        dplyr::filter(is.na(CP20_DEN) == FALSE) %>%
         dplyr::filter(CP20_DEN == name)
     } else if (level == "CAMERA_CollegiUNINOMINALI_2020") {
       sf <- sf %>%
         dplyr::filter(CU20_DEN == name)
     } else if (level == "SENATO_CollegiPLURINOMINALI_2020") {
       sf <- sf %>%
-        dplyr::filter(is.na(SP20_DEN)==FALSE) %>% 
+        dplyr::filter(is.na(SP20_DEN) == FALSE) %>%
         dplyr::filter(SP20_DEN == name)
     } else if (level == "SENATO_CollegiUNINOMINALI_2020") {
       sf <- sf %>%
-        dplyr::filter(is.na(SU20_DEN)==FALSE) %>% 
+        dplyr::filter(is.na(SU20_DEN) == FALSE) %>%
         dplyr::filter(SU20_DEN == name)
     } else if (level == "SENATO_CollegiPLURINOMINALI_2020") {
       sf <- sf %>%
-        dplyr::filter(is.na(SP20_DEN)==FALSE) %>% 
+        dplyr::filter(is.na(SP20_DEN) == FALSE) %>%
         dplyr::filter(SP20_DEN == name)
     } else if (level == "SENATO_CollegiUNINOMINALI_2020") {
       sf <- sf %>%
-        dplyr::filter(is.na(SU20_DEN)==FALSE) %>% 
+        dplyr::filter(is.na(SU20_DEN) == FALSE) %>%
         dplyr::filter(SU20_DEN == name)
     } else if (level == "UT_Collegi2020") {
       sf <- sf %>%
-        dplyr::filter(is.na(DEN_REG) == FALSE) %>% 
+        dplyr::filter(is.na(DEN_REG) == FALSE) %>%
         dplyr::filter(DEN_REG == name)
-    } 
-    
-    saveRDS(object = sf,
-            file = rds_file_location)
+    }
+
+    saveRDS(object = sf, file = rds_file_location)
   }
   return(sf)
 }
