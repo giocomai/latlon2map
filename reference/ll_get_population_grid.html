@@ -61,15 +61,19 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
 
 
 <dl><dt id="arg-year">year<a class="anchor" aria-label="anchor" href="#arg-year"></a></dt>
-<dd><p>Defaults to 2018. Currently, the EU population grid is available only for the year 2006, 2011, and 2018.</p></dd>
+<dd><p>Defaults to 2018. Currently, the EU population grid is available
+only for the year 2006, 2011, and 2018.</p></dd>
 
 
 <dt id="arg-match-sf">match_sf<a class="anchor" aria-label="anchor" href="#arg-match-sf"></a></dt>
-<dd><p>An sf object to be matched with the population grid. If not given, full grid is returned.</p></dd>
+<dd><p>An sf object to be matched with the population grid. If not
+given, full grid is returned.</p></dd>
 
 
 <dt id="arg-match-name">match_name<a class="anchor" aria-label="anchor" href="#arg-match-name"></a></dt>
-<dd><p>A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.</p></dd>
+<dd><p>A name to be used for local caching. It is the
+responsibility of the user to keept it consistent. If not given, data are
+not cached locally.</p></dd>
 
 
 <dt id="arg-match-country">match_country<a class="anchor" aria-label="anchor" href="#arg-match-country"></a></dt>
@@ -77,16 +81,25 @@ More details: https://ec.europa.eu/eurostat/statistics-explained/index.php/Popul
 
 
 <dt id="arg-join">join<a class="anchor" aria-label="anchor" href="#arg-join"></a></dt>
-<dd><p>The function to use for filtering. Defaults to sf::st_intersects. Alternative includes the likes of sf::st_within, sf::st_touches, etc.</p></dd>
+<dd><p>The function to use for filtering. Defaults to sf::st_intersects.
+Alternative includes the likes of sf::st_within, sf::st_touches, etc.</p></dd>
+
+
+<dt id="arg-silent">silent<a class="anchor" aria-label="anchor" href="#arg-silent"></a></dt>
+<dd><p>Defaults to <code>FALSE</code>. If <code>TRUE</code>, hides copyright notice. Useful
+e.g. when using this in reports or in loops. The copyright notice must
+still be shown where the final output is used.</p></dd>
 
 
 <dt id="arg-population-grid-sf">population_grid_sf<a class="anchor" aria-label="anchor" href="#arg-population-grid-sf"></a></dt>
-<dd><p>Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.</p></dd>
+<dd><p>Defaults to NULL. If given, it uses this one as
+population grid of reference. Useful to bulk process items, as it removes
+the need for re-loading the grid from local storage at each iteration.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An sf object with the population grid.</p>
+    <p>An <code>sf</code> object with the population grid.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -35,6 +35,10 @@ ll_get_adm_ocha(
 
 - silent:
 
+  Defaults to `FALSE`. If `TRUE`, hides copyright notice. Useful e.g.
+  when using this in reports or in loops. The copyright notice must
+  still be shown where the final output is used.
+
 ## Examples
 
 ``` r

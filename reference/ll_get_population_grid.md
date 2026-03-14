@@ -46,6 +46,12 @@ ll_get_population_grid(
   The function to use for filtering. Defaults to sf::st_intersects.
   Alternative includes the likes of sf::st_within, sf::st_touches, etc.
 
+- silent:
+
+  Defaults to `FALSE`. If `TRUE`, hides copyright notice. Useful e.g.
+  when using this in reports or in loops. The copyright notice must
+  still be shown where the final output is used.
+
 - population_grid_sf:
 
   Defaults to NULL. If given, it uses this one as population grid of
@@ -54,4 +60,4 @@ ll_get_population_grid(
 
 ## Value
 
-An sf object with the population grid.
+An `sf` object with the population grid.
