@@ -30,27 +30,28 @@
 #'   sf_population_grid = sf_location_grid,
 #'   power = 2
 #' )
-ll_find_pop_centre <- function(sf_location,
-                               sf_population_grid,
-                               power = 2,
-                               join = sf::st_intersects,
-                               adjusted = FALSE) {
+ll_find_pop_centre <- function(
+  sf_location,
+  sf_population_grid,
+  power = 2,
+  join = sf::st_intersects,
+  adjusted = FALSE
+) {
   if (is.element("TOT_P", colnames(sf_population_grid))) {
     sf_population_grid <- sf_population_grid %>%
-      dplyr::rename(population = TOT_P)
+      dplyr::rename(population = "TOT_P")
   } else if (is.element("TOT_P_2018", colnames(sf_population_grid))) {
     sf_population_grid <- sf_population_grid %>%
-      dplyr::rename(population = TOT_P_2018)
+      dplyr::rename(population = "TOT_P_2018")
   } else if (is.element("POP_2020", colnames(sf_population_grid))) {
     sf_population_grid <- sf_population_grid %>%
-      dplyr::rename(population = POP_2020)
+      dplyr::rename(population = "POP_2020")
   } else if (is.element("Population", colnames(sf_population_grid))) {
     sf_population_grid <- sf_population_grid %>%
-      dplyr::rename(population = Population)
+      dplyr::rename(population = "Population")
   }
 
-
-  if (adjusted == TRUE) {
+  if (adjusted) {
     # adjust population for cells that intersect the boundary
     intersect_grid_sf <- sf::st_filter(
       x = sf_population_grid,
@@ -62,7 +63,8 @@ ll_find_pop_centre <- function(sf_location,
       y = sf_location,
       .predicate = sf::st_within
     )
-    boundary_grid_sf <- dplyr::anti_join(intersect_grid_sf,
+    boundary_grid_sf <- dplyr::anti_join(
+      intersect_grid_sf,
       within_grid_sf %>%
         sf::st_drop_geometry(),
       by = "GRD_ID"
@@ -70,21 +72,28 @@ ll_find_pop_centre <- function(sf_location,
     boundary_grid_adjusted_df <- boundary_grid_sf %>%
       sf::st_drop_geometry()
 
-    boundary_grid_adjusted_df$population_adjusted <- boundary_grid_sf$population * as.numeric(sf::st_area(sf::st_intersection(
-      boundary_grid_sf,
-      sf_location
-    )) / sf::st_area(boundary_grid_sf))
+    boundary_grid_adjusted_df$population_adjusted <- boundary_grid_sf$population *
+      as.numeric(
+        sf::st_area(sf::st_intersection(
+          boundary_grid_sf,
+          sf_location
+        )) /
+          sf::st_area(boundary_grid_sf)
+      )
 
     sf_location_grid <- intersect_grid_sf %>%
       dplyr::left_join(
         y = boundary_grid_adjusted_df %>%
-          dplyr::select(GRD_ID, population_adjusted),
+          dplyr::select(dplyr::all_of(c("GRD_ID", "population_adjusted"))),
         by = "GRD_ID"
       ) %>%
-      dplyr::mutate(population = dplyr::if_else(condition = is.na(population_adjusted),
-        true = population,
-        false = population_adjusted
-      ))
+      dplyr::mutate(
+        population = dplyr::if_else(
+          condition = is.na(population_adjusted),
+          true = population,
+          false = population_adjusted
+        )
+      )
   } else {
     sf_location_grid <- sf::st_filter(
       x = sf_population_grid,
@@ -92,7 +101,6 @@ ll_find_pop_centre <- function(sf_location,
       .predicate = join
     )
   }
-
 
   sf_polygon <- sf_location %>%
     dplyr::select(geometry) %>%
@@ -132,7 +140,6 @@ ll_find_pop_centre <- function(sf_location,
     )
   }
 
-  
   sf_pop_centre <- dplyr::bind_cols(
     sf_location_grid %>%
       sf::st_drop_geometry() %>%
@@ -152,49 +159,53 @@ ll_find_pop_centre <- function(sf_location,
   # sf_location_grid %>%
   #   dplyr::filter(population>=median(population))
 
-
   # if the pop-weighted centre is out of the boundary,
   # take the closest cell, crop it with the boundary,
   # and use the centroid of the remaining part
-  
-  if (sf::st_is_valid(sf_location %>% sf::st_transform(4326))==FALSE) {
+
+  if (sf::st_is_valid(sf_location %>% sf::st_transform(4326)) == FALSE) {
     # deal with invalid lau
-    if (sf::st_intersects(
-      x = sf_location %>% sf::st_transform(3857),
-      y = sf_pop_centre %>% sf::st_transform(3857),
-      sparse = FALSE
-    ) == FALSE) {
+    if (
+      sf::st_intersects(
+        x = sf_location %>% sf::st_transform(3857),
+        y = sf_pop_centre %>% sf::st_transform(3857),
+        sparse = FALSE
+      ) ==
+        FALSE
+    ) {
       sf_cell <- sf_location_grid %>%
         dplyr::slice(sf::st_nearest_feature(
-          x = sf_pop_centre  %>% sf::st_transform(3857),
-          y = sf_location_grid  %>% sf::st_transform(3857)
+          x = sf_pop_centre %>% sf::st_transform(3857),
+          y = sf_location_grid %>% sf::st_transform(3857)
         ))
-      
+
       sf_cell_intersection <- sf::st_intersection(
-        sf_cell  %>% sf::st_transform(3857),
-        sf_location  %>% sf::st_transform(3857)
+        sf_cell %>% sf::st_transform(3857),
+        sf_location %>% sf::st_transform(3857)
       )
-      
+
       sf_pop_centre <- sf::st_centroid(sf_cell_intersection) %>%
         sf::st_transform(crs = 4326)
     }
-    
-  } else if (sf::st_intersects(
-    x = sf_location,
-    y = sf_pop_centre,
-    sparse = FALSE
-  ) == FALSE) {
+  } else if (
+    sf::st_intersects(
+      x = sf_location,
+      y = sf_pop_centre,
+      sparse = FALSE
+    ) ==
+      FALSE
+  ) {
     sf_cell <- sf_location_grid %>%
       dplyr::slice(sf::st_nearest_feature(
         x = sf_pop_centre,
         y = sf_location_grid
       ))
-    
+
     sf_cell_intersection <- sf::st_intersection(
       sf_cell,
       sf_location
     )
-    
+
     sf_pop_centre <- sf::st_centroid(sf_cell_intersection) %>%
       sf::st_transform(crs = 4326)
   }

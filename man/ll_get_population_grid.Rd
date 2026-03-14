@@ -15,20 +15,31 @@ ll_get_population_grid(
 )
 }
 \arguments{
-\item{year}{Defaults to 2018. Currently, the EU population grid is available only for the year 2006, 2011, and 2018.}
+\item{year}{Defaults to 2018. Currently, the EU population grid is available
+only for the year 2006, 2011, and 2018.}
 
-\item{match_sf}{An sf object to be matched with the population grid. If not given, full grid is returned.}
+\item{match_sf}{An sf object to be matched with the population grid. If not
+given, full grid is returned.}
 
-\item{match_name}{A name to be used for local caching. It is the responsibility of the user to keept it consistent. If not given, data are not cached locally.}
+\item{match_name}{A name to be used for local caching. It is the
+responsibility of the user to keept it consistent. If not given, data are
+not cached locally.}
 
 \item{match_country}{Defaults to NULL. If given, used to speed up processing.}
 
-\item{join}{The function to use for filtering. Defaults to sf::st_intersects. Alternative includes the likes of sf::st_within, sf::st_touches, etc.}
+\item{join}{The function to use for filtering. Defaults to sf::st_intersects.
+Alternative includes the likes of sf::st_within, sf::st_touches, etc.}
 
-\item{population_grid_sf}{Defaults to NULL. If given, it uses this one as population grid of reference. Useful to bulk process items, as it removes the need for re-loading the grid from local storage at each iteration.}
+\item{silent}{Defaults to \code{FALSE}. If \code{TRUE}, hides copyright notice. Useful
+e.g. when using this in reports or in loops. The copyright notice must
+still be shown where the final output is used.}
+
+\item{population_grid_sf}{Defaults to NULL. If given, it uses this one as
+population grid of reference. Useful to bulk process items, as it removes
+the need for re-loading the grid from local storage at each iteration.}
 }
 \value{
-An sf object with the population grid.
+An \code{sf} object with the population grid.
 }
 \description{
 Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat
