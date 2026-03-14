@@ -11,37 +11,36 @@
 #' @export
 #'
 #' @examples
-#' 
-#' if (interactive) {
+#'
+#' if (interactive()) {
 #'   ll_get_adm_ocha(geo = "UA", level = 3)
 #' }
-ll_get_adm_ocha <- function(geo,
-                            level = 0,
-                            match_name = NULL,
-                            source_url = NULL,
-                            silent = FALSE) {
-  if (silent == FALSE) {
-    
-  }
-  
-  if (is.null(geo) == FALSE) {
+ll_get_adm_ocha <- function(
+  geo,
+  level = 0,
+  match_name = NULL,
+  source_url = NULL,
+  silent = FALSE
+) {
+  if (!silent) {}
+
+  if (!is.null(geo)) {
     geo <- stringr::str_to_upper(string = geo)
   }
-  
-  current_slice <- latlon2map::ll_administrative_boundaries_ocha_metadata %>% 
-    dplyr::filter(.data$country_code==geo)  %>% 
+
+  current_slice <- latlon2map::ll_administrative_boundaries_ocha_metadata %>%
+    dplyr::filter(.data$country_code == geo) %>%
     dplyr::distinct()
-  
-  if (is.null(source_url)==TRUE) {
-    source_url <- current_slice %>% 
+
+  if (is.null(source_url) == TRUE) {
+    source_url <- current_slice %>%
       dplyr::pull(download_url)
   }
-  
-  
-  year <- current_slice %>% 
-    dplyr::pull(last_modified) %>% 
+
+  year <- current_slice %>%
+    dplyr::pull(last_modified) %>%
     stringr::str_extract(pattern = "[[:digit:]]{4}")
-  
+
   if (is.null(match_name) == FALSE) {
     rds_file_location <- ll_find_file(
       geo = geo,
@@ -61,12 +60,11 @@ ll_get_adm_ocha <- function(geo,
       file_type = "rds"
     )
   }
-  
+
   if (fs::file_exists(rds_file_location)) {
     return(readRDS(file = rds_file_location))
   }
-  
-  
+
   ll_create_folders(
     geo = geo,
     level = level,
@@ -74,22 +72,21 @@ ll_get_adm_ocha <- function(geo,
     year = year,
     file_type = c("zip", "shp", "rds")
   )
-  
-  
+
   if (fs::file_exists(rds_file_location)) {
     sf <- readRDS(file = rds_file)
     return(sf)
   }
-  
+
   shp_folder <- ll_find_file(
     geo = geo,
     level = level,
     resolution = "ocha",
     year = year,
-    name =  paste0("ocha_administrative"),
+    name = paste0("ocha_administrative"),
     file_type = "shp"
-  ) 
-  
+  )
+
   zip_file <- ll_find_file(
     geo = geo,
     level = level,
@@ -97,21 +94,21 @@ ll_get_adm_ocha <- function(geo,
     year = year,
     name = paste0("ocha_administrative"),
     file_type = "zip"
-  ) 
-  
+  )
+
   if (fs::file_exists(zip_file) == FALSE) {
     download.file(
       url = source_url,
       destfile = zip_file
     )
   }
-  
+
   file_name <- stringr::str_split(source_url, "/") %>%
     unlist() %>%
     dplyr::last() %>%
     stringr::str_replace("_csv\\.zip$|\\.csv\\.zip$", ".csv") %>%
     stringr::str_to_lower()
-  
+
   if (fs::file_exists(fs::path(shp_folder, file_name)) == FALSE) {
     unzip(
       zipfile = zip_file,
@@ -131,26 +128,37 @@ ll_get_adm_ocha <- function(geo,
       }
     )
   }
-  
-  all_shp_files_df <- tibble::tibble(file_location = fs::dir_ls(path = shp_folder, recurse = FALSE, type = "file", glob = "*.shp")) %>% 
-    dplyr::mutate(file = fs::path_file(.data$file_location)) %>% 
-    dplyr::mutate(level = stringr::str_extract(string = .data$file, pattern = "[[:digit:]]+"))
-  
+
+  all_shp_files_df <- tibble::tibble(
+    file_location = fs::dir_ls(
+      path = shp_folder,
+      recurse = FALSE,
+      type = "file",
+      glob = "*.shp"
+    )
+  ) %>%
+    dplyr::mutate(file = fs::path_file(.data$file_location)) %>%
+    dplyr::mutate(
+      level = stringr::str_extract(
+        string = .data$file,
+        pattern = "[[:digit:]]+"
+      )
+    )
+
   selected_level <- level
-  
-  current_level_shp_file <- all_shp_files_df %>% 
-    dplyr::filter(.data$level == as.character(selected_level)) %>% 
-    dplyr::slice(1) %>% 
+
+  current_level_shp_file <- all_shp_files_df %>%
+    dplyr::filter(.data$level == as.character(selected_level)) %>%
+    dplyr::slice(1) %>%
     dplyr::pull(file_location)
-  
-  current_sf <- sf::st_read(current_level_shp_file) %>% 
+
+  current_sf <- sf::st_read(current_level_shp_file) %>%
     sf::st_transform(crs = 4326)
-  
+
   saveRDS(
     object = current_sf,
     file = rds_file_location
   )
-  
+
   return(current_sf)
 }
-

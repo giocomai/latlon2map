@@ -26,7 +26,7 @@ Source: https://data.humdata.org/
 }
 \examples{
 
-if (interactive) {
+if (interactive()) {
   ll_get_adm_ocha(geo = "UA", level = 3)
 }
 }
