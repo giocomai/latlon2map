@@ -138,17 +138,51 @@ ll_set_folder(fs::path(fs::path_home_r(), "R"))
 ll_get_electoral_districts_it()
 #> https://www.istat.it/it/archivio/273443
 #> ℹ Istat (CC-BY)
-#> Error in loadNamespace(x): there is no package called ‘stringr’
+#> Simple feature collection with 28 features and 6 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 313279.3 ymin: 3933683 xmax: 1312016 ymax: 5220292
+#> Projected CRS: WGS 84 / UTM zone 32N
+#> # A tibble: 28 × 7
+#>    OBJECTID CIRC_COD CIRC_DEN              Shape_Leng   Shape_Area POP_2011
+#>       <dbl>    <dbl> <chr>                      <dbl>        <dbl>    <dbl>
+#>  1        1        1 Piemonte 1               593390.  6826908024.  2247780
+#>  2        2        2 Piemonte 2              1392233. 18559788304.  2116136
+#>  3        3        3 Lombardia 1              360012.  1873839345.  3805895
+#>  4        4        4 Lombardia 2              920201.  6719744999.  2088579
+#>  5        5        5 Lombardia 3              604436.  7105383618.  2175099
+#>  6        6        6 Lombardia 4             1095404.  8164129493.  1634578
+#>  7        7        7 Veneto 1                 885787.  8562659461.  1932447
+#>  8        8        8 Veneto 2                 800405.  9782546922.  2923457
+#>  9        9        9 Friuli-Venezia Giulia    767632.  7932519651.  1220291
+#> 10       10       10 Liguria                 1079631.  5416137655.  1570694
+#> # ℹ 18 more rows
+#> # ℹ 1 more variable: geometry <MULTIPOLYGON [m]>
 ll_get_electoral_districts_it(name = "Lombardia 2")
 #> https://www.istat.it/it/archivio/273443
 #> ℹ Istat (CC-BY)
-#> Error in loadNamespace(x): there is no package called ‘stringr’
-ll_get_electoral_districts_it() %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Circoscrizioni Camera")
+#> Simple feature collection with 1 feature and 6 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: 465199.5 ymin: 5045017 xmax: 625473.8 ymax: 5165371
+#> Projected CRS: WGS 84 / UTM zone 32N
+#> # A tibble: 1 × 7
+#>   OBJECTID CIRC_COD CIRC_DEN    Shape_Leng  Shape_Area POP_2011
+#> *    <dbl>    <dbl> <chr>            <dbl>       <dbl>    <dbl>
+#> 1        4        4 Lombardia 2    920201. 6719744999.  2088579
+#> # ℹ 1 more variable: geometry <MULTIPOLYGON [m]>
+ll_get_electoral_districts_it() %>%
+ ggplot2::ggplot() +
+ ggplot2::geom_sf() +
+ ggplot2::labs(title = "Circoscrizioni Camera")
 #> https://www.istat.it/it/archivio/273443
 #> ℹ Istat (CC-BY)
-#> Error in loadNamespace(x): there is no package called ‘stringr’
-ll_get_electoral_districts_it(level = "SENATO_CollegiUNINOMINALI_2020") %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Collegi uninominali - Senato")
+
+
+ll_get_electoral_districts_it(level = "SENATO_CollegiUNINOMINALI_2020") %>%
+ ggplot2::ggplot() +
+ ggplot2::geom_sf() +
+ ggplot2::labs(title = "Collegi uninominali - Senato")
 #> https://www.istat.it/it/archivio/273443
 #> ℹ Istat (CC-BY)
-#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```

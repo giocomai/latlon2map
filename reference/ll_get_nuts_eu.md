@@ -50,5 +50,26 @@ NUTS in sf format
 
 ``` r
 ll_get_nuts_eu()
-#> Error in loadNamespace(x): there is no package called ‘stringr’
+#> ℹ © EuroGeographics for the administrative boundaries
+#> ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/countries
+#> Simple feature collection with 1514 features and 8 fields
+#> Geometry type: MULTIPOLYGON
+#> Dimension:     XY
+#> Bounding box:  xmin: -61.84073 ymin: -21.37565 xmax: 55.84983 ymax: 80.79911
+#> Geodetic CRS:  WGS 84
+#> # A tibble: 1,514 × 9
+#>    NUTS_ID LEVL_CODE CNTR_CODE NAME_LATN          NUTS_NAME MOUNT_TYPE URBN_TYPE
+#>    <chr>       <int> <chr>     <chr>              <chr>          <int>     <int>
+#>  1 DE149           3 DE        Sigmaringen        Sigmarin…          4         3
+#>  2 DE211           3 DE        Ingolstadt, Kreis… Ingolsta…          4         2
+#>  3 DE212           3 DE        München, Kreisfre… München,…          4         1
+#>  4 DE213           3 DE        Rosenheim, Kreisf… Rosenhei…          4         2
+#>  5 DE214           3 DE        Altötting          Altötting          4         2
+#>  6 DE215           3 DE        Berchtesgadener L… Berchtes…          3         2
+#>  7 DE216           3 DE        Bad Tölz-Wolfrats… Bad Tölz…          2         2
+#>  8 DE217           3 DE        Dachau             Dachau             4         2
+#>  9 DE218           3 DE        Ebersberg          Ebersberg          4         2
+#> 10 DE219           3 DE        Eichstätt          Eichstätt          4         2
+#> # ℹ 1,504 more rows
+#> # ℹ 2 more variables: COAST_TYPE <int>, geometry <MULTIPOLYGON [°]>
 ```

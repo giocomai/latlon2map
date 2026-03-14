@@ -40,10 +40,8 @@ name <- "Pinzolo"
 sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high")
 #> ℹ Source: https://www.istat.it/it/archivio/222527
 #> ℹ Istat (CC-BY)
-#> Error in loadNamespace(x): there is no package called ‘stringr’
 
 lau_grid_name_temp <- stringr::str_c(name, "_lau_high-st_intersects")
-#> Error in loadNamespace(x): there is no package called ‘stringr’
 
 sf_location_grid <- ll_get_population_grid(
   match_sf = sf_location,
@@ -53,7 +51,9 @@ sf_location_grid <- ll_get_population_grid(
 )
 #> ℹ Data source population grid information: Eurostat, EFGS
 #> ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat
-#> Error in loadNamespace(x): there is no package called ‘stringr’
+#> Warning: downloaded length 54884787 != reported length 76915213
+#> Warning: URL 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip': Timeout of 60 seconds was reached
+#> Error in download.file(url = source_url, destfile = zip_file): download from 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip' failed
 
 
 pop_centre <- ll_find_pop_centre(
