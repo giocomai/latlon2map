@@ -38,8 +38,7 @@ ll_get_adm_ocha(
 ## Examples
 
 ``` r
-if (interactive) {
+if (interactive()) {
   ll_get_adm_ocha(geo = "UA", level = 3)
 }
-#> Error in if (interactive) {    ll_get_adm_ocha(geo = "UA", level = 3)}: argument is not interpretable as logical
 ```

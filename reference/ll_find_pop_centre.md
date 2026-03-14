@@ -51,7 +51,7 @@ sf_location_grid <- ll_get_population_grid(
 )
 #> ℹ Data source population grid information: Eurostat, EFGS
 #> ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat
-#> Warning: downloaded length 54884787 != reported length 76915213
+#> Warning: downloaded length 53942708 != reported length 76915213
 #> Warning: URL 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip': Timeout of 60 seconds was reached
 #> Error in download.file(url = source_url, destfile = zip_file): download from 'https://ec.europa.eu/eurostat/cache/GISCO/geodatafiles/JRC_GRID_2018.zip' failed
 
