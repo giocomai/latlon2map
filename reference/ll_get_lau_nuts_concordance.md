@@ -41,12 +41,9 @@ sources for details and ensure complete matching.
 ## Examples
 
 ``` r
-ll_set_folder("~/R/")
-#> [1] "~/R/"
-ll_get_lau_nuts_concordance()
-#> ℹ For details, see: <https://ec.europa.eu/eurostat/web/nuts/local-administrative-units>
-#> Error in loadNamespace(x): there is no package called ‘readxl’
 if (FALSE) { # \dontrun{
+ll_set_folder("~/R/")
+ll_get_lau_nuts_concordance()
 lau_with_nuts_df <- ll_get_lau_eu(year = 2018) %>%
   sf::st_drop_geometry() %>%
   filter(is.na(LAU_NAME) == FALSE) %>%
