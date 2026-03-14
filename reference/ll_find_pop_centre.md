@@ -38,7 +38,9 @@ ll_set_folder("~/R/")
 #> [1] "~/R/"
 name <- "Pinzolo"
 sf_location <- ll_get_nuts_it(name = name, level = "lau", resolution = "high")
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: https://www.istat.it/it/archivio/222527
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 
 lau_grid_name_temp <- stringr::str_c(name, "_lau_high-st_intersects")
 #> Error in loadNamespace(x): there is no package called ‘stringr’
@@ -49,7 +51,9 @@ sf_location_grid <- ll_get_population_grid(
   match_country = "IT",
   join = sf::st_intersects
 )
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Data source population grid information: Eurostat, EFGS
+#> ℹ Source: https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/population-distribution-demography/geostat
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 
 
 pop_centre <- ll_find_pop_centre(

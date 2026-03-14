@@ -41,7 +41,11 @@ ll_get_nuts_it(
 ll_set_folder(fs::path(fs::path_home_r(), "R"))
 #> /home/runner/R
 ll_get_nuts_it()
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: https://www.istat.it/it/archivio/222527
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ll_get_nuts_it(name = "Rimini", level = 3)
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: https://www.istat.it/it/archivio/222527
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```

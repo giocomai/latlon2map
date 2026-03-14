@@ -56,5 +56,6 @@ European LAU in sf format
 ll_set_folder("~/R/")
 #> [1] "~/R/"
 ll_get_lau_eu()
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ © EuroGeographics for the administrative boundaries
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```

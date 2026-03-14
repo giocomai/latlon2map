@@ -33,5 +33,7 @@ An `sf` object
 
 ``` r
 ll_get_gadm(geo = "UKR", level = 2)
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: <https://gadm.org/>
+#> ℹ The data are freely available for academic use and other non-commercial use. Redistribution, or commercial use, is not allowed without prior permission. Using the data to create maps for academic publishing is allowed.
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```

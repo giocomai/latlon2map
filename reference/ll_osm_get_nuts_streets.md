@@ -47,7 +47,7 @@ ll_osm_get_nuts_streets(
 - country_code_type:
 
   Defaults to "eurostat". An alternative common value is "iso2c". See
-  [`countrycode::codelist`](https://vincentarelbundock.github.io/countrycode/reference/codelist.html)
+  [`countrycode::codelist`](https://vincentarelbundock.github.io/countrycode/man/codelist.html)
   for a list of available codes.
 
 - year:

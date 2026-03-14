@@ -136,11 +136,19 @@ Column names metadata:
 ll_set_folder(fs::path(fs::path_home_r(), "R"))
 #> /home/runner/R
 ll_get_electoral_districts_it()
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> https://www.istat.it/it/archivio/273443
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ll_get_electoral_districts_it(name = "Lombardia 2")
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> https://www.istat.it/it/archivio/273443
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ll_get_electoral_districts_it() %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Circoscrizioni Camera")
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> https://www.istat.it/it/archivio/273443
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ll_get_electoral_districts_it(level = "SENATO_CollegiUNINOMINALI_2020") %>% ggplot2::ggplot() + ggplot2::geom_sf() + ggplot2::labs(title = "Collegi uninominali - Senato")
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> https://www.istat.it/it/archivio/273443
+#> ℹ Istat (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```

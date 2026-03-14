@@ -29,5 +29,6 @@ ll_get_nuts_us(level = "county", resolution = "500k", year = 2018)
 
 ``` r
 ll_get_nuts_us(level = "county", resolution = "500k", year = 2018)
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: https://www.census.gov/geographies/mapping-files/time-series/geo/carto-boundary-file.html
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```

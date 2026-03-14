@@ -44,7 +44,8 @@ sources for details and ensure complete matching.
 ll_set_folder("~/R/")
 #> [1] "~/R/"
 ll_get_lau_nuts_concordance()
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ For details, see: <https://ec.europa.eu/eurostat/web/nuts/local-administrative-units>
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 if (FALSE) { # \dontrun{
 lau_with_nuts_df <- ll_get_lau_eu(year = 2018) %>%
   sf::st_drop_geometry() %>%

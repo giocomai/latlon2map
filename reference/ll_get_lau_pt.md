@@ -35,7 +35,11 @@ ll_get_lau_pt(
 ll_set_folder(fs::path(fs::path_home_r(), "R"))
 #> /home/runner/R
 ll_get_lau_pt()
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: <https://dados.gov.pt/pt/datasets/freguesias-de-portugal/>
+#> ℹ dados.gov.pt (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ll_get_lau_pt(name = "Porto")
-#> Error in loadNamespace(x): there is no package called ‘usethis’
+#> ℹ Source: <https://dados.gov.pt/pt/datasets/freguesias-de-portugal/>
+#> ℹ dados.gov.pt (CC-BY)
+#> Error in loadNamespace(x): there is no package called ‘stringr’
 ```
