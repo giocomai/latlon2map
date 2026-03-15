@@ -35,12 +35,12 @@ ll_osm_get_nuts_streets(
 
 - unnamed_streets:
 
-  Defaults to TRUE. If FALSE, it drops all streets with missing "name"
-  or missing "fclass".
+  Defaults to `TRUE`. If `FALSE`, it drops all streets with missing
+  "name" or missing `fclass`.
 
 - streets_sf:
 
-  Defaults to NULL. If given, used to speed up processing. Must be an
+  Defaults to `NULL`. If given, used to speed up processing. Must be an
   `sf` object such as the ones output by
   [`ll_osm_get_roads()`](https://giocomai.github.io/latlon2map/reference/ll_osm_get_roads.md).
 

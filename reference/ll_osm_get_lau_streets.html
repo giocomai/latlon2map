@@ -72,17 +72,18 @@ country names see the dataset included in this package: <code>ll_osm_countries</
 
 
 <dt id="arg-unnamed-streets">unnamed_streets<a class="anchor" aria-label="anchor" href="#arg-unnamed-streets"></a></dt>
-<dd><p>Defaults to TRUE. If FALSE, it drops all streets with
-missing "name" or missing "fclass".</p></dd>
+<dd><p>Defaults to <code>TRUE</code>. If <code>FALSE</code>, it drops all streets
+with missing "name" or missing <code>fclass</code>.</p></dd>
 
 
 <dt id="arg-lau-boundary-sf">lau_boundary_sf<a class="anchor" aria-label="anchor" href="#arg-lau-boundary-sf"></a></dt>
-<dd><p>Defaults to NULL. If given, used to speed up
-processing. Must be an <code>sf</code> object such as the ones output by by <code><a href="ll_get_lau_eu.html">ll_get_lau_eu()</a></code>.</p></dd>
+<dd><p>Defaults to <code>NULL</code>. If given, used to speed up
+processing. Must be an <code>sf</code> object such as the ones output by by
+<code><a href="ll_get_lau_eu.html">ll_get_lau_eu()</a></code>.</p></dd>
 
 
 <dt id="arg-streets-sf">streets_sf<a class="anchor" aria-label="anchor" href="#arg-streets-sf"></a></dt>
-<dd><p>Defaults to NULL. If given, used to speed up processing.
+<dd><p>Defaults to <code>NULL</code>. If given, used to speed up processing.
 Must be an <code>sf</code> object such as the ones output by <code><a href="ll_osm_get_roads.html">ll_osm_get_roads()</a></code>.</p></dd>
 
 
@@ -97,7 +98,7 @@ is "iso2c". See <code><a href="https://vincentarelbundock.github.io/countrycode/
 
 
 <dt id="arg-fallback">fallback<a class="anchor" aria-label="anchor" href="#arg-fallback"></a></dt>
-<dd><p>Logical, defaults to TRUE. If a <code>gisco_id</code> does not match an
+<dd><p>Logical, defaults to <code>TRUE</code>. If a <code>gisco_id</code> does not match an
 entity in <code><a href="ll_get_lau_eu.html">ll_get_lau_eu()</a></code>, try alternatives for the boundaries based on
 the country code, including <code><a href="ll_get_nuts_eu.html">ll_get_nuts_eu()</a></code>, <code><a href="ll_get_gadm.html">ll_get_gadm()</a></code>, and
 <code><a href="ll_get_adm_ocha.html">ll_get_adm_ocha()</a></code>.</p></dd>
@@ -112,11 +113,11 @@ OpenStreetMap</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="fu">ll_osm_get_lau_streets</span><span class="op">(</span>gisco_id <span class="op">=</span> <span class="st">"IT_022205"</span>, unnamed_streets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">ll_osm_get_lau_streets</span><span class="op">(</span>gisco_id <span class="op">=</span> <span class="st">"IT_022205"</span>, unnamed_streets <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># or if country name does not match</span></span></span>
+<span class="r-in"><span>  <span class="co"># or if country name does not match</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">ll_osm_get_lau_streets</span><span class="op">(</span>gisco_id <span class="op">=</span> <span class="st">"EL_01020204"</span>, country <span class="op">=</span> <span class="st">"greece"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">ll_osm_get_lau_streets</span><span class="op">(</span>gisco_id <span class="op">=</span> <span class="st">"EL_01020204"</span>, country <span class="op">=</span> <span class="st">"greece"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
