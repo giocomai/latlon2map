@@ -20,9 +20,9 @@
 #' @export
 #'
 #' @examples
-#'
-#' ll_set_folder("~/R/")
-#' ll_get_lau_eu()
+#' \dontrun{
+#'   ll_get_lau_eu()
+#' }
 ll_get_lau_eu <- function(
   gisco_id = NULL,
   name = NULL,
@@ -50,7 +50,7 @@ ll_get_lau_eu <- function(
     file_type = "rds"
   )
 
-  if (is.null(gisco_id) == FALSE) {
+  if (!is.null(gisco_id)) {
     rds_file_location <- ll_find_file(
       geo = "eu",
       level = "lau",
@@ -63,7 +63,7 @@ ll_get_lau_eu <- function(
     if (fs::file_exists(rds_file_location)) {
       return(readRDS(file = rds_file_location))
     }
-  } else if (is.null(name) == FALSE) {
+  } else if (!is.null(name)) {
     rds_file_location <- ll_find_file(
       geo = "eu",
       level = "lau",
@@ -85,8 +85,8 @@ ll_get_lau_eu <- function(
     }
   }
 
-  if (is.null(gisco_id) == FALSE) {
-    if (fallback == TRUE & (gisco_id %in% latlon2map::ll_codes$id)) {
+  if (!is.null(gisco_id)) {
+    if (fallback & (gisco_id %in% latlon2map::ll_codes$id)) {
       code_row_df <- latlon2map::ll_codes %>%
         dplyr::filter(gisco_id == .data$id)
 
@@ -134,7 +134,7 @@ ll_get_lau_eu <- function(
     }
   }
 
-  if (is.null(lau_sf) == FALSE) {
+  if (!is.null(lau_sf)) {
     sf <- lau_sf
   } else if (fs::file_exists(rds_file)) {
     sf <- readRDS(file = rds_file)
@@ -204,7 +204,7 @@ ll_get_lau_eu <- function(
     )
   }
 
-  if (is.null(gisco_id) == FALSE) {
+  if (!is.null(gisco_id)) {
     if (gisco_id == "SK_Bratislava") {
       sf <- sf %>%
         dplyr::filter(stringr::str_starts(
@@ -247,7 +247,7 @@ ll_get_lau_eu <- function(
       object = sf,
       file = rds_file_location
     )
-  } else if (is.null(name) == FALSE) {
+  } else if (!is.null(name)) {
     if (name == "Bratislava") {
       sf <- sf %>%
         dplyr::filter(stringr::str_starts(
@@ -281,7 +281,7 @@ ll_get_lau_eu <- function(
           ),
           dplyr::everything()
         )
-    } else if (is.element("LAU_LABEL", colnames(sf)) == TRUE) {
+    } else if (is.element("LAU_LABEL", colnames(sf))) {
       sf <- sf %>%
         dplyr::filter(LAU_LABEL == name)
     } else {
@@ -305,27 +305,28 @@ ll_get_lau_eu <- function(
 #' Get all streets available in OpenStreetMap located in given local
 #' administrative unit.
 #'
-#' Relies on the output of `ll_get_lau_eu()` for the boundaries of local
+#' Relies on the output of [ll_get_lau_eu()] for the boundaries of local
 #' administrative units.
 #'
 #' @param gisco_id Gisco identifier.
 #' @param country Name of country as included in Geofabrik's datasets, does not
 #'   always match common country names or geography. For details on available
 #'   country names see the dataset included in this package: `ll_osm_countries`
-#' @param unnamed_streets Defaults to TRUE. If FALSE, it drops all streets with
-#'   missing "name" or missing "fclass".
-#' @param lau_boundary_sf Defaults to NULL. If given, used to speed up
-#'   processing. Must be an `sf` object such as the ones output by by `ll_get_lau_eu()`.
-#' @param streets_sf Defaults to NULL. If given, used to speed up processing.
-#'   Must be an `sf` object such as the ones output by `ll_osm_get_roads()`.
+#' @param unnamed_streets Defaults to `TRUE`. If `FALSE`, it drops all streets
+#'   with missing "name" or missing `fclass`.
+#' @param lau_boundary_sf Defaults to `NULL`. If given, used to speed up
+#'   processing. Must be an `sf` object such as the ones output by by
+#'   [ll_get_lau_eu()].
+#' @param streets_sf Defaults to `NULL`. If given, used to speed up processing.
+#'   Must be an `sf` object such as the ones output by [ll_osm_get_roads()].
 #' @param country_code_type Defaults to "eurostat". An alternative common value
 #'   is "iso2c". See `countrycode::codelist` for a list of available codes.
 #' @param year Year of LAU boundaries, defaults to most recent (2021), passed to
 #'   `ll_get_lau_eu()`. Available starting with 2011.
-#' @param fallback Logical, defaults to TRUE. If a `gisco_id` does not match an
-#'   entity in `ll_get_lau_eu()`, try alternatives for the boundaries based on
-#'   the country code, including `ll_get_nuts_eu()`, `ll_get_gadm()`, and
-#'   `ll_get_adm_ocha()`.
+#' @param fallback Logical, defaults to `TRUE`. If a `gisco_id` does not match an
+#'   entity in [ll_get_lau_eu()], try alternatives for the boundaries based on
+#'   the country code, including [ll_get_nuts_eu()], [ll_get_gadm()], and
+#'   [ll_get_adm_ocha()].
 #'
 #' @return An `sf` objects with all streets of a given LAU based on
 #'   OpenStreetMap
@@ -333,11 +334,11 @@ ll_get_lau_eu <- function(
 #'
 #' @examples
 #' \dontrun{
-#' ll_osm_get_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
+#'   ll_osm_get_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
 #'
-#' # or if country name does not match
+#'   # or if country name does not match
 #'
-#' ll_osm_get_lau_streets(gisco_id = "EL_01020204", country = "greece")
+#'   ll_osm_get_lau_streets(gisco_id = "EL_01020204", country = "greece")
 #' }
 ll_osm_get_lau_streets <- function(
   gisco_id,
@@ -350,7 +351,7 @@ ll_osm_get_lau_streets <- function(
   year = 2021,
   fallback = TRUE
 ) {
-  if (unnamed_streets == TRUE) {
+  if (unnamed_streets) {
     ll_create_folders(
       geo = "eu",
       level = "lau_osm_streets",

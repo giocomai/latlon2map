@@ -23,11 +23,11 @@ ll_osm_get_nuts_streets(
 always match common country names or geography. For details on available
 country names see the dataset included in this package: \code{ll_osm_countries}}
 
-\item{unnamed_streets}{Defaults to TRUE. If FALSE, it drops all streets with
-missing "name" or missing "fclass".}
+\item{unnamed_streets}{Defaults to \code{TRUE}. If \code{FALSE}, it drops all streets
+with missing "name" or missing \code{fclass}.}
 
-\item{streets_sf}{Defaults to NULL. If given, used to speed up processing.
-Must be an \code{sf} object such as the ones output by \code{ll_osm_get_roads()}.}
+\item{streets_sf}{Defaults to \code{NULL}. If given, used to speed up processing.
+Must be an \code{sf} object such as the ones output by \code{\link[=ll_osm_get_roads]{ll_osm_get_roads()}}.}
 
 \item{country_code_type}{Defaults to "eurostat". An alternative common value
 is "iso2c". See \code{countrycode::codelist} for a list of available codes.}

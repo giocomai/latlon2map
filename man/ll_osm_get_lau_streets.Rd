@@ -23,14 +23,15 @@ ll_osm_get_lau_streets(
 always match common country names or geography. For details on available
 country names see the dataset included in this package: \code{ll_osm_countries}}
 
-\item{unnamed_streets}{Defaults to TRUE. If FALSE, it drops all streets with
-missing "name" or missing "fclass".}
+\item{unnamed_streets}{Defaults to \code{TRUE}. If \code{FALSE}, it drops all streets
+with missing "name" or missing \code{fclass}.}
 
-\item{lau_boundary_sf}{Defaults to NULL. If given, used to speed up
-processing. Must be an \code{sf} object such as the ones output by by \code{ll_get_lau_eu()}.}
+\item{lau_boundary_sf}{Defaults to \code{NULL}. If given, used to speed up
+processing. Must be an \code{sf} object such as the ones output by by
+\code{\link[=ll_get_lau_eu]{ll_get_lau_eu()}}.}
 
-\item{streets_sf}{Defaults to NULL. If given, used to speed up processing.
-Must be an \code{sf} object such as the ones output by \code{ll_osm_get_roads()}.}
+\item{streets_sf}{Defaults to \code{NULL}. If given, used to speed up processing.
+Must be an \code{sf} object such as the ones output by \code{\link[=ll_osm_get_roads]{ll_osm_get_roads()}}.}
 
 \item{country_code_type}{Defaults to "eurostat". An alternative common value
 is "iso2c". See \code{countrycode::codelist} for a list of available codes.}
@@ -38,25 +39,25 @@ is "iso2c". See \code{countrycode::codelist} for a list of available codes.}
 \item{year}{Year of LAU boundaries, defaults to most recent (2021), passed to
 \code{ll_get_lau_eu()}. Available starting with 2011.}
 
-\item{fallback}{Logical, defaults to TRUE. If a \code{gisco_id} does not match an
-entity in \code{ll_get_lau_eu()}, try alternatives for the boundaries based on
-the country code, including \code{ll_get_nuts_eu()}, \code{ll_get_gadm()}, and
-\code{ll_get_adm_ocha()}.}
+\item{fallback}{Logical, defaults to \code{TRUE}. If a \code{gisco_id} does not match an
+entity in \code{\link[=ll_get_lau_eu]{ll_get_lau_eu()}}, try alternatives for the boundaries based on
+the country code, including \code{\link[=ll_get_nuts_eu]{ll_get_nuts_eu()}}, \code{\link[=ll_get_gadm]{ll_get_gadm()}}, and
+\code{\link[=ll_get_adm_ocha]{ll_get_adm_ocha()}}.}
 }
 \value{
 An \code{sf} objects with all streets of a given LAU based on
 OpenStreetMap
 }
 \description{
-Relies on the output of \code{ll_get_lau_eu()} for the boundaries of local
+Relies on the output of \code{\link[=ll_get_lau_eu]{ll_get_lau_eu()}} for the boundaries of local
 administrative units.
 }
 \examples{
 \dontrun{
-ll_osm_get_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
+  ll_osm_get_lau_streets(gisco_id = "IT_022205", unnamed_streets = FALSE)
 
-# or if country name does not match
+  # or if country name does not match
 
-ll_osm_get_lau_streets(gisco_id = "EL_01020204", country = "greece")
+  ll_osm_get_lau_streets(gisco_id = "EL_01020204", country = "greece")
 }
 }
